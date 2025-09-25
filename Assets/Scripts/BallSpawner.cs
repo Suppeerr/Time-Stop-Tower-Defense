@@ -3,7 +3,7 @@ using UnityEngine;
 public class BallSpawner : MonoBehaviour
 {
     public GameObject cannon_projectile;
-    public float spawnPerSecond = 10f;
+    public float spawnPerSecond = 5f;
     private float spawnRate;
     private float timer = 0f;
 
