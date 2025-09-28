@@ -11,26 +11,29 @@ public class BallSpawner : MonoBehaviour
     void Start()
     {
         spawnRate = 1f / spawnPerSecond;
-        spawnBall();
+        SpawnBall();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (ProjectileManager.IsFrozen)
+        {
+            return;
+        }
         if (timer < spawnRate)
-        {
-            timer += Time.deltaTime;
-        }
-        else
-        {
-            spawnBall();
-            timer = 0;
-        }
+            {
+                timer += Time.deltaTime;
+            }
+            else
+            {
+                SpawnBall();
+                timer = 0;
+            }
     }
 
-    void spawnBall()
+    void SpawnBall()
     {
         Instantiate(cannon_projectile, transform.position, transform.rotation);
-
     }
 }
