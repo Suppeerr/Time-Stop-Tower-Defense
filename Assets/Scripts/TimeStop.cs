@@ -6,7 +6,7 @@ public class TimeStop : MonoBehaviour
 {
     public static event Action<bool> timeStop;
     public TMP_Text durationText;
-    public Color activeColor; 
+    private Color activeColor = Color.yellow; 
     private Color inactiveColor = Color.gray;
     public float duration = 5f;
     public float maxDur = 5f;
@@ -56,7 +56,6 @@ public class TimeStop : MonoBehaviour
                 {
                     duration = maxDur;
                 }
-
             }
         }
 
@@ -67,10 +66,16 @@ public class TimeStop : MonoBehaviour
             if (active)
             {
                 durationText.color = activeColor;
+                durationText.gameObject.SetActive(true);
+            }
+            else if (duration < maxDur)
+            {
+                durationText.color = inactiveColor;
+                durationText.gameObject.SetActive(true);
             }
             else
             {
-                durationText.color = inactiveColor;
+                durationText.gameObject.SetActive(false);
             }
         }
     }
