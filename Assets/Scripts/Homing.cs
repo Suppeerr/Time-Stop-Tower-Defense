@@ -8,15 +8,12 @@ public class Homing : MonoBehaviour
     public string targetTag = "Enemy";
 
     // Arc / Steering
-    public float timeToTarget = 1f;
     public float steerSpeed = 10f;
     public float maxSpeed = 1f;
     private float arcBoost = 2f;
 
     // Behavior
     public float destroyAfter = 10f;
-    public LayerMask collisionMask = ~0;
-    public float raycastSafetyPadding = 0.1f;
 
     private Rigidbody rb;
 
@@ -24,6 +21,7 @@ public class Homing : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        ProjectileManager.Instance.RegisterProjectile(rb);
         rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
         rb.linearVelocity = Vector3.zero;
 
@@ -50,6 +48,10 @@ public class Homing : MonoBehaviour
     // Updates for projectile physics 
     void FixedUpdate()
     {
+        if (ProjectileManager.IsFrozen)
+        {
+            return;
+        }
         if (target == null) return;
 
         // Vector to target
@@ -90,17 +92,22 @@ public class Homing : MonoBehaviour
 
     void HandleHit(Collider collider, Vector3 hitPoint, Vector3 hitNormal)
     {
-        if (collider.transform == target)
-        {
-            Debug.Log("Projectile hit target!");
+        // if (collider.transform == target)
+        //{
+        //    Debug.Log("Projectile hit target!");
             // add damage logic here
-        }
-        else
-        {
-            Debug.Log("Projectile hit " + collider.name);
-        }
+        //}
+        //else
+        //{
+        //    Debug.Log("Projectile hit " + collider.name);
+        //}
 
         Destroy(gameObject);
+    }
+
+    void OnDestroy()
+    {
+        ProjectileManager.Instance?.UnregisterProjectile(rb);
     }
 }
 
