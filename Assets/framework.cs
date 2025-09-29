@@ -1,4 +1,49 @@
+using System.Linq;
 using UnityEngine;
+
+public class enemyPathing
+{
+    public waypoint[] waypoints { get; private set; }
+    public void addWaypoint(float x, float y)
+    {
+        if (waypoints.Length == 0)
+        {
+            waypoints = waypoints.Append(new waypoint(x, y)).ToArray();
+            return;
+        }
+        
+        waypoint prevPoint = waypoints[waypoints.Length - 1];
+        waypoints = waypoints.Append(new waypoint(x, y, prevPoint.x,prevPoint.y)).ToArray();
+    }
+}
+
+public class waypoint
+{
+    public float x, y;
+
+    public float x_modif { get; private set; }
+    public float y_modif { get; private set; }
+    public float? xvec { get; private set; }
+    public float? yvec { get; private set; }
+    public waypoint(float x, float y, float prevX, float prevY)
+    {
+        this.x = x;
+        this.y = y;
+        xvec = x - prevX;
+        yvec = y - prevY;
+        float dist_modif = xvec ?? 0 + yvec ?? 0;
+        x_modif = xvec ?? 0 / dist_modif;
+        y_modif = yvec ?? 0 / dist_modif;
+    }
+
+    public waypoint(float x, float y)
+    {
+        this.x = x;
+        this.y = y;
+        xvec = null;
+        yvec = null;
+    }
+}
 
 //reference numbers: enemy hp 100~100000, projectile damage 25~x
 public abstract partial class baseEnemy
@@ -11,6 +56,13 @@ public abstract partial class baseEnemy
     public int hp;
     public int def;
     public int res;
+
+    public float x;
+    public float y;
+    public float speed;
+
+    public readonly enemyPathing spath;
+    public int currentWaypoint = 1; 
 
     public abstract void OnSpawn();
     public abstract void OnDestroy();
@@ -27,6 +79,26 @@ public abstract partial class baseEnemy
         if (damage.isRes) damagerecieved = Mathf.Clamp(damagerecieved * (1 - (float)res), minDamage, damagerecieved);
         hp -= (int)damagerecieved;
         if (hp < 0) OnDie();
+    }
+
+    //called per-update
+    public void s_move()
+    {
+        float distance_traveled = speed * Time.deltaTime;
+        waypoint targ_waypoint = spath.waypoints[currentWaypoint];
+
+        float dist_to_next_waypoint = Mathf.Abs(targ_waypoint.x - x) - Mathf.Abs(distance_traveled * targ_waypoint.x_modif);
+        if (dist_to_next_waypoint <= 0)
+        {
+            this.y = targ_waypoint.y;
+            this.x = targ_waypoint.x;
+            currentWaypoint += 1;
+            targ_waypoint = spath.waypoints[currentWaypoint];
+            distance_traveled = distance_traveled - dist_to_next_waypoint;
+        }
+
+        this.y += distance_traveled * targ_waypoint.x_modif;
+        this.x += distance_traveled * targ_waypoint.y_modif;
     }
 }
 
