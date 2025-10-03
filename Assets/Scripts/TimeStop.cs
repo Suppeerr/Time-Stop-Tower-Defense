@@ -8,6 +8,7 @@ public class TimeStop : MonoBehaviour
     public TMP_Text durationText;
     private Color activeColor = Color.yellow; 
     private Color inactiveColor = Color.gray;
+    private Color cooldownColor = Color.red;
     public float duration = 5f;
     public float maxDur = 5f;
     public float rechargeRate = 1f;
@@ -66,6 +67,11 @@ public class TimeStop : MonoBehaviour
             if (active)
             {
                 durationText.color = activeColor;
+                durationText.gameObject.SetActive(true);
+            }
+            else if (duration <= 1f)
+            {
+                durationText.color = cooldownColor;
                 durationText.gameObject.SetActive(true);
             }
             else if (duration < maxDur)
