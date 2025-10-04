@@ -5,6 +5,8 @@ using TMPro;
 public class TimeStop : MonoBehaviour
 {
     public static event Action<bool> timeStop;
+    public AudioSource audioSource;
+    public AudioClip timeStopSFX;
     public TMP_Text durationText;
     private Color activeColor = Color.yellow; 
     private Color inactiveColor = Color.gray;
@@ -23,6 +25,7 @@ public class TimeStop : MonoBehaviour
         if (!active && Input.GetKeyDown(KeyCode.T) && duration > waitTime)
         {
             active = true;
+            audioSource.PlayOneShot();
             Debug.Log("Time has been stopped.");
             timeStop?.Invoke(true);
 

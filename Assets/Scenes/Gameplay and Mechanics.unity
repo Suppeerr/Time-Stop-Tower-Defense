@@ -420,11 +420,113 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e5e2f7aad63c0c94ab1ccc176f7ce3f7, type: 3}
+--- !u!1 &1068224592 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7145860282645891625, guid: 87ca9127500f43246a2379b83ffc1f66, type: 3}
+  m_PrefabInstance: {fileID: 8802967446757999741}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1145689599 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4093609540753257016, guid: 87ca9127500f43246a2379b83ffc1f66, type: 3}
   m_PrefabInstance: {fileID: 8802967446757999741}
   m_PrefabAsset: {fileID: 0}
+--- !u!82 &1145689604
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1068224592}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 8300000, guid: 50070e6619928244993803148e210ed0, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1439725352
 GameObject:
   m_ObjectHideFlags: 0
@@ -1009,6 +1111,14 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4357961900893937353, guid: 87ca9127500f43246a2379b83ffc1f66, type: 3}
+      propertyPath: audioSource
+      value: 
+      objectReference: {fileID: 1145689604}
+    - target: {fileID: 4357961900893937353, guid: 87ca9127500f43246a2379b83ffc1f66, type: 3}
+      propertyPath: timeStopSFX
+      value: 
+      objectReference: {fileID: 8300000, guid: 50070e6619928244993803148e210ed0, type: 3}
+    - target: {fileID: 4357961900893937353, guid: 87ca9127500f43246a2379b83ffc1f66, type: 3}
       propertyPath: durationText
       value: 
       objectReference: {fileID: 1931106189}
@@ -1034,7 +1144,10 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4093609540753257016, guid: 87ca9127500f43246a2379b83ffc1f66, type: 3}
       insertIndex: -1
       addedObject: {fileID: 26204079}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7145860282645891625, guid: 87ca9127500f43246a2379b83ffc1f66, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1145689604}
   m_SourcePrefab: {fileID: 100100000, guid: 87ca9127500f43246a2379b83ffc1f66, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
