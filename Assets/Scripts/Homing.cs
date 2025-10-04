@@ -10,7 +10,7 @@ public class Homing : MonoBehaviour
     // Arc / Steering
     public float steerSpeed = 10f;
     public float maxSpeed = 1f;
-    private float arcBoost = 2f;
+    public float arcBoost = 2f;
 
     // Behavior
     public float destroyAfter = 10f;

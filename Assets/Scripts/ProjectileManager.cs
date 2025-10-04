@@ -66,7 +66,6 @@ public class ProjectileManager : MonoBehaviour
     // Freezes all registered projectiles
     void FreezeProjectiles()
     {
-        Debug.Log("Projectiles have been frozen");
         foreach (Rigidbody projectile in activeProjectiles)
         {
             savedVelocities[projectile] = projectile.linearVelocity;
