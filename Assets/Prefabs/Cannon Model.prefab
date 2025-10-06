@@ -481,7 +481,6 @@ GameObject:
   - component: {fileID: 3652011956315678642}
   - component: {fileID: 8303127609990628921}
   - component: {fileID: -5215299815803115452}
-  - component: {fileID: 7335608758425206024}
   m_Layer: 0
   m_Name: Barrel
   m_TagString: Untagged
@@ -560,20 +559,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &7335608758425206024
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1214824004972775095}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 98c73760247936d418333d8d4f887cc7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BallSpawner
-  cannon_projectile: {fileID: 0}
-  spawnPerSecond: 5
 --- !u!1 &2968609167750827889
 GameObject:
   m_ObjectHideFlags: 0
