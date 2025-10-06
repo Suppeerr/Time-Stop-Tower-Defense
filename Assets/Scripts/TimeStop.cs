@@ -1,6 +1,7 @@
 using UnityEngine;
 using System;
 using TMPro;
+using UnityEngine.InputSystem;
 
 public class TimeStop : MonoBehaviour
 {
@@ -22,10 +23,10 @@ public class TimeStop : MonoBehaviour
     void Update()
     {
         // Triggers timestop
-        if (!active && Input.GetKeyDown(KeyCode.T) && duration > waitTime)
+        if (!active && Keyboard.current.tKey.wasPressedThisFrame && duration > waitTime)
         {
             active = true;
-            audioSource.PlayOneShot();
+            // audioSource.PlayOneShot();
             Debug.Log("Time has been stopped.");
             timeStop?.Invoke(true);
 
