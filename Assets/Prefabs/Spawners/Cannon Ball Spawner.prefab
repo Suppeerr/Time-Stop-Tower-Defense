@@ -1,0 +1,81 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &8453614160857543132
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -7999699111181615728, guid: abcd32f945183f1419466507fa77955f, type: 3}
+      propertyPath: isCannon
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7999699111181615728, guid: abcd32f945183f1419466507fa77955f, type: 3}
+      propertyPath: projectile
+      value: 
+      objectReference: {fileID: 3039730848133068532, guid: 76a0f53a8c93b88499398cce0977bd8f, type: 3}
+    - target: {fileID: -7999699111181615728, guid: abcd32f945183f1419466507fa77955f, type: 3}
+      propertyPath: spawnPerSecond
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7999699111181615728, guid: abcd32f945183f1419466507fa77955f, type: 3}
+      propertyPath: cannon_projectile
+      value: 
+      objectReference: {fileID: 8182219313735854317, guid: c81ee203f9216434bb76cb51412dfe63, type: 3}
+    - target: {fileID: 2397778631345784361, guid: abcd32f945183f1419466507fa77955f, type: 3}
+      propertyPath: m_Name
+      value: Cannon Ball Spawner Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 2884920078848424653, guid: abcd32f945183f1419466507fa77955f, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7766454902230698212, guid: abcd32f945183f1419466507fa77955f, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7766454902230698212, guid: abcd32f945183f1419466507fa77955f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.191
+      objectReference: {fileID: 0}
+    - target: {fileID: 7766454902230698212, guid: abcd32f945183f1419466507fa77955f, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 7.721
+      objectReference: {fileID: 0}
+    - target: {fileID: 7766454902230698212, guid: abcd32f945183f1419466507fa77955f, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7766454902230698212, guid: abcd32f945183f1419466507fa77955f, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7766454902230698212, guid: abcd32f945183f1419466507fa77955f, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7766454902230698212, guid: abcd32f945183f1419466507fa77955f, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7766454902230698212, guid: abcd32f945183f1419466507fa77955f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7766454902230698212, guid: abcd32f945183f1419466507fa77955f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7766454902230698212, guid: abcd32f945183f1419466507fa77955f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 2884920078848424653, guid: abcd32f945183f1419466507fa77955f, type: 3}
+    - {fileID: -7807241490948032311, guid: abcd32f945183f1419466507fa77955f, type: 3}
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: abcd32f945183f1419466507fa77955f, type: 3}

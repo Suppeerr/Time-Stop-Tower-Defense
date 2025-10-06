@@ -5,12 +5,11 @@ public class Homing : MonoBehaviour
 {
     // Targeting
     public Transform target;
-    public string targetTag = "Enemy";
-
+    
     // Arc / Steering
     public float steerSpeed = 10f;
-    public float maxSpeed = 1f;
-    private float arcBoost = 2f;
+    public float maxSpeed = 10f;
+    public float arcBoost = 2f;
 
     // Behavior
     public float destroyAfter = 10f;
@@ -25,20 +24,34 @@ public class Homing : MonoBehaviour
         rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
         rb.linearVelocity = Vector3.zero;
 
-        if (target == null && !string.IsNullOrEmpty(targetTag))
+        // Homes onto nearest enemy if no target assigned inb BallSpawner
+        if (target == null)
         {
-            GameObject t = GameObject.FindWithTag(targetTag);
-            if (t != null)
+            GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+            GameObject closest = null;
+            float minDist = Mathf.Infinity;
+            Vector3 pos = transform.position;
+
+            foreach (GameObject e in enemies)
             {
-                target = t.transform;
+                float dist = (e.transform.position - pos).sqrMagnitude;
+                if (dist < minDist)
+                {
+                    closest = e;
+                    minDist = dist;
+                }
+            }
+            if (closest != null)
+            {
+                target = closest.transform;
+            }
+            else
+            {
+                Destroy(gameObject);
             }
         }
-        if (target != null)
-        {
-            Vector3 disp = target.position - transform.position;
-            float verticalDisp = disp.y;
-        }
 
+        // Destroys projectile after destroyAfter seconds
         if (destroyAfter > 0f)
         {
             Destroy(gameObject, destroyAfter);
@@ -52,7 +65,11 @@ public class Homing : MonoBehaviour
         {
             return;
         }
-        if (target == null) return;
+        if (target == null)
+        {
+            Destroy(gameObject);
+            return;
+        }
 
         // Vector to target
         Vector3 disp = target.position - transform.position;
@@ -85,23 +102,25 @@ public class Homing : MonoBehaviour
             transform.rotation = Quaternion.LookRotation(rb.linearVelocity.normalized);
     }
 
-    void OnCollisionEnter(Collision collision)
+    public void SetTarget(GameObject newTarget)
     {
-        HandleHit(collision.collider, collision.contacts[0].point, collision.contacts[0].normal);
+        target = newTarget.transform;
     }
 
-    void HandleHit(Collider collider, Vector3 hitPoint, Vector3 hitNormal)
+    void OnCollisionEnter(Collision collision)
     {
-        // if (collider.transform == target)
-        //{
-        //    Debug.Log("Projectile hit target!");
-            // add damage logic here
-        //}
-        //else
-        //{
-        //    Debug.Log("Projectile hit " + collider.name);
-        //}
+        HandleHit(collision.collider);
+    }
 
+    void HandleHit(Collider collider)
+    {
+        if (collider.transform == target)
+        {
+            //    Debug.Log("Projectile hit target!");
+            // add damage logic here
+
+            Destroy(gameObject);
+        }
         Destroy(gameObject);
     }
 

@@ -1,13 +1,17 @@
 using UnityEngine;
 using System;
 using TMPro;
+using UnityEngine.InputSystem;
 
 public class TimeStop : MonoBehaviour
 {
     public static event Action<bool> timeStop;
+    public AudioSource audioSource;
+    public AudioClip timeStopSFX;
     public TMP_Text durationText;
-    public Color activeColor; 
+    private Color activeColor = Color.yellow; 
     private Color inactiveColor = Color.gray;
+    private Color cooldownColor = Color.red;
     public float duration = 5f;
     public float maxDur = 5f;
     public float rechargeRate = 1f;
@@ -19,9 +23,10 @@ public class TimeStop : MonoBehaviour
     void Update()
     {
         // Triggers timestop
-        if (!active && Input.GetKeyDown(KeyCode.T) && duration > waitTime)
+        if (!active && Keyboard.current.tKey.wasPressedThisFrame && duration > waitTime)
         {
             active = true;
+            // audioSource.PlayOneShot();
             Debug.Log("Time has been stopped.");
             timeStop?.Invoke(true);
 
@@ -56,7 +61,6 @@ public class TimeStop : MonoBehaviour
                 {
                     duration = maxDur;
                 }
-
             }
         }
 
@@ -67,10 +71,21 @@ public class TimeStop : MonoBehaviour
             if (active)
             {
                 durationText.color = activeColor;
+                durationText.gameObject.SetActive(true);
+            }
+            else if (duration <= 1f)
+            {
+                durationText.color = cooldownColor;
+                durationText.gameObject.SetActive(true);
+            }
+            else if (duration < maxDur)
+            {
+                durationText.color = inactiveColor;
+                durationText.gameObject.SetActive(true);
             }
             else
             {
-                durationText.color = inactiveColor;
+                durationText.gameObject.SetActive(false);
             }
         }
     }
