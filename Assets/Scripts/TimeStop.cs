@@ -26,7 +26,7 @@ public class TimeStop : MonoBehaviour
         if (!active && Keyboard.current.tKey.wasPressedThisFrame && duration > waitTime)
         {
             active = true;
-            // audioSource.PlayOneShot();
+            audioSource.PlayOneShot(timeStopSFX);
             Debug.Log("Time has been stopped.");
             timeStop?.Invoke(true);
 

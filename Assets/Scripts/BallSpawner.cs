@@ -6,6 +6,8 @@ public class BallSpawner : MonoBehaviour
 {
     public Camera mainCamera;
     public GameObject projectile;
+    public AudioSource audioSource;
+    public AudioClip parrySFX;
     public float spawnPerSecond = 5f;
     public bool isCannon = false;
     private float spawnRate;
@@ -55,6 +57,7 @@ public class BallSpawner : MonoBehaviour
 
     public void SpawnBall(Vector3 position, Quaternion rotation)
     {
+        audioSource.PlayOneShot(parrySFX);
         Instantiate(projectile, position, rotation);
     }
 

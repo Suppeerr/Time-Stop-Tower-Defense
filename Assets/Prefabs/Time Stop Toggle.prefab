@@ -126,6 +126,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4bf4f2b2bf48b9543932d8579f69f924, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  audioSource: {fileID: 0}
+  timeStopSFX: {fileID: 8300000, guid: 50070e6619928244993803148e210ed0, type: 3}
+  durationText: {fileID: 0}
   duration: 5
   maxDur: 5
   rechargeRate: 1
+  waitTime: 1
