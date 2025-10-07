@@ -5,6 +5,10 @@ TagManager:
   serializedVersion: 3
   tags:
   - Collectable
+  - Enemy
+  - Tower Projectile
+  - Ground
+  - Cannon Projectile
   layers:
   - Default
   - TransparentFX
@@ -12,7 +16,7 @@ TagManager:
   - 
   - Water
   - UI
-  - 
+  - Projectile
   - 
   - 
   - 
