@@ -48,7 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BallSpawner
   mainCamera: {fileID: 0}
   projectile: {fileID: 4926105239026105867, guid: 6a57a689b20abdc48aca5ab69f52cec9, type: 3}
-  spawnPerSecond: 2
+  spawnPerSecond: 1
   isCannon: 0
 --- !u!33 &2884920078848424653
 MeshFilter:

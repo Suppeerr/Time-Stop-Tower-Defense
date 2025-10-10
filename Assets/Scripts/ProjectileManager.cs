@@ -4,6 +4,7 @@ using System.Collections.Generic;
 public class ProjectileManager : MonoBehaviour
 {
     public static ProjectileManager Instance;
+    public AudioSource parrySFX;
 
     public static bool IsFrozen { get; private set; } = false;
     List<Rigidbody> activeProjectiles = new List<Rigidbody>();
@@ -28,6 +29,10 @@ public class ProjectileManager : MonoBehaviour
         if (!activeProjectiles.Contains(projectile))
         {
             activeProjectiles.Add(projectile);
+        }
+        if (projectile.CompareTag("Homing Projectile"))
+        {
+            parrySFX.Play();
         }
     }
 

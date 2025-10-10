@@ -1,15 +1,18 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System.Collections;
 
 
 public class BallSpawner : MonoBehaviour
 {
-    public Camera mainCamera;
     public GameObject projectile;
+    public AudioSource parrySFX;
     public float spawnPerSecond = 5f;
     public bool isCannon = false;
     private float spawnRate;
     private float timer = 0f;
+    private float delayAfterSFX = .05f;
+    private Camera mainCamera;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -55,7 +58,8 @@ public class BallSpawner : MonoBehaviour
 
     public void SpawnBall(Vector3 position, Quaternion rotation)
     {
-        Instantiate(projectile, position, rotation);
+        GameObject proj = Instantiate(projectile, position, rotation);
+        StartCoroutine(StartParrySFXAfterDelay());
     }
 
     public void SpawnBall(GameObject target)
@@ -63,12 +67,18 @@ public class BallSpawner : MonoBehaviour
         GameObject proj = Instantiate(projectile, transform.position, transform.rotation);
         proj.GetComponent<Homing>().SetTarget(target);
         timer = 0;
-        Debug.Log("Spawned Ball!");
     }
 
     public void SpawnBall()
     {
         Instantiate(projectile, transform.position, transform.rotation);
         timer = 0;
+    }
+
+    private IEnumerator StartParrySFXAfterDelay()
+    {
+        yield return new WaitForSeconds(delayAfterSFX);
+        if (parrySFX != null)
+            parrySFX.Play();
     }
 }

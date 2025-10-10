@@ -5,7 +5,6 @@ public class ProjectileLauncher : MonoBehaviour
     public float initialXVel = 15f;
     public float initialYVel = 15f;
     public float initialZVel = 0f;
-
     public BallSpawner ballSpawner;
     private Rigidbody rb;
 

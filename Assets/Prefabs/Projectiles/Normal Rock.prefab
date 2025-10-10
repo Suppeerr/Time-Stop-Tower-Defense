@@ -165,7 +165,7 @@ MonoBehaviour:
   initialXVel: 0
   initialYVel: 10
   initialZVel: 1
-  ballSpawner: {fileID: 9011716441048923755, guid: cfe75775c075b9842b392bf481b61074, type: 3}
+  ballSpawner: {fileID: 3583277678865754898, guid: cfe75775c075b9842b392bf481b61074, type: 3}
 --- !u!96 &5452576504588569607
 TrailRenderer:
   serializedVersion: 3

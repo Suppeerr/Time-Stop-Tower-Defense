@@ -8,6 +8,7 @@ TagManager:
   - Tower Projectile
   - Ground
   - Cannon Projectile
+  - Homing Projectile
   layers:
   - Default
   - TransparentFX
