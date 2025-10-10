@@ -54,7 +54,6 @@ public class Drone : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Collectable"))
         {
-            Debug.Log("Coin?");
             Destroy(other.gameObject);
         }
     }
