@@ -1,15 +1,17 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System.Collections;
 
 
 public class BallSpawner : MonoBehaviour
 {
-    public Camera mainCamera;
     public GameObject projectile;
+    public AudioSource parrySFX;
     public float spawnPerSecond = 5f;
     public bool isCannon = false;
     private float spawnRate;
     private float timer = 0f;
+    private Camera mainCamera;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -63,7 +65,6 @@ public class BallSpawner : MonoBehaviour
         GameObject proj = Instantiate(projectile, transform.position, transform.rotation);
         proj.GetComponent<Homing>().SetTarget(target);
         timer = 0;
-        Debug.Log("Spawned Ball!");
     }
 
     public void SpawnBall()
@@ -71,4 +72,5 @@ public class BallSpawner : MonoBehaviour
         Instantiate(projectile, transform.position, transform.rotation);
         timer = 0;
     }
+
 }

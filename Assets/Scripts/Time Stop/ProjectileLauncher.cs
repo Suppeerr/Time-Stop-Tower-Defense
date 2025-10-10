@@ -5,8 +5,8 @@ public class ProjectileLauncher : MonoBehaviour
     public float initialXVel = 15f;
     public float initialYVel = 15f;
     public float initialZVel = 0f;
-
     public BallSpawner ballSpawner;
+    private float gravityMultiplier = 0.9f;
     private Rigidbody rb;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -25,6 +25,8 @@ public class ProjectileLauncher : MonoBehaviour
         {
             return;
         }
+        rb.AddForce(Physics.gravity * (gravityMultiplier - 1f), ForceMode.Acceleration);
+
     }
 
     void OnCollisionEnter(Collision collision)
