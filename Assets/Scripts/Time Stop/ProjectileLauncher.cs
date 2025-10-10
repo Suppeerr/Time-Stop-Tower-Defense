@@ -21,11 +21,12 @@ public class ProjectileLauncher : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        rb.AddForce(Physics.gravity * (gravityMultiplier - 1f), ForceMode.Acceleration);
         if (ProjectileManager.IsFrozen)
         {
             return;
         }
+        rb.AddForce(Physics.gravity * (gravityMultiplier - 1f), ForceMode.Acceleration);
+
     }
 
     void OnCollisionEnter(Collision collision)

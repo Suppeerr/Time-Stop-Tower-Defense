@@ -10,15 +10,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 1ab1715d1fc6c44ee83dc8a8b5d820d7, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.2
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1ab1715d1fc6c44ee83dc8a8b5d820d7, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.2
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1ab1715d1fc6c44ee83dc8a8b5d820d7, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.2
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1ab1715d1fc6c44ee83dc8a8b5d820d7, type: 3}
       propertyPath: m_LocalPosition.x
@@ -188,7 +188,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f62b5f845a8d77b4cb0572c28fdb1541, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Homing
-  target: {fileID: 0}
   steerSpeed: 25
   maxSpeed: 25
   arcBoost: 1
