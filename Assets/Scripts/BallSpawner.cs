@@ -11,7 +11,6 @@ public class BallSpawner : MonoBehaviour
     public bool isCannon = false;
     private float spawnRate;
     private float timer = 0f;
-    private float delayAfterSFX = .05f;
     private Camera mainCamera;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -58,8 +57,7 @@ public class BallSpawner : MonoBehaviour
 
     public void SpawnBall(Vector3 position, Quaternion rotation)
     {
-        GameObject proj = Instantiate(projectile, position, rotation);
-        StartCoroutine(StartParrySFXAfterDelay());
+        Instantiate(projectile, position, rotation);
     }
 
     public void SpawnBall(GameObject target)
@@ -75,10 +73,4 @@ public class BallSpawner : MonoBehaviour
         timer = 0;
     }
 
-    private IEnumerator StartParrySFXAfterDelay()
-    {
-        yield return new WaitForSeconds(delayAfterSFX);
-        if (parrySFX != null)
-            parrySFX.Play();
-    }
 }

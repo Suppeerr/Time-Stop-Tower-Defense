@@ -4,7 +4,7 @@ using UnityEngine;
 public class Homing : MonoBehaviour
 {
     // Targeting
-    public Transform target;
+    private Transform target;
     
     // Arc / Steering
     public float steerSpeed = 10f;
