@@ -167,4 +167,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5a086e44c2295b4f9f4977b5c535b12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CoinLogic
-  MoneyManagerObject: {fileID: 0}
+  MoneyManagerObject: {fileID: 1360090404083059143, guid: b2d1890f4ba393f4191e68aa32f23d28, type: 3}

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: -7999699111181615728}
   - component: {fileID: 2884920078848424653}
   - component: {fileID: -7807241490948032311}
+  - component: {fileID: -1350432743430596585}
   m_Layer: 0
   m_Name: Splitter
   m_TagString: Untagged
@@ -106,3 +107,16 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &-1350432743430596585
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2397778631345784361}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c87b3d79225b54d98b6c71beefd53b2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Draggable
+  transparentMat: {fileID: 2100000, guid: 9d8cdd33e50ba4b95a39a21af2b39cfe, type: 2}

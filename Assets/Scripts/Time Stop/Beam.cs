@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 public class BeamZap : MonoBehaviour
 {
     public Transform firePoint;
-    public LineRenderer lineRenderer;
+    public LineRenderer beam;
     public float maxDistance = 50f;
     public LayerMask hitLayers;
     public float zapDuration = 0.05f; // how long it stays visible
@@ -15,6 +15,7 @@ public class BeamZap : MonoBehaviour
 
     void Start()
     {
+        beam.enabled = false;
         if (mainCamera == null)
         {
             mainCamera = Camera.main;
@@ -44,15 +45,20 @@ public class BeamZap : MonoBehaviour
         float radius = 1f;
         if (Physics.SphereCast(ray, radius, out hit) && hit.collider.gameObject.tag == "Tower Projectile")
         {
+            beam.enabled = true;
             GameObject hitObject = hit.collider.gameObject;
             endPos = hit.point;
-            lineRenderer.SetPosition(0, firePoint.position);
-            lineRenderer.SetPosition(1, endPos);
-            lineRenderer.enabled = true;
+            beam.SetPosition(0, firePoint.position);
+            beam.SetPosition(1, endPos);
+            beam.enabled = true;
             Destroy(hitObject);
             if (ballSpawner != null)
             {
                 ballSpawner.SpawnBall(hitObject.transform.position, hitObject.transform.rotation);
+                while (ProjectileManager.IsFrozen)
+                {
+                    
+                }
             }
             
         yield return new WaitForSeconds(zapDuration);
@@ -62,6 +68,6 @@ public class BeamZap : MonoBehaviour
         // Draw beam
         yield return new WaitForSeconds(zapDuration);
 
-        lineRenderer.enabled = false;
+        beam.enabled = false;
     }
 }
