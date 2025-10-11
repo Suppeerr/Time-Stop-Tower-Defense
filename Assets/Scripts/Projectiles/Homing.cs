@@ -23,8 +23,12 @@ public class Homing : MonoBehaviour
         ProjectileManager.Instance.RegisterProjectile(rb);
         rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
         rb.linearVelocity = Vector3.zero;
+        if (ProjectileManager.IsFrozen)
+        {
+            rb.useGravity = false;
+        }
 
-        // Homes onto nearest enemy if no target assigned inb BallSpawner
+        // Homes onto nearest enemy if no target assigned in BallSpawner
         if (target == null)
         {
             GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
@@ -64,6 +68,10 @@ public class Homing : MonoBehaviour
         if (ProjectileManager.IsFrozen)
         {
             return;
+        }
+        else if (rb.useGravity == false)
+        {
+            rb.useGravity = true;
         }
         if (target == null)
         {
@@ -116,7 +124,6 @@ public class Homing : MonoBehaviour
     {
         if (collider.transform == target)
         {
-            //    Debug.Log("Projectile hit target!");
             // add damage logic here
 
             Destroy(gameObject);
@@ -124,6 +131,7 @@ public class Homing : MonoBehaviour
         Destroy(gameObject);
     }
 
+    // Unregisters projectiles when destroyed
     void OnDestroy()
     {
         ProjectileManager.Instance?.UnregisterProjectile(rb);

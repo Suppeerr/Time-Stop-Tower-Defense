@@ -58,6 +58,7 @@ public class BallSpawner : MonoBehaviour
     public void SpawnBall(Vector3 position, Quaternion rotation)
     {
         Instantiate(projectile, position, rotation);
+        Debug.Log("Homing Projectile Spawned!");
     }
 
     public void SpawnBall(GameObject target)

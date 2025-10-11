@@ -30,7 +30,7 @@ public class ProjectileManager : MonoBehaviour
         {
             activeProjectiles.Add(projectile);
         }
-        if (projectile.CompareTag("Homing Projectile"))
+        if (projectile.CompareTag("Homing Projectile") && !IsFrozen)
         {
             parrySFX.Play();
         }
