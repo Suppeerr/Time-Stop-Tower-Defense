@@ -6,6 +6,10 @@ public class BlockSource : MonoBehaviour
 
     private void OnMouseDown()
     {
+        if (ProjectileManager.IsFrozen)
+        {
+            return;
+        }
         // Get a spawn position under the cursor (XZ plane)
         Camera cam = Camera.main;
         Ray ray = cam.ScreenPointToRay(Input.mousePosition);
@@ -17,6 +21,7 @@ public class BlockSource : MonoBehaviour
         {
             spawnPos = new Vector3(hit.point.x, hit.point.y, hit.point.z);
         }
+        Debug.Log("Hi");
 
         // Spawn the block
         GameObject newBlock = Instantiate(draggablePrefab, spawnPos, Quaternion.identity);

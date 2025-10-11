@@ -1,17 +1,20 @@
 using UnityEngine;
+using static UnityEngine.Random;
 
 public class ProjectileLauncher : MonoBehaviour
 {
-    public float initialXVel = 15f;
-    public float initialYVel = 15f;
-    public float initialZVel = 0f;
     public BallSpawner ballSpawner;
+    private float initialXVel = 0f;
+    private float initialYVel = 11f;
+    private float initialZVel = 0f;
     private float gravityMultiplier = 0.9f;
     private Rigidbody rb;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        initialXVel = Random.Range(-0.8f, 0.8f);
+        initialZVel = Random.Range(-0.8f, 0.8f);
         rb = GetComponent<Rigidbody>();
         ProjectileManager.Instance.RegisterProjectile(rb);
         rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;

@@ -15,7 +15,6 @@ public class BeamZap : MonoBehaviour
 
     void Start()
     {
-        beam.enabled = false;
         if (mainCamera == null)
         {
             mainCamera = Camera.main;
@@ -55,10 +54,6 @@ public class BeamZap : MonoBehaviour
             if (ballSpawner != null)
             {
                 ballSpawner.SpawnBall(hitObject.transform.position, hitObject.transform.rotation);
-                while (ProjectileManager.IsFrozen)
-                {
-                    
-                }
             }
             
         yield return new WaitForSeconds(zapDuration);
@@ -67,7 +62,6 @@ public class BeamZap : MonoBehaviour
 
         // Draw beam
         yield return new WaitForSeconds(zapDuration);
-
         beam.enabled = false;
     }
 }
