@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 8471095200501631762}
   - component: {fileID: 7762648189114632331}
   m_Layer: 0
-  m_Name: Coin
+  m_Name: Copper Coin
   m_TagString: Collectable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -70,7 +70,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: ff89c16ee433350458ac119a5464ed5b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -167,4 +167,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5a086e44c2295b4f9f4977b5c535b12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CoinLogic
-  MoneyManagerObject: {fileID: 0}
+  MoneyManagerObject: {fileID: 1360090404083059143, guid: b2d1890f4ba393f4191e68aa32f23d28, type: 3}
