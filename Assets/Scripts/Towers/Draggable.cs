@@ -2,16 +2,24 @@ using UnityEngine;
 
 public class Draggable : MonoBehaviour
 {
+    // Placement layer and checks
     public LayerMask groundMask;
-    private Camera mainCamera;
+    public string[] invalidTags = {"Tower", "GameController", "Enemy"};
+    
+    // Drag check
     private bool isDragging = false;
     private Vector3 offset;
-    public float placementRadius = 1f; 
+
+    // Placement variables
+    private float placementRadius = 2f;
     private bool canPlace = true;
+    public bool isPlaced = false;
+    
+    private Camera mainCamera;
 
-
-    // mat/rend vars
+    // Renderers and ballSpawner script
     private Renderer[] rends;
+    private Color[][] originalColors;
     private BallSpawner ballSpawner;
 
     void Awake()
@@ -19,6 +27,18 @@ public class Draggable : MonoBehaviour
         mainCamera = Camera.main;
         rends = GetComponentsInChildren<Renderer>(true);
         ballSpawner = GetComponent<BallSpawner>();
+
+        // Store original tower colors
+        originalColors = new Color[rends.Length][];
+        for (int i = 0; i < rends.Length; i++)
+        {
+            Material[] mats = rends[i].materials;
+            originalColors[i] = new Color[mats.Length];
+            for (int j = 0; j < mats.Length; j++)
+            {
+                originalColors[i][j] = mats[j].color;
+            }
+        }
     }
 
     void Update()
@@ -30,33 +50,54 @@ public class Draggable : MonoBehaviour
 
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, groundMask))
             {
-                Vector3 desiredPos = hit.point + offset + Vector3.up * 0.7f;
+                Vector3 desiredPos = hit.point + offset + Vector3.up * 0.85f;
                 transform.position = desiredPos;
 
                 // Check for nearby objects
-                // Collider[] nearby = Physics.OverlapSphere(desiredPos, placementRadius);
-                // canPlace = true;
+                Collider[] nearby = Physics.OverlapSphere(desiredPos, placementRadius);
+                canPlace = true;
 
-                // foreach (Collider col in nearby)
-                // {
-                //     if (col.gameObject != this.gameObject) // ignore self
-                //     {
-                //         canPlace = false;
-                //         break;
-                //     }
-                // }
+                // Update color based on placement validity
+                foreach (Collider col in nearby)
+                {
+                    foreach (string invTag in invalidTags)
+                    {
+                        if (col.CompareTag(invTag) && col.gameObject != gameObject)
+                        {
+                            canPlace = false;
+                            break;
+                        }
+                    }
+                    if (!canPlace)
+                    {
+                        break;
+                    }
+                }
 
-                // Change color based on whether placement is valid
-                // SetPlacementColor(canPlace);
+                if (canPlace)
+                {
+                    ApplyColor(0.6f);
+                }
+                else
+                {
+                    ApplyColor(0.6f, Color.red, false);
+                }
             }
 
-            // stop dragging if mouse released
+            // Stop dragging if mouse released
             if (Input.GetMouseButtonUp(0))
             {
-                StopDrag();
+                if (canPlace)
+                {
+                    StopDrag();
+                }
+                else
+                {
+                    CancelDrag();
+                }
             }
 
-            // cancel drag if time stopped or x pressed
+            // Cancel drag if time stopped or x pressed
             if (ProjectileManager.IsFrozen || Input.GetKeyDown(KeyCode.X))
             {
                 CancelDrag();
@@ -66,7 +107,10 @@ public class Draggable : MonoBehaviour
 
     void OnMouseDown()
     {
-        BeginDrag();
+        if (!isPlaced)
+        {
+            BeginDrag();
+        }
     }
 
     void OnMouseUp()
@@ -88,9 +132,6 @@ public class Draggable : MonoBehaviour
             {
                 ballSpawner.enabled = false;
             }
-
-            // make transparent
-            SetTransparency(.6f);
         }
     }
 
@@ -102,8 +143,9 @@ public class Draggable : MonoBehaviour
             CancelDrag();
             return;
         }
+        isPlaced = true;
         isDragging = false;
-        SetTransparency(1f);
+        ApplyColor(1f);
 
         if (ballSpawner != null)
         {
@@ -117,21 +159,19 @@ public class Draggable : MonoBehaviour
         Destroy(gameObject);
     }
 
-    private void SetTransparency(float alpha)
+    private void ApplyColor(float alpha = 1f, Color? tint = null, bool useOriginal = true)
     {
+        int i = 0;
         foreach (Renderer rend in rends)
         {
+            int j = 0;
             foreach (Material mat in rend.materials)
             {
-                if (!mat.HasProperty("_BaseColor"))
-                    continue;
+                Color baseColor = useOriginal ? originalColors[i][j] : (tint ?? originalColors[i][j]);
+                Color finalColor = baseColor;
+                finalColor.a = alpha;
+                mat.color = finalColor;
 
-                // Get and update existing base color
-                Color baseColor = mat.GetColor("_BaseColor");
-                baseColor.a = alpha;
-                mat.SetColor("_BaseColor", baseColor);
-
-                // Force the material into transparent mode
                 if (alpha < 1f)
                 {
                     mat.SetFloat("_Surface", 1f); // Transparent
@@ -146,16 +186,20 @@ public class Draggable : MonoBehaviour
                 }
                 else
                 {
-                    // Revert to opaque mode
                     mat.SetFloat("_Surface", 0f); // Opaque
                     mat.SetOverrideTag("RenderType", "Opaque");
                     mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
                     mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
                     mat.SetInt("_ZWrite", 1);
+                    mat.DisableKeyword("_ALPHATEST_ON");
                     mat.DisableKeyword("_ALPHABLEND_ON");
+                    mat.DisableKeyword("_ALPHAPREMULTIPLY_ON");
                     mat.renderQueue = -1;
                 }
+                    
+                j++;
             }
+            i++;
         }
     }
 

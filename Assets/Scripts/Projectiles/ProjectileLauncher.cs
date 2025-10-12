@@ -7,7 +7,7 @@ public class ProjectileLauncher : MonoBehaviour
     private float initialXVel = 0f;
     private float initialYVel = 11f;
     private float initialZVel = 0f;
-    private float gravityMultiplier = 0.9f;
+    private float gravityMultiplier = 0.8f;
     private Rigidbody rb;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
