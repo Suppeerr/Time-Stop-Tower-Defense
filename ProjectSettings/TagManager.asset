@@ -10,16 +10,17 @@ TagManager:
   - Ground
   - Cannon Projectile
   - Homing Projectile
+  - Tower
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Ground
   - Water
   - UI
   - Homing Projectile
   - Normal Projectile
-  - 
+  - Cannon Projectile
   - 
   - 
   - 
