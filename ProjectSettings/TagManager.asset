@@ -4,20 +4,23 @@
 TagManager:
   serializedVersion: 3
   tags:
+  - Collectable
   - Enemy
   - Tower Projectile
   - Ground
   - Cannon Projectile
+  - Homing Projectile
+  - Tower
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Ground
   - Water
   - UI
-  - Projectile
-  - 
-  - 
+  - Homing Projectile
+  - Normal Projectile
+  - Cannon Projectile
   - 
   - 
   - 

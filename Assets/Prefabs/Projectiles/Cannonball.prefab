@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: -6114205551824116562}
   - component: {fileID: -911055962639030450}
   - component: {fileID: 2129917304383257204}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: Cannonball
   m_TagString: Cannon Projectile
   m_Icon: {fileID: 0}
@@ -153,9 +153,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f62b5f845a8d77b4cb0572c28fdb1541, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Homing
-  target: {fileID: 0}
-  steerSpeed: 20
-  maxSpeed: 20
+  steerSpeed: 25
+  maxSpeed: 25
   arcBoost: 10
   destroyAfter: 10
 --- !u!96 &2129917304383257204
