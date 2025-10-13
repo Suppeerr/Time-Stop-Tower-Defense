@@ -15,7 +15,7 @@ public class BarrelAim : MonoBehaviour
             yield break;
         }
         // Calculates desired rotation
-        Quaternion targetRot = Quaternion.LookRotation(target.transform.position - shootPoint.position);
+        Quaternion targetRot = Quaternion.LookRotation((target.transform.position + Vector3.up * 1.0f) - shootPoint.position);
 
         // Rotate to right angle
         while (Quaternion.Angle(transform.rotation, targetRot) > 1f)

@@ -14,6 +14,10 @@ public class Homing : MonoBehaviour
     // Behavior
     public float destroyAfter = 10f;
 
+    // Effects
+    public LightningRing lightningRing;
+    public GlowingSphereEmitter sphereEmitter;
+
     private Rigidbody rb;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -129,6 +133,17 @@ public class Homing : MonoBehaviour
             Destroy(gameObject);
         }
         Destroy(gameObject);
+    }
+
+    // Enables effects
+    public void EnableEffects()
+    {
+        if (ProjectileManager.IsFrozen)
+        {
+            lightningRing.enabled = true;
+            lightningRing.SetVisible(true);
+            sphereEmitter.enabled = true;
+        }
     }
 
     // Unregisters projectiles when destroyed

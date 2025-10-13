@@ -65,20 +65,24 @@ public class BallSpawner : MonoBehaviour
         timer = 0;
     }
 
+    // Homing Rock Spawner
     public void SpawnBall(Vector3 position, Quaternion rotation)
     {
-        Instantiate(projectile, position, rotation);
+        GameObject homingRock = Instantiate(projectile, position, rotation);
+        Homing homingScript = homingRock.GetComponent<Homing>();
+        homingScript.EnableEffects();
     }
 
+    // Cannon Ball Spawner
     public void SpawnBall(GameObject target)
     {
         if (barrelAim != null && target != null)
         {
-            Debug.Log("Fire");
             StartCoroutine(FireWithAim(target));
         }
     }
 
+    // Normal Rock Spawner
     public void SpawnBall()
     {
         Instantiate(projectile, transform.position, transform.rotation);
