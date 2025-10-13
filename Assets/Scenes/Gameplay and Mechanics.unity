@@ -196,6 +196,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 237731611589914035, guid: a477c0fc531854b409fdb902634bc6ec, type: 3}
+      propertyPath: groundMask.m_Bits
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6120635238198436938, guid: a477c0fc531854b409fdb902634bc6ec, type: 3}
       propertyPath: m_LocalPosition.x
       value: -4.5
@@ -253,6 +257,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 237731611589914035, guid: a477c0fc531854b409fdb902634bc6ec, type: 3}
+      propertyPath: groundMask.m_Bits
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6120635238198436938, guid: a477c0fc531854b409fdb902634bc6ec, type: 3}
       propertyPath: m_LocalPosition.x
       value: -6.82
