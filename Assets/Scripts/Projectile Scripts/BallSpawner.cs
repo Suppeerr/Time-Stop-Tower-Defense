@@ -7,6 +7,8 @@ public class BallSpawner : MonoBehaviour
 {
     public GameObject projectile;
     public AudioSource parrySFX;
+    public Transform shootPoint;
+    public BarrelAim barrelAim;
     public float spawnPerSecond = 5f;
     public bool isCannon = false;
     private float spawnRate;
@@ -55,23 +57,37 @@ public class BallSpawner : MonoBehaviour
 
     }
 
-    public void SpawnBall(Vector3 position, Quaternion rotation)
+    private IEnumerator FireWithAim(GameObject target)
     {
-        Instantiate(projectile, position, rotation);
-        Debug.Log("Homing Projectile Spawned!");
-    }
-
-    public void SpawnBall(GameObject target)
-    {
+        yield return StartCoroutine(barrelAim.AimAtTarget(target));
         GameObject proj = Instantiate(projectile, transform.position, transform.rotation);
         proj.GetComponent<Homing>().SetTarget(target);
         timer = 0;
     }
 
+    // Homing Rock Spawner
+    public void SpawnBall(Vector3 position, Quaternion rotation)
+    {
+        GameObject homingRock = Instantiate(projectile, position, rotation);
+        Homing homingScript = homingRock.GetComponent<Homing>();
+        homingScript.EnableEffects();
+    }
+
+    // Cannon Ball Spawner
+    public void SpawnBall(GameObject target)
+    {
+        if (barrelAim != null && target != null)
+        {
+            StartCoroutine(FireWithAim(target));
+        }
+    }
+
+    // Normal Rock Spawner
     public void SpawnBall()
     {
         Instantiate(projectile, transform.position, transform.rotation);
         timer = 0;
     }
 
+    
 }

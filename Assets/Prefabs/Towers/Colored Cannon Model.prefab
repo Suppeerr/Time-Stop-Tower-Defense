@@ -33,7 +33,6 @@ Transform:
   - {fileID: 7098822821948506222}
   - {fileID: 3110085181665011677}
   - {fileID: 7811165307208893529}
-  - {fileID: 5998184532354617611}
   - {fileID: 1833831040570204081}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -104,6 +103,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BallSpawner
   projectile: {fileID: 3039730848133068532, guid: 76a0f53a8c93b88499398cce0977bd8f, type: 3}
   parrySFX: {fileID: 0}
+  shootPoint: {fileID: 0}
+  barrelAim: {fileID: 648633440711191226}
   spawnPerSecond: 3
   isCannon: 1
 --- !u!1 &3340081053258293151
@@ -206,6 +207,7 @@ GameObject:
   - component: {fileID: 7098822821948506222}
   - component: {fileID: 1420109456755007441}
   - component: {fileID: 2514644165446358409}
+  - component: {fileID: 648633440711191226}
   m_Layer: 0
   m_Name: Barrel
   m_TagString: Untagged
@@ -222,11 +224,12 @@ Transform:
   m_GameObject: {fileID: 3453599984267967434}
   serializedVersion: 2
   m_LocalRotation: {x: -0.48480973, y: 0, z: -0, w: 0.87461966}
-  m_LocalPosition: {x: -0.004706399, y: 0.808, z: 0.227}
+  m_LocalPosition: {x: -0.004706399, y: 0.805, z: 0.09}
   m_LocalScale: {x: 0.35187045, y: 0.35187045, z: 0.35187045}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1889997507367471034}
+  - {fileID: 5998184532354617611}
   m_Father: {fileID: 1771890141301099475}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &1420109456755007441
@@ -285,6 +288,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &648633440711191226
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3453599984267967434}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0927e8eb7816632458deda70f0ac33e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  shootPoint: {fileID: 1889997507367471034}
 --- !u!1 &5532172604297902700
 GameObject:
   m_ObjectHideFlags: 0
@@ -527,12 +543,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8807700316518719432}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.5, y: 0.5, z: -0.5, w: -0.49999997}
-  m_LocalPosition: {x: -0.50200826, y: 0.6314965, z: 0.1648924}
-  m_LocalScale: {x: 0.09969456, y: 0.09969456, z: 0.09969456}
+  m_LocalRotation: {x: 0.19490498, y: 0.6797147, z: -0.19490497, w: -0.6797147}
+  m_LocalPosition: {x: -1.4133099, y: -0.05643788, z: -0.54617375}
+  m_LocalScale: {x: 0.28332743, y: 0.28332743, z: 0.28332743}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1771890141301099475}
+  m_Father: {fileID: 7098822821948506222}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &5747601776342633650
 MeshFilter:
