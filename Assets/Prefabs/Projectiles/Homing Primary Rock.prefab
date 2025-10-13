@@ -183,15 +183,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 1ab1715d1fc6c44ee83dc8a8b5d820d7, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.4
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1ab1715d1fc6c44ee83dc8a8b5d820d7, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.4
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1ab1715d1fc6c44ee83dc8a8b5d820d7, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.4
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1ab1715d1fc6c44ee83dc8a8b5d820d7, type: 3}
       propertyPath: m_LocalPosition.x
@@ -235,7 +235,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 1ab1715d1fc6c44ee83dc8a8b5d820d7, type: 3}
       propertyPath: m_Name
-      value: Homing Rock
+      value: Homing Primary Rock
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 1ab1715d1fc6c44ee83dc8a8b5d820d7, type: 3}
       propertyPath: m_Layer
@@ -522,6 +522,8 @@ MonoBehaviour:
   destroyAfter: 10
   lightningRing: {fileID: 1691491920027024500}
   sphereEmitter: {fileID: 5858631500589620279}
+  sparksPrefab: {fileID: 289052098803796386, guid: 47fa2cba6ed93234da89e8e5587d4932, type: 3}
+  flashPrefab: {fileID: 1264171774926734363, guid: ce225acb2fd38304d996153b91c960b9, type: 3}
 --- !u!114 &5858631500589620279
 MonoBehaviour:
   m_ObjectHideFlags: 0

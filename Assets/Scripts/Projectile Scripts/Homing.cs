@@ -17,11 +17,12 @@ public class Homing : MonoBehaviour
     // Effects
     public LightningRing lightningRing;
     public GlowingSphereEmitter sphereEmitter;
+    public ParticleSystem sparksPrefab;
+    public ParticleSystem flashPrefab;
 
     private Rigidbody rb;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    void Awake()
     {
         rb = GetComponent<Rigidbody>();
         ProjectileManager.Instance.RegisterProjectile(rb);
@@ -31,7 +32,11 @@ public class Homing : MonoBehaviour
         {
             rb.useGravity = false;
         }
+    }
 
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
+    {
         // Homes onto nearest enemy if no target assigned in BallSpawner
         if (target == null)
         {
@@ -114,11 +119,6 @@ public class Homing : MonoBehaviour
             transform.rotation = Quaternion.LookRotation(rb.linearVelocity.normalized);
     }
 
-    public void SetTarget(GameObject newTarget)
-    {
-        target = newTarget.transform;
-    }
-
     void OnCollisionEnter(Collision collision)
     {
         HandleHit(collision.collider);
@@ -126,11 +126,10 @@ public class Homing : MonoBehaviour
 
     void HandleHit(Collider collider)
     {
+        SpawnExplosion();
         if (collider.transform == target)
         {
             // add damage logic here
-
-            Destroy(gameObject);
         }
         Destroy(gameObject);
     }
@@ -138,12 +137,35 @@ public class Homing : MonoBehaviour
     // Enables effects
     public void EnableEffects()
     {
-        if (ProjectileManager.IsFrozen)
+        if (ProjectileManager.IsFrozen && lightningRing != null && sphereEmitter != null)
         {
             lightningRing.enabled = true;
             lightningRing.SetVisible(true);
             sphereEmitter.enabled = true;
         }
+    }
+
+    // Spawns explosion
+    void SpawnExplosion()
+    {
+        if (sparksPrefab != null)
+        {
+            ParticleSystem s = Instantiate(sparksPrefab, transform.position, transform.rotation);
+            s.Play();
+            Destroy(s.gameObject, s.main.duration);
+        }
+
+        if (flashPrefab != null)
+        {
+            ParticleSystem f = Instantiate(flashPrefab, transform.position, transform.rotation);
+            f.Play();
+            Destroy(f.gameObject, f.main.duration);
+        }
+    }
+
+    public void SetTarget(GameObject newTarget)
+    {
+        target = newTarget.transform;
     }
 
     // Unregisters projectiles when destroyed

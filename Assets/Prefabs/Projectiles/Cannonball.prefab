@@ -153,10 +153,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f62b5f845a8d77b4cb0572c28fdb1541, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Homing
-  steerSpeed: 25
-  maxSpeed: 25
+  steerSpeed: 30
+  maxSpeed: 30
   arcBoost: 10
   destroyAfter: 10
+  lightningRing: {fileID: 0}
+  sphereEmitter: {fileID: 0}
 --- !u!96 &2129917304383257204
 TrailRenderer:
   serializedVersion: 3
