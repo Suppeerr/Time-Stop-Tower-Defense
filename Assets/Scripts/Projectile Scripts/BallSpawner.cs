@@ -9,6 +9,7 @@ public class BallSpawner : MonoBehaviour
     public AudioSource parrySFX;
     public Transform shootPoint;
     public BarrelAim barrelAim;
+    public ParticleSystem muzzleFlash; 
     public float spawnPerSecond = 5f;
     public bool isCannon = false;
     private float spawnRate;
@@ -79,6 +80,10 @@ public class BallSpawner : MonoBehaviour
         if (barrelAim != null && target != null)
         {
             StartCoroutine(FireWithAim(target));
+            if (muzzleFlash != null)
+            {
+                muzzleFlash.Play();
+            }
         }
     }
 

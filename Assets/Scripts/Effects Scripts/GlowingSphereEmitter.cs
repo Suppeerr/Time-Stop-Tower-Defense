@@ -2,16 +2,16 @@ using UnityEngine;
 
 public class GlowingSphereEmitter : MonoBehaviour
 {
-    public GameObject spherePrefab;     // glowing sphere prefab
-    public int spheresPerSecond = 20;   // emission rate
-    public float sphereSpeed = 2f;      // speed of outward movement
-    public float lifetime = 1f;         // how long each sphere lasts
-    public float spawnRadius = 0.1f;    // small offset from projectile center
-
-    private float spawnTimer = 0f;
+    public GameObject spherePrefab;     // Glowing sphere prefab
+    public int spheresPerSecond = 20;   // Emission rate
+    public float sphereSpeed = 2f;      // Speed of outward movement
+    public float lifetime = 1f;         // How long each sphere lasts
+    public float spawnRadius = 0.1f;    // Small offset from projectile center
+    private float spawnTimer = 0f;      // Time between sphere spawns
 
     void Update()
     {
+        // Spawns glowing spheres around a projectile
         spawnTimer += Time.deltaTime;
         float interval = 1f / spheresPerSecond;
 

@@ -64,6 +64,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Bottom Barrel
       objectReference: {fileID: 0}
+    - target: {fileID: -8380157826906577798, guid: 055a04df32a85441489eba1d24efaa27, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: -8143710011712545758, guid: 055a04df32a85441489eba1d24efaa27, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -72,6 +76,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Middle Ring
       objectReference: {fileID: 0}
+    - target: {fileID: -7640558969779515294, guid: 055a04df32a85441489eba1d24efaa27, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: -6902573867230041995, guid: 055a04df32a85441489eba1d24efaa27, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -79,6 +87,10 @@ PrefabInstance:
     - target: {fileID: -6733177361254619370, guid: 055a04df32a85441489eba1d24efaa27, type: 3}
       propertyPath: m_Name
       value: Top Barrel
+      objectReference: {fileID: 0}
+    - target: {fileID: -6733177361254619370, guid: 055a04df32a85441489eba1d24efaa27, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -6093592463355912122, guid: 055a04df32a85441489eba1d24efaa27, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -92,9 +104,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: Base Supports
       objectReference: {fileID: 0}
+    - target: {fileID: 281855664364225751, guid: 055a04df32a85441489eba1d24efaa27, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 055a04df32a85441489eba1d24efaa27, type: 3}
       propertyPath: m_Name
       value: Splitter Schematic
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 055a04df32a85441489eba1d24efaa27, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 055a04df32a85441489eba1d24efaa27, type: 3}
       propertyPath: m_TagString
@@ -108,6 +128,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Top Ring
       objectReference: {fileID: 0}
+    - target: {fileID: 2800250516343163423, guid: 055a04df32a85441489eba1d24efaa27, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6944656104360116776, guid: 055a04df32a85441489eba1d24efaa27, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -115,6 +139,10 @@ PrefabInstance:
     - target: {fileID: 8700725330082129686, guid: 055a04df32a85441489eba1d24efaa27, type: 3}
       propertyPath: m_Name
       value: Top Bolts
+      objectReference: {fileID: 0}
+    - target: {fileID: 8700725330082129686, guid: 055a04df32a85441489eba1d24efaa27, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
