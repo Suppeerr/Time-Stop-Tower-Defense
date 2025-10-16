@@ -11,6 +11,7 @@ public class BeamZap : MonoBehaviour
     public LayerMask hitLayers;
     private float zapDuration = 0.1f; // how long it stays visible
     private Camera mainCamera;
+    public ProjectileType type;
     public BallSpawner ballSpawner;
 
     void Start()
@@ -42,22 +43,33 @@ public class BeamZap : MonoBehaviour
         Ray ray = mainCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
         RaycastHit hit;
         float radius = 1f;
+
         if (Physics.SphereCast(ray, radius, out hit) && hit.collider.gameObject.tag == "Tower Projectile")
         {
+            GameObject hitProj = hit.collider.gameObject;
+            NormalProjectile normalProj = hitProj.GetComponent<NormalProjectile>();
             beam.enabled = true;
-            GameObject hitObject = hit.collider.gameObject;
             endPos = hit.point;
             beam.SetPosition(0, firePoint.position);
             beam.SetPosition(1, endPos);
             beam.enabled = true;
-            Destroy(hitObject);
+            Destroy(hitProj);
+
             if (ballSpawner != null)
             {
-                ballSpawner.SpawnBall(hitObject.transform.position, hitObject.transform.rotation);
+                switch (normalProj.type)
+                {
+                    case ProjectileType.PrimaryNormal:
+                        normalProj.MarkDestroyedByParry();
+                        ballSpawner.SpawnHoming(ProjectileType.PrimaryHoming, hitProj.transform.position, hitProj.transform.rotation);
+                        break;
+                    case ProjectileType.SecondaryNormal:
+                        ballSpawner.SpawnHoming(ProjectileType.SecondaryHoming, hitProj.transform.position, hitProj.transform.rotation);
+                        break;
+                }
             }
             
         yield return new WaitForSeconds(zapDuration);
-            // Optional: apply damage to target
         }
 
         // Draw beam

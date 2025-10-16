@@ -5,15 +5,25 @@ using System.Collections;
 
 public class BallSpawner : MonoBehaviour
 {
-    public GameObject projectile;
-    public AudioSource parrySFX;
-    public Transform shootPoint;
-    public BarrelAim barrelAim;
-    public ParticleSystem muzzleFlash; 
+    // Projectile Prefabs
+    public GameObject homingPrimaryPrefab;
+    public GameObject homingSecondaryPrefab;
+    public GameObject normalPrimaryPrefab;
+    public GameObject cannonBallPrefab;
+
+    // Spawn Settings
     public float spawnPerSecond = 5f;
     public bool isCannon = false;
     private float spawnRate;
     private float timer = 0f;
+    public Transform shootPoint;
+
+    // Effects and Audio
+    public AudioSource parrySFX;
+    public BarrelAim barrelAim;
+    public ParticleSystem muzzleFlash;
+
+    // Ray Trace Camera
     private Camera mainCamera;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -24,6 +34,7 @@ public class BallSpawner : MonoBehaviour
         {
             mainCamera = Camera.main;
         }
+        SpawnNormal();
     }
 
     // Update is called once per frame
@@ -33,66 +44,73 @@ public class BallSpawner : MonoBehaviour
         {
             return;
         }
+
         timer += Time.deltaTime;
         if (isCannon)
         {
             if (Mouse.current.leftButton.wasPressedThisFrame && timer >= spawnRate)
             {
                 Ray ray = mainCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
-                RaycastHit hit;
                 float radius = 1f;
-                if (Physics.SphereCast(ray, radius, out hit) && hit.collider.gameObject.tag == "Tower Projectile")
+                if (Physics.SphereCast(ray, radius, out var hit) && hit.collider.gameObject.tag == "Tower Projectile")
                 {
-                    SpawnBall(hit.collider.gameObject);
+                    SpawnCannonBall(hit.collider.gameObject, cannonBallPrefab);
                 }
-            }
-            else
-            {
-                return;
             }
         }
         else if (timer >= spawnRate)
         {
-            SpawnBall();
+            SpawnNormal();
         }
 
     }
 
-    private IEnumerator FireWithAim(GameObject target)
+    // Cannon Ball Spawner
+    public void SpawnCannonBall(GameObject target, GameObject projectilePrefab)
+    {
+        StartCoroutine(FireWithAim(target, projectilePrefab));
+    }
+
+    private IEnumerator FireWithAim(GameObject target, GameObject projectilePrefab)
     {
         yield return StartCoroutine(barrelAim.AimAtTarget(target));
-        GameObject proj = Instantiate(projectile, transform.position, transform.rotation);
-        proj.GetComponent<Homing>().SetTarget(target);
+        GameObject proj = Instantiate(projectilePrefab, shootPoint.position, shootPoint.rotation);
+        proj.GetComponent<HomingProjectile>()?.SetTarget(target);
+        muzzleFlash?.Play();
+        timer = 0f;
+    }
+
+    // Normal Rock Spawner
+    public void SpawnNormal()
+    {
+        Instantiate(normalPrimaryPrefab, transform.position, transform.rotation);
         timer = 0;
     }
 
     // Homing Rock Spawner
-    public void SpawnBall(Vector3 position, Quaternion rotation)
+    public void SpawnHoming(ProjectileType type, Vector3 position, Quaternion rotation)
     {
-        GameObject homingRock = Instantiate(projectile, position, rotation);
-        Homing homingScript = homingRock.GetComponent<Homing>();
+        GameObject prefabToSpawn = null;
+
+        switch (type)
+        {
+            case ProjectileType.PrimaryHoming:
+                prefabToSpawn = homingPrimaryPrefab;
+                break;
+            case ProjectileType.SecondaryHoming:
+                prefabToSpawn = homingSecondaryPrefab;
+                break;
+        }
+
+        if (prefabToSpawn == null)
+        {
+            Debug.LogWarning("No prefab assigned for this homing type!");
+            return;
+        }
+
+        GameObject homingProjectile = Instantiate(prefabToSpawn, position, rotation);
+
+        HomingProjectile homingScript = homingProjectile.GetComponent<HomingProjectile>();
         homingScript.EnableEffects();
     }
-
-    // Cannon Ball Spawner
-    public void SpawnBall(GameObject target)
-    {
-        if (barrelAim != null && target != null)
-        {
-            StartCoroutine(FireWithAim(target));
-            if (muzzleFlash != null)
-            {
-                muzzleFlash.Play();
-            }
-        }
-    }
-
-    // Normal Rock Spawner
-    public void SpawnBall()
-    {
-        Instantiate(projectile, transform.position, transform.rotation);
-        timer = 0;
-    }
-
-    
 }
