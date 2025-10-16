@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-public class Homing : MonoBehaviour
+public class HomingProjectile : MonoBehaviour
 {
     // Targeting
     private Transform target;
@@ -11,8 +11,9 @@ public class Homing : MonoBehaviour
     public float maxSpeed = 10f;
     public float arcBoost = 2f;
 
-    // Behavior
+    // Behavior / Type
     public float destroyAfter = 10f;
+    public ProjectileType type;
 
     // Effects
     public LightningRing lightningRing;
@@ -21,6 +22,7 @@ public class Homing : MonoBehaviour
     public ParticleSystem flashPrefab;
 
     private Rigidbody rb;
+    
 
     void Awake()
     {

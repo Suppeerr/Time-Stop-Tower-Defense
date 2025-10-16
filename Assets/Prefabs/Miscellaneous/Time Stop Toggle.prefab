@@ -577,7 +577,6 @@ MonoBehaviour:
   hitLayers:
     serializedVersion: 2
     m_Bits: 64
-  zapDuration: 0.1
   ballSpawner: {fileID: 3583277678865754898, guid: cfe75775c075b9842b392bf481b61074, type: 3}
 --- !u!120 &1867542877152371227
 LineRenderer:

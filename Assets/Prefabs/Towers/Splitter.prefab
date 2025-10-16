@@ -179,13 +179,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98c73760247936d418333d8d4f887cc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BallSpawner
-  projectile: {fileID: 4926105239026105867, guid: 6a57a689b20abdc48aca5ab69f52cec9, type: 3}
-  parrySFX: {fileID: 0}
+  homingPrimaryPrefab: {fileID: 0}
+  homingSecondaryPrefab: {fileID: 0}
+  normalPrimaryPrefab: {fileID: 4926105239026105867, guid: 6a57a689b20abdc48aca5ab69f52cec9, type: 3}
+  cannonBallPrefab: {fileID: 0}
+  spawnPerSecond: 0.6
+  isCannon: 0
   shootPoint: {fileID: 0}
+  parrySFX: {fileID: 0}
   barrelAim: {fileID: 0}
   muzzleFlash: {fileID: 0}
-  spawnPerSecond: 1
-  isCannon: 0
 --- !u!64 &8985450122344864329
 MeshCollider:
   m_ObjectHideFlags: 0
