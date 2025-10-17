@@ -612,8 +612,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f62b5f845a8d77b4cb0572c28fdb1541, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Homing
-  steerSpeed: 15
-  maxSpeed: 15
   arcBoost: 1
   destroyAfter: 15
   type: 1
@@ -621,6 +619,7 @@ MonoBehaviour:
   sphereEmitter: {fileID: 5858631500589620279}
   sparksPrefab: {fileID: 289052098803796386, guid: 47fa2cba6ed93234da89e8e5587d4932, type: 3}
   flashPrefab: {fileID: 1264171774926734363, guid: ce225acb2fd38304d996153b91c960b9, type: 3}
+  statsContainer: {fileID: 11400000, guid: 0ed108a3a2db58946b6bdc754b742454, type: 2}
 --- !u!114 &5858631500589620279
 MonoBehaviour:
   m_ObjectHideFlags: 0
