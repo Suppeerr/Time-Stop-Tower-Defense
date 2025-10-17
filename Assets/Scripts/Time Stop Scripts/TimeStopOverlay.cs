@@ -21,14 +21,15 @@ public class TimeStopOverlay : MonoBehaviour
 
     void Update()
     {
+        
         if (ProjectileManager.IsFrozen)
         {
             if (currentFade != null)
             {
                 StopCoroutine(currentFade);
             }
-            currentFade = StartCoroutine(FadeSaturationTo(-100));
             timeStopVolume.enabled = true;
+            currentFade = StartCoroutine(FadeSaturationTo(-100));
         }
         else
         {

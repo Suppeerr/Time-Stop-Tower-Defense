@@ -169,7 +169,7 @@ MonoBehaviour:
   ballSpawner: {fileID: 7703208739090267004, guid: a477c0fc531854b409fdb902634bc6ec, type: 3}
   type: 2
   initialYVel: 11
-  spreadAngle: 30
+  spreadAngle: 0
 --- !u!96 &5452576504588569607
 TrailRenderer:
   serializedVersion: 3
