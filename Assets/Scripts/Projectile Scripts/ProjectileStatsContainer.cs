@@ -4,10 +4,9 @@ using UnityEngine;
 public class ProjectileStats
 {
     public ProjectileType type;   // links stats to a type
-    public float damage;
+    public int damage;
     public float speed;
     public float aoeRadius;       // 0 if single target
-    // add more fields as needed
 }
 
 [CreateAssetMenu(fileName = "ProjectileStatsContainer", menuName = "Projectiles/StatsContainer")]

@@ -34,7 +34,10 @@ public class BallSpawner : MonoBehaviour
         {
             mainCamera = Camera.main;
         }
-        SpawnNormal(ProjectileType.PrimaryNormal, transform.position, transform.rotation);
+        if (!isCannon)
+        {
+            SpawnNormal(ProjectileType.PrimaryNormal, transform.position, transform.rotation);
+        }
     }
 
     // Update is called once per frame
@@ -61,7 +64,6 @@ public class BallSpawner : MonoBehaviour
         else if (timer >= spawnRate)
         {
             SpawnNormal(ProjectileType.PrimaryNormal, transform.position, transform.rotation);
-
         }
 
     }

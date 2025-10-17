@@ -50,7 +50,7 @@ public class Draggable : MonoBehaviour
 
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, groundMask))
             {
-                Vector3 desiredPos = hit.point + offset + Vector3.up * 0.85f;
+                Vector3 desiredPos = hit.point + offset + Vector3.up * 1.3f;
                 transform.position = desiredPos;
 
                 // Check for nearby objects
@@ -171,6 +171,9 @@ public class Draggable : MonoBehaviour
                 Color finalColor = baseColor;
                 finalColor.a = alpha;
                 mat.color = finalColor;
+                mat.DisableKeyword("_ALPHATEST_ON");
+                mat.DisableKeyword("_ALPHABLEND_ON");
+                mat.DisableKeyword("_ALPHAPREMULTIPLY_ON");
 
                 if (alpha < 1f)
                 {
@@ -179,9 +182,6 @@ public class Draggable : MonoBehaviour
                     mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
                     mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
                     mat.SetInt("_ZWrite", 0);
-                    mat.DisableKeyword("_ALPHATEST_ON");
-                    mat.EnableKeyword("_ALPHABLEND_ON");
-                    mat.DisableKeyword("_ALPHAPREMULTIPLY_ON");
                     mat.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
                 }
                 else
@@ -191,9 +191,6 @@ public class Draggable : MonoBehaviour
                     mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
                     mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
                     mat.SetInt("_ZWrite", 1);
-                    mat.DisableKeyword("_ALPHATEST_ON");
-                    mat.DisableKeyword("_ALPHABLEND_ON");
-                    mat.DisableKeyword("_ALPHAPREMULTIPLY_ON");
                     mat.renderQueue = -1;
                 }
                     

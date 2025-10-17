@@ -23,7 +23,7 @@ public class HomingProjectile : MonoBehaviour
 
     // Stats
     public ProjectileStatsContainer statsContainer;
-    private float damage;
+    private int damage;
     private float aoe;
 
     private Rigidbody rb;
@@ -136,23 +136,27 @@ public class HomingProjectile : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        HandleHit(collision.collider);
-    }
-
-    void HandleHit(Collider collider)
-    {
         SpawnExplosion();
-        if (collider.transform == target)
+
+         // Collider hit
+        GameObject hitObj = collision.collider.gameObject;
+
+        // Check up the hierarchy for an EnemyProxy
+        EnemyProxy proxy = hitObj.GetComponent<EnemyProxy>();
+        if (proxy == null)
+            proxy = hitObj.GetComponentInParent<EnemyProxy>();
+
+        if (proxy != null && proxy.enemyData != null)
         {
-            // add damage logic here
+            proxy.enemyData.TakeDamage(new DamageInstance(damage));
         }
+
         Destroy(gameObject);
     }
 
     // Enables effects
     public void EnableEffects()
     {
-        Debug.Log("SphereEmitter: " + sphereEmitter);
         if (!ProjectileManager.IsFrozen)
         {
             return;
