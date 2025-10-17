@@ -7,12 +7,12 @@ public class HomingProjectile : MonoBehaviour
     private Transform target;
     
     // Arc / Steering
-    public float steerSpeed = 10f;
-    public float maxSpeed = 10f;
+    private float steerSpeed = 10f;
+    private float maxSpeed = 10f;
     public float arcBoost = 2f;
 
     // Behavior / Type
-    public float destroyAfter = 10f;
+    public float destroyAfter = 15f;
     public ProjectileType type;
 
     // Effects
@@ -21,8 +21,13 @@ public class HomingProjectile : MonoBehaviour
     public ParticleSystem sparksPrefab;
     public ParticleSystem flashPrefab;
 
+    // Stats
+    public ProjectileStatsContainer statsContainer;
+    private float damage;
+    private float aoe;
+
     private Rigidbody rb;
-    
+
 
     void Awake()
     {
@@ -30,6 +35,7 @@ public class HomingProjectile : MonoBehaviour
         ProjectileManager.Instance.RegisterProjectile(rb);
         rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
         rb.linearVelocity = Vector3.zero;
+
         if (ProjectileManager.IsFrozen)
         {
             rb.useGravity = false;
@@ -39,6 +45,13 @@ public class HomingProjectile : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        // Assigns stat values to projectiles
+        ProjectileStats stats = statsContainer.GetStats(type);
+        damage = stats.damage;
+        steerSpeed = stats.speed;
+        maxSpeed = stats.speed;
+        aoe = stats.aoeRadius;
+
         // Homes onto nearest enemy if no target assigned in BallSpawner
         if (target == null)
         {
@@ -139,10 +152,20 @@ public class HomingProjectile : MonoBehaviour
     // Enables effects
     public void EnableEffects()
     {
-        if (ProjectileManager.IsFrozen && lightningRing != null && sphereEmitter != null)
+        Debug.Log("SphereEmitter: " + sphereEmitter);
+        if (!ProjectileManager.IsFrozen)
+        {
+            return;
+        }
+
+        if (lightningRing != null)
         {
             lightningRing.enabled = true;
             lightningRing.SetVisible(true);
+        }
+
+        if (sphereEmitter != null)
+        {
             sphereEmitter.enabled = true;
         }
     }

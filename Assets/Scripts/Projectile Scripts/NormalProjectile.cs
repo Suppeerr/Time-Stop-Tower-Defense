@@ -5,7 +5,6 @@ public class NormalProjectile : MonoBehaviour
 {
     public BallSpawner ballSpawner;
     public ProjectileType type;
-    public GameObject secondaryProjectile;
     private float initialXVel = -1f;
     public float initialYVel = 0f;
     private float initialZVel = -1f;
@@ -43,11 +42,11 @@ public class NormalProjectile : MonoBehaviour
 
         if (lifetime >= destroyAfter)
         {
-            Destroy(gameObject);
+            SplitAndDestroy();
         }
 
-            rb.AddForce(Physics.gravity * (gravityMultiplier - 1f), ForceMode.Acceleration);
-        }
+        rb.AddForce(Physics.gravity * (gravityMultiplier - 1f), ForceMode.Acceleration);
+    }
 
     void OnCollisionEnter(Collision collision)
     {
@@ -86,28 +85,23 @@ public class NormalProjectile : MonoBehaviour
         parryDeath = true;
     }
 
-    void OnDestroy()
+    void SplitAndDestroy()
     {
-        ProjectileManager.Instance?.UnregisterProjectile(rb);
-
         if (this.type == ProjectileType.PrimaryNormal && !parryDeath)
         {
-            if (secondaryProjectile == null)
-            {
-                return;
-            }
-
             for (int i = 0; i < splitCount; i++)
             {
                 float angle = ((float)i / (splitCount - 1) - 0.5f) * spreadAngle;
                 Quaternion rot = Quaternion.Euler(0, angle, 0) * transform.rotation;
-                Instantiate(secondaryProjectile, transform.position, rot);
+                ballSpawner.SpawnNormal(ProjectileType.SecondaryNormal, transform.position, rot);
             }
         }
+
+        Destroy(gameObject);
     }
 
-    void OnApplicationQuit()
+    void OnDestroy()
     {
-        Destroy(gameObject);
+        ProjectileManager.Instance?.UnregisterProjectile(rb);
     }
 }

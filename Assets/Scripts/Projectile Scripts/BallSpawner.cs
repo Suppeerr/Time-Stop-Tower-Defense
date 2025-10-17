@@ -9,6 +9,7 @@ public class BallSpawner : MonoBehaviour
     public GameObject homingPrimaryPrefab;
     public GameObject homingSecondaryPrefab;
     public GameObject normalPrimaryPrefab;
+    public GameObject normalSecondaryPrefab;
     public GameObject cannonBallPrefab;
 
     // Spawn Settings
@@ -19,7 +20,6 @@ public class BallSpawner : MonoBehaviour
     public Transform shootPoint;
 
     // Effects and Audio
-    public AudioSource parrySFX;
     public BarrelAim barrelAim;
     public ParticleSystem muzzleFlash;
 
@@ -34,7 +34,7 @@ public class BallSpawner : MonoBehaviour
         {
             mainCamera = Camera.main;
         }
-        SpawnNormal();
+        SpawnNormal(ProjectileType.PrimaryNormal, transform.position, transform.rotation);
     }
 
     // Update is called once per frame
@@ -60,7 +60,8 @@ public class BallSpawner : MonoBehaviour
         }
         else if (timer >= spawnRate)
         {
-            SpawnNormal();
+            SpawnNormal(ProjectileType.PrimaryNormal, transform.position, transform.rotation);
+
         }
 
     }
@@ -81,10 +82,28 @@ public class BallSpawner : MonoBehaviour
     }
 
     // Normal Rock Spawner
-    public void SpawnNormal()
+    public void SpawnNormal(ProjectileType type, Vector3 position, Quaternion rotation)
     {
-        Instantiate(normalPrimaryPrefab, transform.position, transform.rotation);
-        timer = 0;
+        GameObject prefabToSpawn = null;
+
+        switch (type)
+        {
+            case ProjectileType.PrimaryNormal:
+                prefabToSpawn = normalPrimaryPrefab;
+                break;
+            case ProjectileType.SecondaryNormal:
+                prefabToSpawn = normalSecondaryPrefab;
+                break;
+        }
+
+        if (prefabToSpawn == null)
+        {
+            Debug.LogWarning("No prefab assigned for this normal type!");
+            return;
+        }
+
+        Instantiate(prefabToSpawn, position, rotation);
+        timer = 0f;
     }
 
     // Homing Rock Spawner
@@ -109,8 +128,6 @@ public class BallSpawner : MonoBehaviour
         }
 
         GameObject homingProjectile = Instantiate(prefabToSpawn, position, rotation);
-
-        HomingProjectile homingScript = homingProjectile.GetComponent<HomingProjectile>();
-        homingScript.EnableEffects();
+        homingProjectile.GetComponent<HomingProjectile>().EnableEffects();
     }
 }

@@ -166,12 +166,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cebc0d9bdc063774ab478ff695b7e580, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  ballSpawner: {fileID: 3583277678865754898, guid: cfe75775c075b9842b392bf481b61074, type: 3}
+  ballSpawner: {fileID: 7703208739090267004, guid: a477c0fc531854b409fdb902634bc6ec, type: 3}
   type: 2
-  secondaryProjectile: {fileID: 6538674577565016964, guid: 5382d1ff16439594d86b5d87a67cbcae, type: 3}
-  initialXVel: -1
   initialYVel: 11
-  initialZVel: -1
   spreadAngle: 30
 --- !u!96 &5452576504588569607
 TrailRenderer:
