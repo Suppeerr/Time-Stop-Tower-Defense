@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3193921702664026942}
   - component: {fileID: 8743330317187499506}
-  - component: {fileID: -2334695273842304992}
   m_Layer: 0
   m_Name: Time Stop VFX
   m_TagString: Untagged
@@ -50,16 +49,3 @@ MonoBehaviour:
   blendDistance: 0
   weight: 1
   sharedProfile: {fileID: 11400000, guid: db3bae6dd1c0aab499b9c89ec37f99df, type: 2}
---- !u!114 &-2334695273842304992
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4809454816962517272}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 17c26a42372479b47b5edef5a82d280e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
-  timeStopVolume: {fileID: 8743330317187499506}

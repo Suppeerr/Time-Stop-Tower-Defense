@@ -8,6 +8,11 @@ public class GlowingSphereEmitter : MonoBehaviour
     public float lifetime = 1f;         // How long each sphere lasts
     public float spawnRadius = 0.1f;    // Small offset from projectile center
     private float spawnTimer = 0f;      // Time between sphere spawns
+    
+    void Awake()
+    {
+        this.enabled = false;
+    }
 
     void Update()
     {
