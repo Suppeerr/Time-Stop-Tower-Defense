@@ -12,4 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6586309271c91cf45904c6549c82389c, type: 3}
   m_Name: ProjectileStatsContainer
   m_EditorClassIdentifier: Assembly-CSharp::ProjectileStatsContainer
-  stats: []
+  stats:
+  - type: 0
+    damage: 0
+    speed: 40
+    aoeRadius: 0
+  - type: 1
+    damage: 600
+    speed: 15
+    aoeRadius: 2
+  - type: 3
+    damage: 300
+    speed: 25
+    aoeRadius: 0
