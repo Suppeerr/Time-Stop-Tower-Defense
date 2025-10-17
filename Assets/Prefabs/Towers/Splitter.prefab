@@ -179,14 +179,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98c73760247936d418333d8d4f887cc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BallSpawner
-  homingPrimaryPrefab: {fileID: 0}
-  homingSecondaryPrefab: {fileID: 0}
+  homingPrimaryPrefab: {fileID: 5614694088177908068, guid: 6202bc6e4cabd8047bfcdfab610e6ecc, type: 3}
+  homingSecondaryPrefab: {fileID: 5176513416565621517, guid: 3de8e5317eb531b4a9eab6b582237682, type: 3}
   normalPrimaryPrefab: {fileID: 4926105239026105867, guid: 6a57a689b20abdc48aca5ab69f52cec9, type: 3}
+  normalSecondaryPrefab: {fileID: 6538674577565016964, guid: 5382d1ff16439594d86b5d87a67cbcae, type: 3}
   cannonBallPrefab: {fileID: 0}
   spawnPerSecond: 0.6
   isCannon: 0
   shootPoint: {fileID: 0}
-  parrySFX: {fileID: 0}
   barrelAim: {fileID: 0}
   muzzleFlash: {fileID: 0}
 --- !u!64 &8985450122344864329
