@@ -15,7 +15,7 @@ public class TimeStop : MonoBehaviour
     public float duration = 5f;
     public float maxDur = 5f;
     public float rechargeRate = 1f;
-    public float waitTime = 5f;
+    public float cooldown = 0f;
     private bool active = false;
     private float delayAfterSFX = .3f;
     private bool isCoroutineRunning = false;
@@ -29,21 +29,40 @@ public class TimeStop : MonoBehaviour
         {
             duration += rechargeRate * Time.deltaTime;
             if (duration > maxDur)
+            {
                 duration = maxDur;
+            }
+        }
+
+        if (cooldown > 0)
+        {
+            cooldown -= Time.deltaTime;
+            if (cooldown < 0 )
+            {
+                cooldown = 0;
+            }
         }
 
         // Update UI
         if (durationText != null)
         {
             durationText.text = duration.ToString("F2");
-            durationText.color = active ? activeColor : (duration <= 1f ? cooldownColor : inactiveColor);
+            durationText.color = active ? activeColor : (cooldown > 0f ? cooldownColor : inactiveColor);
             durationText.gameObject.SetActive(duration < maxDur);
         }
 
         // Trigger key input
-        if (!active && !isCoroutineRunning && Keyboard.current.tKey.wasPressedThisFrame && duration > waitTime)
+        if (!active && !isCoroutineRunning && Keyboard.current.tKey.wasPressedThisFrame && cooldown == 0f)
         {
             StartCoroutine(StartTimeStopAfterDelay());
+        }
+        if (active && isCoroutineRunning && Keyboard.current.tKey.wasPressedThisFrame)
+        {
+            StopAllCoroutines();
+            active = false;
+            timeStop?.Invoke(false);
+            isCoroutineRunning = false;
+            cooldown = 1.5f;
         }
     }
 
@@ -51,8 +70,7 @@ public class TimeStop : MonoBehaviour
     {
         isCoroutineRunning = true;
 
-        if (timeStopSFX != null)
-            timeStopSFX.Play();
+        timeStopSFX?.Play();
 
         yield return new WaitForSecondsRealtime(delayAfterSFX);
 
@@ -68,5 +86,6 @@ public class TimeStop : MonoBehaviour
         active = false;
         timeStop?.Invoke(false);
         isCoroutineRunning = false;
+        cooldown = 1f;
     }
 }
