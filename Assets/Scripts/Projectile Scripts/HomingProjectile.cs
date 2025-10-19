@@ -1,18 +1,19 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-public class Homing : MonoBehaviour
+public class HomingProjectile : MonoBehaviour
 {
     // Targeting
     private Transform target;
     
     // Arc / Steering
-    public float steerSpeed = 10f;
-    public float maxSpeed = 10f;
+    private float steerSpeed = 10f;
+    private float maxSpeed = 10f;
     public float arcBoost = 2f;
 
-    // Behavior
-    public float destroyAfter = 10f;
+    // Behavior / Type
+    public float destroyAfter = 15f;
+    public ProjectileType type;
 
     // Effects
     public LightningRing lightningRing;
@@ -20,7 +21,13 @@ public class Homing : MonoBehaviour
     public ParticleSystem sparksPrefab;
     public ParticleSystem flashPrefab;
 
+    // Stats
+    public ProjectileStatsContainer statsContainer;
+    private int damage;
+    private float aoe;
+
     private Rigidbody rb;
+
 
     void Awake()
     {
@@ -28,6 +35,7 @@ public class Homing : MonoBehaviour
         ProjectileManager.Instance.RegisterProjectile(rb);
         rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
         rb.linearVelocity = Vector3.zero;
+
         if (ProjectileManager.IsFrozen)
         {
             rb.useGravity = false;
@@ -37,6 +45,13 @@ public class Homing : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        // Assigns stat values to projectiles
+        ProjectileStats stats = statsContainer.GetStats(type);
+        damage = stats.damage;
+        steerSpeed = stats.speed;
+        maxSpeed = stats.speed;
+        aoe = stats.aoeRadius;
+
         // Homes onto nearest enemy if no target assigned in BallSpawner
         if (target == null)
         {
@@ -121,26 +136,40 @@ public class Homing : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        HandleHit(collision.collider);
-    }
-
-    void HandleHit(Collider collider)
-    {
         SpawnExplosion();
-        if (collider.transform == target)
+
+         // Collider hit
+        GameObject hitObj = collision.collider.gameObject;
+
+        // Check up the hierarchy for an EnemyProxy
+        EnemyProxy proxy = hitObj.GetComponent<EnemyProxy>();
+        if (proxy == null)
+            proxy = hitObj.GetComponentInParent<EnemyProxy>();
+
+        if (proxy != null && proxy.enemyData != null)
         {
-            // add damage logic here
+            proxy.enemyData.TakeDamage(new DamageInstance(damage));
         }
+
         Destroy(gameObject);
     }
 
     // Enables effects
     public void EnableEffects()
     {
-        if (ProjectileManager.IsFrozen && lightningRing != null && sphereEmitter != null)
+        if (!ProjectileManager.IsFrozen)
+        {
+            return;
+        }
+
+        if (lightningRing != null)
         {
             lightningRing.enabled = true;
             lightningRing.SetVisible(true);
+        }
+
+        if (sphereEmitter != null)
+        {
             sphereEmitter.enabled = true;
         }
     }
