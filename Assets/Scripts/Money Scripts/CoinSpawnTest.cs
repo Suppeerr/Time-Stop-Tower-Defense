@@ -46,7 +46,8 @@ public class CoinSpawnTest : MonoBehaviour
 
     void Update()
     {
-        if (Time.time >= timer)
+        Debug.Log(Time.time);
+        if (Time.timeSinceLevelLoad >= timer)
         {
             timer += spawnInterval;
             SpawnCoin();
@@ -55,6 +56,7 @@ public class CoinSpawnTest : MonoBehaviour
 
     private void SpawnCoin()
     {
+        Debug.Log("Spawned Coin");
         GameObject clone = Instantiate(
             coinPrefab,
             new Vector3(Random.Range(-10, 10), 0, Random.Range(-10, 10)),
