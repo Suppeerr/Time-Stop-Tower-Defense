@@ -11,9 +11,8 @@ GameObject:
   - component: {fileID: 1054753040051937930}
   - component: {fileID: 2622783201086119382}
   - component: {fileID: -7606052773318764168}
-  - component: {fileID: 8580636116610728373}
   m_Layer: 0
-  m_Name: Managers
+  m_Name: Projectile Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -144,16 +143,3 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &8580636116610728373
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1360090404083059143}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f0541eec126b6d848bc4ca8701de42ae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MoneyManagement
-  money: 0
