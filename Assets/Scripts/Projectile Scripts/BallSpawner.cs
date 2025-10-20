@@ -22,6 +22,7 @@ public class BallSpawner : MonoBehaviour
     // Effects and Audio
     public BarrelAim barrelAim;
     public ParticleSystem muzzleFlash;
+    public AudioSource cannonBlastSFX;
 
     // Ray Trace Camera
     private Camera mainCamera;
@@ -79,6 +80,7 @@ public class BallSpawner : MonoBehaviour
         yield return StartCoroutine(barrelAim.AimAtTarget(target));
         GameObject proj = Instantiate(projectilePrefab, shootPoint.position, shootPoint.rotation);
         proj.GetComponent<HomingProjectile>()?.SetTarget(target);
+        cannonBlastSFX?.Play();
         muzzleFlash?.Play();
         timer = 0f;
     }
