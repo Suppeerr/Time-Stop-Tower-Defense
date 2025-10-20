@@ -40,13 +40,12 @@ public class CoinSpawnTest : MonoBehaviour
 {
     [SerializeField] private GameObject coinPrefab;
     [SerializeField] private float spawnInterval = 5f;
-    [SerializeField] private MoneyManagement moneyManagerObject;
+    [SerializeField] private GameObject moneyManagerObject;
 
     private float timer = 0f;
 
     void Update()
     {
-        Debug.Log(Time.time);
         if (Time.timeSinceLevelLoad >= timer)
         {
             timer += spawnInterval;
@@ -56,7 +55,6 @@ public class CoinSpawnTest : MonoBehaviour
 
     private void SpawnCoin()
     {
-        Debug.Log("Spawned Coin");
         GameObject clone = Instantiate(
             coinPrefab,
             new Vector3(Random.Range(-10, 10), 0, Random.Range(-10, 10)),
@@ -64,9 +62,12 @@ public class CoinSpawnTest : MonoBehaviour
         );
 
         CoinLogic coinLogic = clone.GetComponent<CoinLogic>();
+        coinLogic.moneyManagerObject = moneyManagerObject;
+/*
         if (coinLogic != null)
         {
             coinLogic.moneyManagerObject = moneyManagerObject;
         }
+        */
     }
 }

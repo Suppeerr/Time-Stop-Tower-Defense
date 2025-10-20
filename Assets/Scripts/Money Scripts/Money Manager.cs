@@ -3,11 +3,12 @@ using TMPro;
 
 public class MoneyManagement : MonoBehaviour
 {
-    private int money;
+    public int money;
     [SerializeField] private TMP_Text moneyText;
 
     void Awake()
     {
+        moneyText.text = "Money?: ";
         money = 0;
         UpdateUI();
     }
@@ -15,9 +16,11 @@ public class MoneyManagement : MonoBehaviour
     // Calls whenever money changes
     private void UpdateUI()
     {
+        Debug.Log("Inside UpdateUI");
         if (moneyText != null)
         {
-            moneyText.text = "Money: " + money.ToString();
+            Debug.Log("Updating Money Count");
+            moneyText.text = "Money: " + money;
         }
     }
 

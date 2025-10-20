@@ -32,17 +32,19 @@ using UnityEngine;
 
 public class CoinLogic : MonoBehaviour
 {
-    private MoneyManagement moneyManager;
+    //private MoneyManagement moneyManager;
 
     // Assign the MoneyManager via Inspector or at runtime
-    [SerializeField] public MoneyManagement moneyManagerObject;
+    public GameObject moneyManagerObject;
 
     public void Init()
     {
+        /*
         if (moneyManagerObject != null)
             moneyManager = moneyManagerObject;
         else
             Debug.LogError("MoneyManager not assigned on " + gameObject.name);
+            */
     }
 
     // Update is called once per frame
@@ -55,7 +57,7 @@ public class CoinLogic : MonoBehaviour
     // Call CollectCoin when the coin is destroyed
     private void OnDestroy()
     {
-        moneyManager?.CollectCoin();
+        moneyManagerObject.GetComponent<MoneyManagement>().CollectCoin();
     }
 }
 

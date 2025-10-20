@@ -247,7 +247,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8501999640976076504}
-  - component: {fileID: -420672969853268032}
+  - component: {fileID: 2511415714423087711}
   m_Layer: 0
   m_Name: Money Manager
   m_TagString: Untagged
@@ -271,7 +271,7 @@ Transform:
   - {fileID: 6035120516886734332}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-420672969853268032
+--- !u!114 &2511415714423087711
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -280,7 +280,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 8233883291882911332}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f0541eec126b6d848bc4ca8701de42ae, type: 3}
+  m_Script: {fileID: 11500000, guid: 21b58f1b2e9c2d242aeea57c3ba83501, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MoneyManagement
-  moneyText: {fileID: 2917061701096523847}
+  money: 0
+  moneyText: {fileID: 0}
