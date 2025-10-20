@@ -50,7 +50,7 @@ public class Draggable : MonoBehaviour
 
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, groundMask))
             {
-                Vector3 desiredPos = hit.point + offset + Vector3.up * 1.3f;
+                Vector3 desiredPos = hit.point + offset + Vector3.up * 1.1f;
                 transform.position = desiredPos;
 
                 // Check for nearby objects

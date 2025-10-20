@@ -1,22 +1,30 @@
 using UnityEngine;
+using TMPro;
 
 public class MoneyManagement : MonoBehaviour
 {
-    public int money;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private int money;
+    [SerializeField] private TMP_Text moneyText;
+
+    void Awake()
     {
         money = 0;
+        UpdateUI();
     }
 
-    // Update is called once per frame
-    void Update()
+    // Calls whenever money changes
+    private void UpdateUI()
     {
-
+        if (moneyText != null)
+        {
+            moneyText.text = "Money: " + money.ToString();
+        }
     }
 
-    public void CollectCoin()
+    // Public method for collecting coins
+    public void CollectCoin(int amount = 1)
     {
-        money += 1;
+        money += amount;
+        UpdateUI();
     }
 }
