@@ -3,10 +3,10 @@ using UnityEngine;
 [System.Serializable]
 public class EnemyStats
 {
-    public EnemyType type;   // links stats to a type
-    public float hp;
+    public EnemyType type;   
+    public int hp;
     public float spd;
-    public float def;       
+    public int def;       
 }
 
 [CreateAssetMenu(fileName = "EnemyStatsContainer", menuName = "Enemies/StatsContainer")]
@@ -20,6 +20,6 @@ public class EnemyStatsContainer : ScriptableObject
         {
             if (s.type == type) return s;
         }
-        return null; // or a default
+        return null; 
     }
 }

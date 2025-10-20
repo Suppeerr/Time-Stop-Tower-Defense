@@ -44,6 +44,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4eba0197f3d283645b1f1400bd2a0fe4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CoinSpawnTest
-  coin: {fileID: 6112788603860036965, guid: ad12ab3d4d6e52c49b81f2978ce9a611, type: 3}
+  coinPrefab: {fileID: 6112788603860036965, guid: ad12ab3d4d6e52c49b81f2978ce9a611, type: 3}
   spawnInterval: 1
-  moneyManagerObject: {fileID: 8233883291882911332, guid: 3f8ee4aa88993ed4783f20376d60e1a1, type: 3}
+  moneyManagerObject: {fileID: -420672969853268032, guid: 3f8ee4aa88993ed4783f20376d60e1a1, type: 3}

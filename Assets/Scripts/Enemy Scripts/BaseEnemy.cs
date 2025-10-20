@@ -1,39 +1,56 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-//reference numbers: enemy hp 100~100000, projectile damage 25~x
-public partial class BaseEnemy
+    //base stats: (could be stored as a seperate data structure)
+    //reference numbers: enemy hp 100~100000, projectile damage 25~x
+public class BaseEnemy
 {
     //base stats: (could be stored as a seperate data structure)
-    public int baseHp = 1200;
-    public int baseDef;
-    public int baseRes;
+    private int baseHp;
+    private int baseDef;
+    private int baseRes;
 
-    public int hp = 1200;
-    public int def;
-    public int res;
+    private int hp;
+    private int def;
+    private int res;
 
     public float x;
     public float y;
     public float z;
-    public float speed;
+    private float speed;
 
-    public readonly EnemyPath spath;
+    public EnemyType type;
+    public EnemyPath spath;
     public int currentWaypoint = 1;
     public float curdist_traveled;
 
+    public EnemyStatsContainer statsContainer;
     public GameObject visualObj;
     public GameObject enemyvObjPrefab;
     public LevelInstance level;
 
-    public BaseEnemy(float speed, GameObject prefab, LevelInstance level, EnemyPath spath)
+    public void Init(GameObject prefab, LevelInstance level, EnemyPath spath, EnemyType eType)
     {
         //other init also goes here...
-        this.speed = speed;
+        // Assigns stat values to enemies
+        type = eType;
+        statsContainer = Resources.Load<EnemyStatsContainer>("EnemyStatsContainer 1");
+
+        EnemyStats stats = statsContainer.GetStats(type);
+        if (stats == null)
+        {
+            Debug.LogError($"No stats found for enemy type {type}");
+            return;
+        }
+        baseHp = stats.hp;
+        hp = baseHp;
+        speed = stats.spd;
+        baseDef = stats.def;
+        def = baseDef;
         enemyvObjPrefab = prefab;
         this.level = level;
         this.spath = spath;
-
+        
         As_spawn();
     }
 

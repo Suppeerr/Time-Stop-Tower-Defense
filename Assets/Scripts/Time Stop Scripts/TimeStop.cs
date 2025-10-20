@@ -9,6 +9,7 @@ public class TimeStop : MonoBehaviour
     public static event Action<bool> timeStop;
     public AudioSource timeStopSFX;
     public TMP_Text durationText;
+    public TMP_Text cooldownText;
     private Color activeColor = Color.yellow;
     private Color inactiveColor = Color.gray;
     private Color cooldownColor = Color.red;
@@ -46,9 +47,14 @@ public class TimeStop : MonoBehaviour
         // Update UI
         if (durationText != null)
         {
-            durationText.text = duration.ToString("F2");
-            durationText.color = active ? activeColor : (cooldown > 0f ? cooldownColor : inactiveColor);
-            durationText.gameObject.SetActive(duration < maxDur);
+            durationText.text = duration.ToString("F1");
+            durationText.color = active ? activeColor : inactiveColor;
+        }
+        if (cooldownText != null)
+        {
+            cooldownText.text = cooldown.ToString("F1");
+            cooldownText.color = cooldownColor;
+            cooldownText.gameObject.SetActive(cooldown > 0f);
         }
 
         // Trigger key input

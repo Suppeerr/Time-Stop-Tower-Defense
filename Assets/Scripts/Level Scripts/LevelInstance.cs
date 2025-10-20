@@ -17,14 +17,14 @@ public class LevelInstance : MonoBehaviour
         if (!s_enabled) return;
 
         Debug.Log("levelInst enabled");
-        ePrefab = (GameObject)Resources.Load("Bandit");
+        ePrefab = (GameObject)Resources.Load("Normal Bandit");
         //this would be ideally loaded from a data structure or from file before the scene begins
         epath.addWaypoint(0, 0); 
         epath.addWaypoint(0, 15);
         epath.addWaypoint(-11,15);
         epath.addWaypoint(0, 0);
 
-        InvokeRepeating(nameof(spawnEnemyTest), 1.0f, 3.0f);
+        InvokeRepeating(nameof(SpawnEnemyTest), 1.0f, 3.0f);
     }
     public void Update()
     {
@@ -61,13 +61,15 @@ public class LevelInstance : MonoBehaviour
         queueRemove.Clear();
     }
 
-    public void spawnEnemyTest()
+    public void SpawnEnemyTest()
     {
         if (ProjectileManager.IsFrozen)
         {
             return;
         }
         Debug.Log("levelInst spawned enemy");
-        enemies.Add(new BaseEnemy(3, ePrefab, this, epath));
+        BaseEnemy enemy = new BaseEnemy();
+        enemy.Init(ePrefab, this, epath, EnemyType.NormalBandit);
+        enemies.Add(enemy);
     }
 }
