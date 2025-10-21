@@ -3,11 +3,11 @@ using System.Collections;
 
 public class BarrelAim : MonoBehaviour
 {
-    public Transform shootPoint;
-    private float rotationSpeed = 1f;
+    public Transform shootPoint;            // Shoot location
+    private float rotationSpeed = 1f;       // Cannon rotate speed
+    private Vector3 targetDirection;        // Direction of target
 
-    private Vector3 targetDirection;
-
+    // Aims at target whenever called
     public IEnumerator AimAtTarget(GameObject target)
     {
         if (target == null)
@@ -15,7 +15,7 @@ public class BarrelAim : MonoBehaviour
             yield break;
         }
         // Calculates desired rotation
-        Quaternion targetRot = Quaternion.LookRotation((target.transform.position + Vector3.up * 1.0f) - shootPoint.position);
+        Quaternion targetRot = Quaternion.LookRotation(target.transform.position + Vector3.up * 5f - shootPoint.position);
 
         // Rotate to right angle
         while (Quaternion.Angle(transform.rotation, targetRot) > 1f)
