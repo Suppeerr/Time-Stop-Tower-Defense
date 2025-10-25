@@ -27,6 +27,7 @@ public class BaseEnemy
     public EnemyStatsContainer statsContainer;
     public GameObject visualObj;
     public GameObject enemyvObjPrefab;
+    public EnemyHealthBar healthbar;
     public LevelInstance level;
 
     public void Init(GameObject prefab, LevelInstance level, EnemyPath spath, EnemyType eType)
@@ -64,6 +65,11 @@ public class BaseEnemy
         if (damage.isDef) damagerecieved = Mathf.Clamp(damagerecieved - def, minDamage, damagerecieved);
         if (damage.isRes) damagerecieved = Mathf.Clamp(damagerecieved * (1 - (float)res), minDamage, damagerecieved);
         hp -= (int)damagerecieved;
+
+        // Updates healthbar to indicate damage taken
+        healthbar?.UpdateHealth(hp);
+
+        // The enemy dies if its hp becomes 0 or less
         if (hp <= 0)
         {
             OnDeath();
@@ -83,6 +89,10 @@ public class BaseEnemy
         // Attach proxy
         var proxy = visualObj.AddComponent<EnemyProxy>();
         proxy.Init(this);
+
+        // Gets healthbar
+        healthbar = visualObj.GetComponentInChildren<EnemyHealthBar>();
+        healthbar?.Init(baseHp);
     }
     public void As_update()
     {

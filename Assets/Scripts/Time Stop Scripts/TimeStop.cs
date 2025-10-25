@@ -7,7 +7,8 @@ using UnityEngine.InputSystem;
 public class TimeStop : MonoBehaviour
 {
     public static event Action<bool> timeStop;
-    public AudioSource timeStopSFX;
+    public AudioSource timeStopStartSFX;
+    public AudioSource timeStopEndSFX;
     public TMP_Text durationText;
     public TMP_Text cooldownText;
     private Color activeColor = Color.yellow;
@@ -16,7 +17,7 @@ public class TimeStop : MonoBehaviour
     public float duration = 5f;
     public float maxDur = 5f;
     public float rechargeRate = 1f;
-    public float cooldown = 0f;
+    private float cooldown;
     private bool active = false;
     private float delayAfterSFX = .3f;
     private bool isCoroutineRunning = false;
@@ -60,23 +61,19 @@ public class TimeStop : MonoBehaviour
         // Trigger key input
         if (!active && !isCoroutineRunning && Keyboard.current.tKey.wasPressedThisFrame && cooldown == 0f)
         {
+            StopAllCoroutines();
             StartCoroutine(StartTimeStopAfterDelay());
         }
         if (active && isCoroutineRunning && Keyboard.current.tKey.wasPressedThisFrame)
         {
-            StopAllCoroutines();
-            active = false;
-            timeStop?.Invoke(false);
-            isCoroutineRunning = false;
-            cooldown = 1.5f;
+            EndTimestop(2f);
         }
     }
 
     private IEnumerator StartTimeStopAfterDelay()
     {
         isCoroutineRunning = true;
-
-        timeStopSFX?.Play();
+        timeStopStartSFX?.Play();
 
         yield return new WaitForSecondsRealtime(delayAfterSFX);
 
@@ -88,10 +85,17 @@ public class TimeStop : MonoBehaviour
             duration -= Time.deltaTime;
             yield return null;
         }
+        EndTimestop(1f);
+    }
 
+    // Ends the timestop
+    private void EndTimestop(float cd)
+    {
+        StopAllCoroutines();
         active = false;
         timeStop?.Invoke(false);
         isCoroutineRunning = false;
-        cooldown = 1f;
+        timeStopEndSFX?.Play();
+        cooldown = cd;
     }
 }
