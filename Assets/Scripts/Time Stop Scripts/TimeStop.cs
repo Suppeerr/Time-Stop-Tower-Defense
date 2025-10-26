@@ -11,7 +11,6 @@ public class TimeStop : MonoBehaviour
     public AudioSource timeStopEndSFX;
     public TMP_Text durationText;
     public TMP_Text cooldownText;
-    private Color activeColor = Color.yellow;
     private Color inactiveColor = Color.gray;
     private Color cooldownColor = Color.red;
     public float duration = 5f;
@@ -21,7 +20,6 @@ public class TimeStop : MonoBehaviour
     private bool active = false;
     private float delayAfterSFX = .3f;
     private bool isCoroutineRunning = false;
-
 
     // Once timestop is triggered, all animated objects freeze for the duration
     void Update()
@@ -49,7 +47,15 @@ public class TimeStop : MonoBehaviour
         if (durationText != null)
         {
             durationText.text = duration.ToString("F1");
-            durationText.color = active ? activeColor : inactiveColor;
+            if (active)
+            {
+                durationText.fontMaterial.SetFloat("_GlowPower", 0.5f);
+            }
+            else
+            {
+                durationText.color = inactiveColor;
+                durationText.fontMaterial.SetFloat("_GlowPower", 0f);
+            }
         }
         if (cooldownText != null)
         {

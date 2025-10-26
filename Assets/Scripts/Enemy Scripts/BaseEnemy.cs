@@ -69,6 +69,10 @@ public class BaseEnemy
 
         // Spawns a damage indicator visual above the enemy's head
         damageIndicator?.ShowDamage(damagerecieved);
+        if (damageIndicator == null)
+        {
+            Debug.Log("Damage indicator is null.");
+        }
 
         // Updates healthbar to indicate damage taken
         healthbar?.UpdateHealth(hp);

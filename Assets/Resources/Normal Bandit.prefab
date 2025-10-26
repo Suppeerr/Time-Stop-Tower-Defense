@@ -13,8 +13,10 @@ GameObject:
   - component: {fileID: 6706845216114667055}
   - component: {fileID: 1520032082059711056}
   - component: {fileID: 5935711136336998346}
+  - component: {fileID: 3483937379178923858}
+  - component: {fileID: 6356765802050461372}
   m_Layer: 0
-  m_Name: Healthbar Canvas
+  m_Name: Healthbar and Damage Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -59,7 +61,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
-  m_AdditionalShaderChannelsFlag: 0
+  m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
@@ -128,7 +130,7 @@ MonoBehaviour:
     key5: {r: 0, g: 0, b: 0, a: 0}
     key6: {r: 0, g: 0, b: 0, a: 0}
     key7: {r: 0, g: 0, b: 0, a: 0}
-    ctime0: 14071
+    ctime0: 15035
     ctime1: 32768
     ctime2: 65535
     ctime3: 0
@@ -148,6 +150,32 @@ MonoBehaviour:
     m_ColorSpace: -1
     m_NumColorKeys: 3
     m_NumAlphaKeys: 2
+--- !u!114 &3483937379178923858
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 783346306717128022}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f4aa9a42e25c2e42ab64f4257550357, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  damageIndicator: {fileID: 8090588558786134674, guid: a68e55b76c3e5c040b3718519d65d40e, type: 3}
+  enemy: {fileID: 172965282212442296}
+--- !u!114 &6356765802050461372
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 783346306717128022}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a64b0bbbaaafa5a42957e19107d6611d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIFaceCamera
 --- !u!1 &4196417440704232113
 GameObject:
   m_ObjectHideFlags: 0
@@ -391,6 +419,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 8522817682257515320}
   m_SourcePrefab: {fileID: 100100000, guid: 90909e1b653c2429482a9c415a7e51d1, type: 3}
+--- !u!1 &172965282212442296 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 90909e1b653c2429482a9c415a7e51d1, type: 3}
+  m_PrefabInstance: {fileID: 1055837720665017833}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &661377879569803778 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 90909e1b653c2429482a9c415a7e51d1, type: 3}

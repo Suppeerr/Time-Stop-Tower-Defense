@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 1520032082059711056}
   - component: {fileID: 5935711136336998346}
   - component: {fileID: 3483937379178923858}
+  - component: {fileID: 7627162781160812120}
   m_Layer: 0
   m_Name: Healthbar and Damage Canvas
   m_TagString: Untagged
@@ -161,8 +162,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f4aa9a42e25c2e42ab64f4257550357, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  damageNumber: {fileID: 823977043825678796, guid: b133d83ed1761c74c920ba28f0003927, type: 3}
-  enemyCanvas: {fileID: 3500813708565780324}
+  damageIndicator: {fileID: 8090588558786134674, guid: a68e55b76c3e5c040b3718519d65d40e, type: 3}
+  enemy: {fileID: 172965282212442296}
+--- !u!114 &7627162781160812120
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 783346306717128022}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a64b0bbbaaafa5a42957e19107d6611d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIFaceCamera
 --- !u!1 &4196417440704232113
 GameObject:
   m_ObjectHideFlags: 0
@@ -387,7 +400,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 90909e1b653c2429482a9c415a7e51d1, type: 3}
       propertyPath: m_Name
-      value: Normal Bandit 1
+      value: Normal Bandit
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 90909e1b653c2429482a9c415a7e51d1, type: 3}
       propertyPath: m_TagString
@@ -406,6 +419,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 8522817682257515320}
   m_SourcePrefab: {fileID: 100100000, guid: 90909e1b653c2429482a9c415a7e51d1, type: 3}
+--- !u!1 &172965282212442296 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 90909e1b653c2429482a9c415a7e51d1, type: 3}
+  m_PrefabInstance: {fileID: 1055837720665017833}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &661377879569803778 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 90909e1b653c2429482a9c415a7e51d1, type: 3}

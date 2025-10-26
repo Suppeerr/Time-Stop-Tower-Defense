@@ -47,7 +47,7 @@ public class EnemyHealthBar : MonoBehaviour
             {
                 yield return null;
             }
-            
+
             elapsedDelay += Time.deltaTime;
             yield return null;
         }
