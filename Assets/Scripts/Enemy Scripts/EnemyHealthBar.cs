@@ -12,7 +12,7 @@ public class EnemyHealthBar : MonoBehaviour
     private float fadeDuration = 0.5f;
     private Coroutine hideCoroutine;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    // Gets enemy health and becomes invisible
     public void Init(float maxHP)
     {
         this.maxHP = maxHP;
@@ -40,18 +40,33 @@ public class EnemyHealthBar : MonoBehaviour
     // Hides the healthbar after a few seconds
     private IEnumerator FadeAfterDelay()
     {
-        yield return new WaitForSeconds(fadeDelay);
+        float elapsedDelay = 0f;
+        while (elapsedDelay < fadeDelay)
+        {
+            while (ProjectileManager.IsFrozen)
+            {
+                yield return null;
+            }
+            
+            elapsedDelay += Time.deltaTime;
+            yield return null;
+        }
 
-        float elapsed = 0f;
+        float elapsedFade = 0f;
         Color bgColor = backgroundImage.color;
         Color fillColor = fillImage.color;
 
         float startAlpha = bgColor.a;
 
-        while (elapsed < fadeDuration)
+        while (elapsedFade < fadeDuration)
         {
-            elapsed += Time.deltaTime;
-            float percentElapsed = elapsed / fadeDuration;
+            while (ProjectileManager.IsFrozen)
+            {
+                yield return null;
+            }
+
+            elapsedFade += Time.deltaTime;
+            float percentElapsed = elapsedFade / fadeDuration;
             float alpha = Mathf.Lerp(startAlpha, 0f, percentElapsed);
 
             SetAlpha(alpha);

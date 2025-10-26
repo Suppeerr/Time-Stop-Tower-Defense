@@ -28,6 +28,7 @@ public class BaseEnemy
     public GameObject visualObj;
     public GameObject enemyvObjPrefab;
     public EnemyHealthBar healthbar;
+    public EnemyDamageIndicator damageIndicator;
     public LevelInstance level;
 
     public void Init(GameObject prefab, LevelInstance level, EnemyPath spath, EnemyType eType)
@@ -66,6 +67,9 @@ public class BaseEnemy
         if (damage.isRes) damagerecieved = Mathf.Clamp(damagerecieved * (1 - (float)res), minDamage, damagerecieved);
         hp -= (int)damagerecieved;
 
+        // Spawns a damage indicator visual above the enemy's head
+        damageIndicator?.ShowDamage(damagerecieved);
+
         // Updates healthbar to indicate damage taken
         healthbar?.UpdateHealth(hp);
 
@@ -76,7 +80,6 @@ public class BaseEnemy
             Clearself();
         }
     }
-
 
     public void As_spawn()
     {
@@ -89,6 +92,9 @@ public class BaseEnemy
         // Attach proxy
         var proxy = visualObj.AddComponent<EnemyProxy>();
         proxy.Init(this);
+
+        // Gets damage indicator
+        damageIndicator = visualObj.GetComponentInChildren<EnemyDamageIndicator>();
 
         // Gets healthbar
         healthbar = visualObj.GetComponentInChildren<EnemyHealthBar>();

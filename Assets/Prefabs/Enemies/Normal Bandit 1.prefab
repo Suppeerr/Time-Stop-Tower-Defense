@@ -13,8 +13,9 @@ GameObject:
   - component: {fileID: 6706845216114667055}
   - component: {fileID: 1520032082059711056}
   - component: {fileID: 5935711136336998346}
+  - component: {fileID: 3483937379178923858}
   m_Layer: 0
-  m_Name: Healthbar Canvas
+  m_Name: Healthbar and Damage Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -59,7 +60,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
-  m_AdditionalShaderChannelsFlag: 0
+  m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
@@ -148,6 +149,20 @@ MonoBehaviour:
     m_ColorSpace: -1
     m_NumColorKeys: 3
     m_NumAlphaKeys: 2
+--- !u!114 &3483937379178923858
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 783346306717128022}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f4aa9a42e25c2e42ab64f4257550357, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  damageNumber: {fileID: 823977043825678796, guid: b133d83ed1761c74c920ba28f0003927, type: 3}
+  enemyCanvas: {fileID: 3500813708565780324}
 --- !u!1 &4196417440704232113
 GameObject:
   m_ObjectHideFlags: 0
