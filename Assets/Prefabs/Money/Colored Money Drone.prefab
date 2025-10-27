@@ -79,7 +79,7 @@ PrefabInstance:
     - target: {fileID: -3244035098001850105, guid: 7e81607bb0cac4061b970ca89b80c69d, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 32f181692a9858044bac44b693009c86, type: 2}
+      objectReference: {fileID: 2100000, guid: 14685b8ff3be30744b22e31d1bdb5ca1, type: 2}
     - target: {fileID: -2170108987277907934, guid: 7e81607bb0cac4061b970ca89b80c69d, type: 3}
       propertyPath: m_Name
       value: Propeller Blades 1
@@ -112,6 +112,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Colored Money Drone
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 7e81607bb0cac4061b970ca89b80c69d, type: 3}
+      propertyPath: m_TagString
+      value: Collector
+      objectReference: {fileID: 0}
     - target: {fileID: 1304984986165193601, guid: 7e81607bb0cac4061b970ca89b80c69d, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -131,7 +135,7 @@ PrefabInstance:
     - target: {fileID: 4214842181981892926, guid: 7e81607bb0cac4061b970ca89b80c69d, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 6e9b138e2e570a44ab8256afe9fd49cb, type: 2}
+      objectReference: {fileID: 2100000, guid: 715c5deb0cf78a34686e656978898071, type: 2}
     - target: {fileID: 4327359458297511927, guid: 7e81607bb0cac4061b970ca89b80c69d, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
