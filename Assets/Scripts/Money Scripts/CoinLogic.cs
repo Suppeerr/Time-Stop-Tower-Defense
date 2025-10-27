@@ -54,10 +54,14 @@ public class CoinLogic : MonoBehaviour
         transform.rotation *= Quaternion.Euler(-90 * Time.deltaTime, 0, 0);
     }
 
-    // Call CollectCoin when the coin is destroyed
-    private void OnDestroy()
+    // Call CollectCoin when the coin collides with drone collector
+    private void OnTriggerEnter(Collider other)
     {
-        moneyManagerObject.GetComponent<MoneyManagement>().CollectCoin();
+        if (other.CompareTag("Collector")) 
+        {
+            moneyManagerObject.GetComponent<MoneyManagement>().CollectCoin();
+            Destroy(gameObject);
+        }
     }
 }
 

@@ -63,11 +63,6 @@ public class CoinSpawnTest : MonoBehaviour
 
         CoinLogic coinLogic = clone.GetComponent<CoinLogic>();
         coinLogic.moneyManagerObject = moneyManagerObject;
-/*
-        if (coinLogic != null)
-        {
-            coinLogic.moneyManagerObject = moneyManagerObject;
-        }
-        */
+
     }
 }
