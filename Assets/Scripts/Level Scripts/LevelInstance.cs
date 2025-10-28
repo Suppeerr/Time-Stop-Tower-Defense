@@ -8,6 +8,8 @@ public class LevelInstance : MonoBehaviour
     List<BaseEnemy> enemies = new List<BaseEnemy>();
     public List<BaseEnemy> queueRemove = new List<BaseEnemy>();
     bool s_enabled = false;
+    private float spawnInterval;
+    private float elapsed = 0f;
     GameObject ePrefab;
 
     public void Awake()
@@ -19,15 +21,30 @@ public class LevelInstance : MonoBehaviour
         Debug.Log("levelInst enabled");
         ePrefab = (GameObject)Resources.Load("Normal Bandit");
         //this would be ideally loaded from a data structure or from file before the scene begins
-        epath.addWaypoint(0, 0); 
-        epath.addWaypoint(0, 15);
-        epath.addWaypoint(-11,15);
         epath.addWaypoint(0, 0);
-
-        InvokeRepeating(nameof(SpawnEnemyTest), 1.0f, 3.0f);
+        epath.addWaypoint(0, 15);
+        epath.addWaypoint(-11, 15);
+        epath.addWaypoint(0, 0);
+        spawnInterval = Random.Range(1f, 3f);
     }
+    
     public void Update()
     {
+        if (ProjectileManager.IsFrozen)
+        {
+            return;
+        }
+        
+        if (elapsed < spawnInterval)
+        {
+            elapsed += Time.deltaTime;
+        }
+        else
+        {
+            SpawnEnemyTest();
+            spawnInterval = Random.Range(2f, 4f);
+            elapsed = 0;
+        }
          if (!s_enabled) return;
 
         // Temporary list to hold enemies to remove
@@ -63,10 +80,6 @@ public class LevelInstance : MonoBehaviour
 
     public void SpawnEnemyTest()
     {
-        if (ProjectileManager.IsFrozen)
-        {
-            return;
-        }
         Debug.Log("levelInst spawned enemy");
         BaseEnemy enemy = new BaseEnemy();
         enemy.Init(ePrefab, this, epath, EnemyType.NormalBandit);

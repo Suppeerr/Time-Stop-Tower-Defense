@@ -8,7 +8,6 @@ public class MoneyManagement : MonoBehaviour
 
     void Awake()
     {
-        moneyText.text = "Money?: ";
         money = 0;
         UpdateUI();
     }

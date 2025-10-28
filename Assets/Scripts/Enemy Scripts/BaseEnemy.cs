@@ -27,6 +27,8 @@ public class BaseEnemy
     public EnemyStatsContainer statsContainer;
     public GameObject visualObj;
     public GameObject enemyvObjPrefab;
+    public EnemyHealthBar healthbar;
+    public EnemyDamageIndicator damageIndicator;
     public LevelInstance level;
 
     public void Init(GameObject prefab, LevelInstance level, EnemyPath spath, EnemyType eType)
@@ -64,13 +66,24 @@ public class BaseEnemy
         if (damage.isDef) damagerecieved = Mathf.Clamp(damagerecieved - def, minDamage, damagerecieved);
         if (damage.isRes) damagerecieved = Mathf.Clamp(damagerecieved * (1 - (float)res), minDamage, damagerecieved);
         hp -= (int)damagerecieved;
+
+        // Spawns a damage indicator visual above the enemy's head
+        damageIndicator?.ShowDamage(damagerecieved);
+        if (damageIndicator == null)
+        {
+            Debug.Log("Damage indicator is null.");
+        }
+
+        // Updates healthbar to indicate damage taken
+        healthbar?.UpdateHealth(hp);
+
+        // The enemy dies if its hp becomes 0 or less
         if (hp <= 0)
         {
             OnDeath();
             Clearself();
         }
     }
-
 
     public void As_spawn()
     {
@@ -83,6 +96,13 @@ public class BaseEnemy
         // Attach proxy
         var proxy = visualObj.AddComponent<EnemyProxy>();
         proxy.Init(this);
+
+        // Gets damage indicator
+        damageIndicator = visualObj.GetComponentInChildren<EnemyDamageIndicator>();
+
+        // Gets healthbar
+        healthbar = visualObj.GetComponentInChildren<EnemyHealthBar>();
+        healthbar?.Init(baseHp);
     }
     public void As_update()
     {
@@ -145,5 +165,8 @@ public class BaseEnemy
     public virtual void OnReachEnd() { }
     public virtual void OnSpawn() { }
     public virtual void OnDestroy() { }
-    public virtual void OnDeath() { }
+    public virtual void OnDeath()
+    {
+        CoinSpawner.Instance.SpawnCoin(visualObj.transform.position);
+    }
 }
