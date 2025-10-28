@@ -165,5 +165,8 @@ public class BaseEnemy
     public virtual void OnReachEnd() { }
     public virtual void OnSpawn() { }
     public virtual void OnDestroy() { }
-    public virtual void OnDeath() { }
+    public virtual void OnDeath()
+    {
+        CoinSpawner.Instance.SpawnCoin(visualObj.transform.position);
+    }
 }
