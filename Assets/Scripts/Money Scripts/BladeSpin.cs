@@ -7,6 +7,10 @@ public class BladeSpin : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (ProjectileManager.IsFrozen)
+        {
+            return;
+        }
         transform.Rotate(Vector3.forward * rotationSpeed * Time.deltaTime, Space.Self);
     }
 }
