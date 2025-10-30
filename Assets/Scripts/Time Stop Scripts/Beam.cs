@@ -12,6 +12,7 @@ public class BeamZap : MonoBehaviour
     private float zapDuration = 0.1f; // how long it stays visible
     private Camera mainCamera;
     public BallSpawner ballSpawner;
+    public AudioSource zapSFX;
 
     void Start()
     {
@@ -19,6 +20,7 @@ public class BeamZap : MonoBehaviour
         {
             mainCamera = Camera.main;
         }
+        gameObject.SetActive(false);
     }
 
     void Update()
@@ -58,6 +60,7 @@ public class BeamZap : MonoBehaviour
             endPos = hit.point;
             beam.SetPosition(0, firePoint.position);
             beam.SetPosition(1, endPos);
+            zapSFX?.Play();
 
             if (normalProj != null)
             {

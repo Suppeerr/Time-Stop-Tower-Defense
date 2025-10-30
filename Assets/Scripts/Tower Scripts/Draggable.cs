@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class Draggable : MonoBehaviour
 {
@@ -13,7 +14,7 @@ public class Draggable : MonoBehaviour
     // Placement variables
     private float placementRadius = 2f;
     private bool canPlace = true;
-    public bool isPlaced = false;
+    private bool isPlaced = false;
     
     private Camera mainCamera;
 
@@ -21,6 +22,12 @@ public class Draggable : MonoBehaviour
     private Renderer[] rends;
     private Color[][] originalColors;
     private BallSpawner ballSpawner;
+
+    // Tower placement animation
+    private float placementTime = 0.4f;
+
+    // Tower placement audio
+    public AudioSource towerPlaceSFX;
 
     void Awake()
     {
@@ -43,6 +50,7 @@ public class Draggable : MonoBehaviour
 
     void Update()
     {
+        // Drags the tower to wherever the cursor is
         if (isDragging)
         {
             Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
@@ -50,7 +58,7 @@ public class Draggable : MonoBehaviour
 
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, groundMask))
             {
-                Vector3 desiredPos = hit.point + offset + Vector3.up * 1.1f;
+                Vector3 desiredPos = hit.point + offset + Vector3.up * 2f;
                 transform.position = desiredPos;
 
                 // Check for nearby objects
@@ -105,6 +113,7 @@ public class Draggable : MonoBehaviour
         }
     }
 
+    // When left mouse button is clicked and held, begin dragging the tower
     void OnMouseDown()
     {
         if (!isPlaced)
@@ -113,11 +122,13 @@ public class Draggable : MonoBehaviour
         }
     }
 
+    // When left mouse button is unheld, stop dragging the tower
     void OnMouseUp()
     {
         StopDrag();
     }
 
+    // Starts dragging the tower
     private void BeginDrag()
     {
         Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
@@ -135,6 +146,7 @@ public class Draggable : MonoBehaviour
         }
     }
 
+    // Stops dragging the tower
     private void StopDrag()
     {
         if (!canPlace)
@@ -143,15 +155,11 @@ public class Draggable : MonoBehaviour
             CancelDrag();
             return;
         }
-        isPlaced = true;
-        isDragging = false;
-        ApplyColor(1f);
-
-        if (ballSpawner != null)
+        if (!isPlaced)
         {
-            ballSpawner.enabled = true;
+            StartCoroutine(PlaceTower(gameObject.transform.position));
         }
-    }
+   }
 
     private void CancelDrag()
     {
@@ -204,5 +212,36 @@ public class Draggable : MonoBehaviour
     public void StartDragAtCursor()
     {
         BeginDrag();
+    }
+
+    // 
+    private IEnumerator PlaceTower(Vector3 initialPos)
+    {
+        isPlaced = true;
+        isDragging = false;
+        ApplyColor(1f);
+        towerPlaceSFX?.Play();
+        float elapsedDelay = 0f;
+        Vector3 startPos = initialPos + new Vector3(0, 3, 0);
+        Vector3 endPos = initialPos;
+
+        while (elapsedDelay < placementTime)
+        {
+            while (ProjectileManager.IsFrozen)
+            {
+                yield return null;
+            }
+
+            elapsedDelay += Time.deltaTime;
+            float t = elapsedDelay / placementTime;
+            gameObject.transform.position = Vector3.Lerp(startPos, endPos, t);
+
+            yield return null;
+        }
+
+        if (ballSpawner != null)
+        {
+            ballSpawner.enabled = true;
+        }
     }
 }

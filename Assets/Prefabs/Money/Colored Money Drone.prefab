@@ -48,21 +48,65 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -8673793551844106767, guid: 7e81607bb0cac4061b970ca89b80c69d, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: -8331326980839488877, guid: 7e81607bb0cac4061b970ca89b80c69d, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: -8117554411744466327, guid: 7e81607bb0cac4061b970ca89b80c69d, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: -7722303727146093878, guid: 7e81607bb0cac4061b970ca89b80c69d, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: -7721912936883106697, guid: 7e81607bb0cac4061b970ca89b80c69d, type: 3}
       propertyPath: m_Name
       value: Propeller Blades 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -7721912936883106697, guid: 7e81607bb0cac4061b970ca89b80c69d, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: -7531226482989705210, guid: 7e81607bb0cac4061b970ca89b80c69d, type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: -7176656574309770887, guid: 7e81607bb0cac4061b970ca89b80c69d, type: 3}
       propertyPath: m_Name
       value: Propeller Blades 2
       objectReference: {fileID: 0}
+    - target: {fileID: -6387072107790130046, guid: 7e81607bb0cac4061b970ca89b80c69d, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: -6060614752118505556, guid: 7e81607bb0cac4061b970ca89b80c69d, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: -5495063183825699199, guid: 7e81607bb0cac4061b970ca89b80c69d, type: 3}
       propertyPath: m_Name
       value: Propeller Blades 4
       objectReference: {fileID: 0}
+    - target: {fileID: -5495063183825699199, guid: 7e81607bb0cac4061b970ca89b80c69d, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: -4680868155145935108, guid: 7e81607bb0cac4061b970ca89b80c69d, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: -4370642913995875526, guid: 7e81607bb0cac4061b970ca89b80c69d, type: 3}
       propertyPath: m_Name
       value: Base Cannon
+      objectReference: {fileID: 0}
+    - target: {fileID: -4370642913995875526, guid: 7e81607bb0cac4061b970ca89b80c69d, type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: -4319857252672498554, guid: 7e81607bb0cac4061b970ca89b80c69d, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -80,9 +124,21 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 14685b8ff3be30744b22e31d1bdb5ca1, type: 2}
+    - target: {fileID: -2997925266437623816, guid: 7e81607bb0cac4061b970ca89b80c69d, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: -2978320347535248112, guid: 7e81607bb0cac4061b970ca89b80c69d, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: -2170108987277907934, guid: 7e81607bb0cac4061b970ca89b80c69d, type: 3}
       propertyPath: m_Name
       value: Propeller Blades 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -2170108987277907934, guid: 7e81607bb0cac4061b970ca89b80c69d, type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: -1770856339361170861, guid: 7e81607bb0cac4061b970ca89b80c69d, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -92,14 +148,26 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 14685b8ff3be30744b22e31d1bdb5ca1, type: 2}
+    - target: {fileID: -1188953890562654104, guid: 7e81607bb0cac4061b970ca89b80c69d, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: -743930375958502741, guid: 7e81607bb0cac4061b970ca89b80c69d, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: abc33ee824d995843b3d2625f563010a, type: 2}
+    - target: {fileID: -741118818694007390, guid: 7e81607bb0cac4061b970ca89b80c69d, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: -548845978058478135, guid: 7e81607bb0cac4061b970ca89b80c69d, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: c9916d3eaed67b44b8575349dba14b1b, type: 2}
+    - target: {fileID: -86651569449386690, guid: 7e81607bb0cac4061b970ca89b80c69d, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 20147517116652002, guid: 7e81607bb0cac4061b970ca89b80c69d, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -111,6 +179,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 7e81607bb0cac4061b970ca89b80c69d, type: 3}
       propertyPath: m_Name
       value: Colored Money Drone
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 7e81607bb0cac4061b970ca89b80c69d, type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 7e81607bb0cac4061b970ca89b80c69d, type: 3}
       propertyPath: m_TagString
@@ -128,6 +200,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Propeller Blades 2
       objectReference: {fileID: 0}
+    - target: {fileID: 1409986926226888049, guid: 7e81607bb0cac4061b970ca89b80c69d, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1816053744530370761, guid: 7e81607bb0cac4061b970ca89b80c69d, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2278712049601630803, guid: 7e81607bb0cac4061b970ca89b80c69d, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3464734662153230290, guid: 7e81607bb0cac4061b970ca89b80c69d, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 3937215457570671595, guid: 7e81607bb0cac4061b970ca89b80c69d, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -143,6 +231,10 @@ PrefabInstance:
     - target: {fileID: 4666070601267682152, guid: 7e81607bb0cac4061b970ca89b80c69d, type: 3}
       propertyPath: m_Name
       value: Base Cannon Gear
+      objectReference: {fileID: 0}
+    - target: {fileID: 4666070601267682152, guid: 7e81607bb0cac4061b970ca89b80c69d, type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4952213658781785674, guid: 7e81607bb0cac4061b970ca89b80c69d, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -176,6 +268,14 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 32f181692a9858044bac44b693009c86, type: 2}
+    - target: {fileID: 8093514801917216928, guid: 7e81607bb0cac4061b970ca89b80c69d, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8764636247018831461, guid: 7e81607bb0cac4061b970ca89b80c69d, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 8773889795158160223, guid: 7e81607bb0cac4061b970ca89b80c69d, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
