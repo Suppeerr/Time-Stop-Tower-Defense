@@ -19,7 +19,6 @@ public class EnemyPath
     }
 }
 
-[System.Serializable]
 public class Waypoint
 {
     public float x, y;
