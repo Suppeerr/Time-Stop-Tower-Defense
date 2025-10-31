@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class LevelInstance : MonoBehaviour
 {
-    public EnemyPath epath = new EnemyPath(); //could be array if we want multiple paths
+    public enemyWaypointPath epath = new enemyWaypointPath(); //could be array if we want multiple paths
     List<BaseEnemy> enemies = new List<BaseEnemy>();
     public List<BaseEnemy> queueRemove = new List<BaseEnemy>();
     bool s_enabled = false;
@@ -23,10 +23,10 @@ public class LevelInstance : MonoBehaviour
         Debug.Log("levelInst enabled");
         ePrefab = (GameObject)Resources.Load("Normal Bandit");
         //this would be ideally loaded from a data structure or from file before the scene begins
-        epath.addWaypoint(0, 0);
-        epath.addWaypoint(0, 15);
-        epath.addWaypoint(-11, 15);
-        epath.addWaypoint(0, 0);
+        epath.addWaypoint(0, 0,0);
+        epath.addWaypoint(0, 15,0);
+        epath.addWaypoint(-11, 15,0);
+        epath.addWaypoint(0, 0,0);
         spawnInterval = Random.Range(1f, 3f);
     }
     

@@ -20,7 +20,7 @@ public class BaseEnemy
     private float speed;
 
     public EnemyType type;
-    public EnemyPath spath;
+    public enemyWaypointPath spath;
     public int currentWaypoint = 1;
     public float curdist_traveled;
 
@@ -31,7 +31,7 @@ public class BaseEnemy
     public EnemyDamageIndicator damageIndicator;
     public LevelInstance level;
 
-    public void Init(GameObject prefab, LevelInstance level, EnemyPath spath, EnemyType eType)
+    public void Init(GameObject prefab, LevelInstance level, enemyWaypointPath spath, EnemyType eType)
     {
         //other init also goes here...
         // Assigns stat values to enemies
@@ -106,31 +106,32 @@ public class BaseEnemy
     }
     public void As_update()
     {
-        Move();
+        _s_move();
         //internal naming needs to be changed - I didnt realize unity used y for height instead of z
         visualObj.transform.position = new Vector3(x, z, y); //also change orientation > face vector direction
         //other internal enemy things
     }
-    public void Clearself()
+    private void _s_clearself()
     {
         Object.Destroy(visualObj);
         level.queueRemove.Add(this);
         //s
     }
-    public void Pathend()
+    private void _s_pathend()
     {
         OnReachEnd();
-        Clearself();
+        _s_clearself();
         Debug.Log("enemy reached end");
     }
 
     //called per-update
-    public void Move()
-    {
+    private void _s_move()
+    {   //... change positioning later - jack (self)
         if (ProjectileManager.IsFrozen)
         {
             return;
         }
+
         float distance_traveled = speed * Time.deltaTime;
         Waypoint targ_waypoint = spath.waypoints[currentWaypoint];
 
@@ -141,7 +142,6 @@ public class BaseEnemy
 
         if (curdist_traveled + distance_traveled >= targ_waypoint.dist)
         {
-            Debug.Log("new waypoint");
             this.y = targ_waypoint.y;
             this.x = targ_waypoint.x;
             distance_traveled = curdist_traveled + distance_traveled - targ_waypoint.dist;
@@ -149,7 +149,7 @@ public class BaseEnemy
             currentWaypoint += 1;
             if (spath.waypoints.Length <= currentWaypoint)
             {
-                this.Pathend();
+                this._s_pathend();
                 return;
             }
             targ_waypoint = spath.waypoints[currentWaypoint];
