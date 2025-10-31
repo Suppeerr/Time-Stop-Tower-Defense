@@ -6,6 +6,8 @@ public class CoinSpawner : MonoBehaviour
     [SerializeField] private GameObject coinPrefab;
     // [SerializeField] private float spawnInterval = 5f;
     [SerializeField] private GameObject moneyManagerObject;
+    [SerializeField] private Drone droneScript;
+
 
     // private float timer = 0f;
 
@@ -44,6 +46,6 @@ public class CoinSpawner : MonoBehaviour
 
         CoinLogic coinLogic = clone.GetComponent<CoinLogic>();
         coinLogic.moneyManagerObject = moneyManagerObject;
-
+        droneScript.changeCoin(droneScript.FindClosestCoin());
     }
 }

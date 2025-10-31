@@ -17,7 +17,6 @@ public class Drone : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Coin = FindClosestCoin();
         if (Coin != null)
         {
             Vector3 coinXZ = new Vector3(Coin.transform.position.x, Coin.transform.position.y, Coin.transform.position.z);
@@ -31,7 +30,7 @@ public class Drone : MonoBehaviour
         }
     }
 
-    private GameObject FindClosestCoin()
+    public GameObject FindClosestCoin()
     {
         GameObject[] gos;
         gos = GameObject.FindGameObjectsWithTag("Collectable");
@@ -56,6 +55,11 @@ public class Drone : MonoBehaviour
         if (other.gameObject.CompareTag("Collectable"))
         {
             Destroy(other.gameObject);
+            Coin = FindClosestCoin();
         }
+    }
+
+    public void changeCoin(GameObject newCoin){
+        Coin = newCoin;
     }
 }
