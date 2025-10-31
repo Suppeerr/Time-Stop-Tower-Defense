@@ -3,7 +3,7 @@ using TMPro;
 
 public class MoneyManagement : MonoBehaviour
 {
-    public int money;
+    private int money;
     [SerializeField] private TMP_Text moneyText;
 
     void Awake()
@@ -19,7 +19,7 @@ public class MoneyManagement : MonoBehaviour
         if (moneyText != null)
         {
             Debug.Log("Updating Money Count");
-            moneyText.text = "Money: " + money;
+            moneyText.text = "Money: $" + money;
         }
     }
 

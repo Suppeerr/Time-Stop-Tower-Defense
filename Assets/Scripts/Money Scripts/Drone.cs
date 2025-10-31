@@ -20,7 +20,7 @@ public class Drone : MonoBehaviour
         Coin = FindClosestCoin();
         if (Coin != null)
         {
-            Vector3 coinXZ = Coin.transform.position - new Vector3(0, Coin.transform.position.y, 0);
+            Vector3 coinXZ = new Vector3(Coin.transform.position.x, Coin.transform.position.y, Coin.transform.position.z);
             Vector3 currXZ = (transform.position - new Vector3(0, transform.position.y, 0));
             Vector3 direction = coinXZ - currXZ;
             direction.Normalize();

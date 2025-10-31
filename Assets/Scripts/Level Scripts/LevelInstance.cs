@@ -42,7 +42,7 @@ public class LevelInstance : MonoBehaviour
         else
         {
             SpawnEnemyTest();
-            spawnInterval = Random.Range(2f, 4f);
+            spawnInterval = Random.Range(3f, 5f);
             elapsed = 0;
         }
          if (!s_enabled) return;
