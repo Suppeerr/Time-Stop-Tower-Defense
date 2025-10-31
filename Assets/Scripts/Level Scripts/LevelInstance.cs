@@ -24,9 +24,10 @@ public class LevelInstance : MonoBehaviour
         ePrefab = (GameObject)Resources.Load("Normal Bandit");
         //this would be ideally loaded from a data structure or from file before the scene begins
         epath.addWaypoint(0, 0,0);
-        epath.addWaypoint(0, 15,0);
-        epath.addWaypoint(-11, 15,0);
-        epath.addWaypoint(0, 0,0);
+        epath.addWaypoint(0, 0, 15);
+        epath.addWaypoint(-11, 5, 15);
+        epath.addWaypoint(0, 5,0);
+        epath.addWaypoint(0, 0, 15);
         spawnInterval = Random.Range(1f, 3f);
     }
     

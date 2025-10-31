@@ -1,8 +1,10 @@
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.UIElements;
 
-    //base stats: (could be stored as a seperate data structure)
-    //reference numbers: enemy hp 100~100000, projectile damage 25~x
+//base stats: (could be stored as a seperate data structure)
+//reference numbers: enemy hp 100~100000, projectile damage 25~x
 public class BaseEnemy
 {
     //base stats: (could be stored as a seperate data structure)
@@ -14,9 +16,7 @@ public class BaseEnemy
     private int def;
     private int res;
 
-    public float x;
-    public float y;
-    public float z;
+    public Vector3 s_position;
     private float speed;
 
     public EnemyType type;
@@ -30,6 +30,8 @@ public class BaseEnemy
     public EnemyHealthBar healthbar;
     public EnemyDamageIndicator damageIndicator;
     public LevelInstance level;
+
+    public Quaternion visObjbaseRot;
 
     public void Init(GameObject prefab, LevelInstance level, enemyWaypointPath spath, EnemyType eType)
     {
@@ -81,17 +83,16 @@ public class BaseEnemy
         if (hp <= 0)
         {
             OnDeath();
-            Clearself();
+            _s_clearself();
         }
     }
 
     public void As_spawn()
     {
         visualObj = GameObject.Instantiate(enemyvObjPrefab);
-        x = spath.waypoints[0].x;
-        y = spath.waypoints[0].y;
-        z = 0;
-        visualObj.transform.position = new Vector3(x, z, y);
+        this.s_position = spath.waypoints[0].position;
+        visualObj.transform.position = s_position;
+        visObjbaseRot = visualObj.transform.rotation;
 
         // Attach proxy
         var proxy = visualObj.AddComponent<EnemyProxy>();
@@ -107,8 +108,7 @@ public class BaseEnemy
     public void As_update()
     {
         _s_move();
-        //internal naming needs to be changed - I didnt realize unity used y for height instead of z
-        visualObj.transform.position = new Vector3(x, z, y); //also change orientation > face vector direction
+        visualObj.transform.position = s_position;
         //other internal enemy things
     }
     private void _s_clearself()
@@ -135,15 +135,9 @@ public class BaseEnemy
         float distance_traveled = speed * Time.deltaTime;
         Waypoint targ_waypoint = spath.waypoints[currentWaypoint];
 
-        //debug
-        float test_wp = Mathf.Sqrt(Mathf.Pow(Mathf.Abs(targ_waypoint.x - x), 2) + Mathf.Pow(Mathf.Abs(targ_waypoint.y - y), 2));
-        float dist_to_next_waypoint = test_wp - distance_traveled;
-        //Debug.Log("position: (" + x + "," + y + ") waypoint: (" + targ_waypoint.x + "," + targ_waypoint.y + ") distance: "+ test_wp + " next wp:" + dist_to_next_waypoint + " targ_waypoint.x_modif: "+ targ_waypoint.x_modif + " targ_waypoint.y_modif: " + targ_waypoint.y_modif + " curdist_traveled: " + curdist_traveled + " targ_waypoint.dist: " + targ_waypoint.dist + " targ_waypoint.yvec: " + targ_waypoint.yvec);
-
         if (curdist_traveled + distance_traveled >= targ_waypoint.dist)
         {
-            this.y = targ_waypoint.y;
-            this.x = targ_waypoint.x;
+            this.s_position = targ_waypoint.position;
             distance_traveled = curdist_traveled + distance_traveled - targ_waypoint.dist;
             curdist_traveled = 0;
             currentWaypoint += 1;
@@ -153,11 +147,13 @@ public class BaseEnemy
                 return;
             }
             targ_waypoint = spath.waypoints[currentWaypoint];
+            visualObj.transform.rotation = visObjbaseRot * spath.waypoints[currentWaypoint].facedirection;
+            Vector3 testv = visualObj.transform.eulerAngles;
+            visualObj.transform.rotation = Quaternion.Euler(-testv.z, testv.y, -testv.x); //correct facing direction
         }
 
         curdist_traveled += distance_traveled;
-        this.y += distance_traveled * targ_waypoint.y_modif;
-        this.x += distance_traveled * targ_waypoint.x_modif;
+        s_position += distance_traveled * targ_waypoint.modif;
     }
 
 

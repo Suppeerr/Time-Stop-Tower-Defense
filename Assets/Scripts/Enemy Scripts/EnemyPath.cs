@@ -28,52 +28,21 @@ public class Waypoint
 {
 
     public Vector3 position;
-
     public Vector3 modif;
-
     public Quaternion facedirection;
-
-    public float x, y;
-
     public float dist;
-    public float vdist;
-    public float x_modif { get; private set; }
-    public float y_modif { get; private set; }
-    public float? xvec { get; private set; }
-    public float? yvec { get; private set; }
 
-    public void waypoint2(Vector3 position, Vector3 source)
-    {
-        this.position = position;
-        vdist = (position - source).magnitude;
-        modif = (position - source).normalized;
-        Debug.Log($"Created New Waypoint: at {position}, modif {modif} ({(position - source).x /vdist},{(position - source).y / vdist} => {x_modif},{y_modif}), dist {vdist} ({dist}): vec {(position - source)}, ({xvec}, {yvec} > {Mathf.Abs(xvec ?? 0) + Mathf.Abs(yvec ?? 0)})");
-        x_modif = modif.x;
-        y_modif = modif.y;
-        facedirection = Quaternion.LookRotation((source - position).normalized);
-        dist = vdist;
-    }
     public Waypoint(Vector3 position, Vector3 source)
     {
-        this.x = position.x;
-        this.y = position.y;
-        float prevX = source.x;
-        float prevY = source.y;
-        xvec = x - prevX;
-        yvec = y - prevY;
-        float dist_modif = Mathf.Abs(xvec ?? 0) + Mathf.Abs(yvec ?? 0);
-        x_modif = (xvec ?? 0) / dist_modif;
-        y_modif = (yvec ?? 0) / dist_modif;
-        dist = Mathf.Sqrt(Mathf.Pow(Mathf.Abs(xvec ?? 0), 2) + Mathf.Pow(Mathf.Abs(yvec ?? 0), 2));
-        waypoint2(position, source);
+        this.position = position;
+        dist = (position - source).magnitude;
+        modif = (position - source).normalized;
+        facedirection = Quaternion.LookRotation((source - position).normalized);
+        Debug.Log($"Created New Waypoint: at {position}, modif {modif} ({dist})");
     }
 
     public Waypoint(Vector3 position)
     {
         this.position = position;
-        this.x = position.x;
-        this.y = position.y;
-        xvec = null;
-        yvec = null;
     }
 }
