@@ -29,6 +29,9 @@ public class Draggable : MonoBehaviour
     // Tower placement audio
     public AudioSource towerPlaceSFX;
 
+    // Money manager script
+    private MoneyManager moneyManagerScript;
+
     void Awake()
     {
         mainCamera = Camera.main;
@@ -129,8 +132,9 @@ public class Draggable : MonoBehaviour
     }
 
     // Starts dragging the tower
-    private void BeginDrag()
+    public void BeginDrag(MoneyManager monManager = null)
     {
+        moneyManagerScript = monManager; 
         Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
@@ -208,15 +212,10 @@ public class Draggable : MonoBehaviour
         }
     }
 
-    // 🔹 Call this from BlockSource to force dragging immediately
-    public void StartDragAtCursor()
-    {
-        BeginDrag();
-    }
-
     // 
     private IEnumerator PlaceTower(Vector3 initialPos)
     {
+        moneyManagerScript.DecreaseMoney(5);
         isPlaced = true;
         isDragging = false;
         ApplyColor(1f);

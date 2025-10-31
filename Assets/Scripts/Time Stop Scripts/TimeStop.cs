@@ -45,27 +45,7 @@ public class TimeStop : MonoBehaviour
             }
         }
 
-        // Update UI
-        if (durationText != null)
-        {
-            durationText.text = duration.ToString("F1");
-            if (active)
-            {
-                durationText.color = activeColor;
-                durationText.fontMaterial.SetFloat("_GlowPower", 0.5f);
-            }
-            else
-            {
-                durationText.color = inactiveColor;
-                durationText.fontMaterial.SetFloat("_GlowPower", 0f);
-            }
-        }
-        if (cooldownText != null)
-        {
-            cooldownText.text = cooldown.ToString("F1");
-            cooldownText.color = cooldownColor;
-            cooldownText.gameObject.SetActive(cooldown > 0f);
-        }
+        UpdateUI();
 
         // Trigger key input
         if (!active && !isCoroutineRunning && Keyboard.current.tKey.wasPressedThisFrame && cooldown == 0f)
@@ -108,5 +88,31 @@ public class TimeStop : MonoBehaviour
         timeStopEndSFX?.Play();
         cooldown = cd;
         beamSpawner.SetActive(false);
+    }
+
+    // Updates timestop timers
+    private void UpdateUI()
+    {
+        if (durationText != null)
+        {
+            durationText.text = duration.ToString("F1");
+            if (active)
+            {
+                durationText.color = activeColor;
+                durationText.fontMaterial.SetFloat("_GlowPower", 0.5f);
+            }
+            else
+            {
+                durationText.color = inactiveColor;
+                durationText.fontMaterial.SetFloat("_GlowPower", 0f);
+            }
+        }
+        if (cooldownText != null)
+        {
+            cooldownText.text = cooldown.ToString("F1");
+            cooldownText.color = cooldownColor;
+            cooldownText.gameObject.SetActive(cooldown > 0f);
+        }
+        
     }
 }

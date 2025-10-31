@@ -136,7 +136,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2983202885446355622, guid: c1114cefe4fb876498e2f028be5c1de6, type: 3}
       propertyPath: m_text
-      value: 'Money: $0'
+      value: 'Money: $10'
       objectReference: {fileID: 0}
     - target: {fileID: 5970652965529626397, guid: c1114cefe4fb876498e2f028be5c1de6, type: 3}
       propertyPath: m_Pivot.x
