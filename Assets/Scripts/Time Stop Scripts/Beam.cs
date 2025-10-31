@@ -12,6 +12,7 @@ public class BeamZap : MonoBehaviour
     private float zapDuration = 0.1f; // how long it stays visible
     private Camera mainCamera;
     public BallSpawner ballSpawner;
+    public AudioSource zapSFX;
 
     void Start()
     {
@@ -19,6 +20,7 @@ public class BeamZap : MonoBehaviour
         {
             mainCamera = Camera.main;
         }
+        gameObject.SetActive(false);
     }
 
     void Update()
@@ -42,25 +44,45 @@ public class BeamZap : MonoBehaviour
         Ray ray = mainCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
         RaycastHit hit;
         float radius = 1f;
-        if (Physics.SphereCast(ray, radius, out hit) && hit.collider.gameObject.tag == "Tower Projectile")
+
+        if (Physics.SphereCast(ray, radius, out hit) && hit.collider.gameObject.CompareTag("Tower Projectile"))
         {
+            GameObject hitProj = hit.collider.gameObject;
+            NormalProjectile normalProj = hitProj.GetComponent<NormalProjectile>();
+            HomingProjectile homingProj = hitProj.GetComponent<HomingProjectile>();
+
+            if (homingProj != null)
+            {
+                homingProj.EnableEffects();
+            }
+
             beam.enabled = true;
-            GameObject hitObject = hit.collider.gameObject;
             endPos = hit.point;
             beam.SetPosition(0, firePoint.position);
             beam.SetPosition(1, endPos);
-            beam.enabled = true;
-            Destroy(hitObject);
-            if (ballSpawner != null)
+            zapSFX?.Play();
+
+            if (normalProj != null)
             {
-                ballSpawner.SpawnBall(hitObject.transform.position, hitObject.transform.rotation);
+                normalProj.MarkDestroyedByParry();
+
+                switch (normalProj.type)
+                {
+                    case ProjectileType.PrimaryNormal:
+                        normalProj.MarkDestroyedByParry();
+                        ballSpawner?.SpawnHoming(ProjectileType.PrimaryHoming, hitProj.transform.position, hitProj.transform.rotation);
+                        break;
+                    case ProjectileType.SecondaryNormal:
+                        ballSpawner?.SpawnHoming(ProjectileType.SecondaryHoming, hitProj.transform.position, hitProj.transform.rotation);
+                        break;
+                }
             }
-            
-        yield return new WaitForSeconds(zapDuration);
-            // Optional: apply damage to target
+
+            Destroy(hitProj); 
         }
 
-        // Draw beam
+
+        // Disable beam
         yield return new WaitForSeconds(zapDuration);
         beam.enabled = false;
     }

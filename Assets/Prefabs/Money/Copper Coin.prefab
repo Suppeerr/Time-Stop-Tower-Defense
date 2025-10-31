@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 8893665420332820121}
   - component: {fileID: 6154440984239477092}
   - component: {fileID: 3381432438140981641}
-  - component: {fileID: 1846982572592187068}
   - component: {fileID: 8471095200501631762}
   - component: {fileID: 7762648189114632331}
   m_Layer: 0
@@ -116,18 +115,6 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
---- !u!114 &1846982572592187068
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6112788603860036965}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 71ef530252bbd8e4cb993d245e55d50b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CoinSpin
 --- !u!54 &8471095200501631762
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -167,4 +154,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5a086e44c2295b4f9f4977b5c535b12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CoinLogic
-  MoneyManagerObject: {fileID: 1360090404083059143, guid: b2d1890f4ba393f4191e68aa32f23d28, type: 3}
+  moneyManagerObject: {fileID: 0}

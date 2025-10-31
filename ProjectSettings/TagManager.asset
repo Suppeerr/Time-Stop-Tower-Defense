@@ -11,6 +11,7 @@ TagManager:
   - Cannon Projectile
   - Homing Projectile
   - Tower
+  - Collector
   layers:
   - Default
   - TransparentFX

@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class Draggable : MonoBehaviour
 {
@@ -13,7 +14,7 @@ public class Draggable : MonoBehaviour
     // Placement variables
     private float placementRadius = 2f;
     private bool canPlace = true;
-    public bool isPlaced = false;
+    private bool isPlaced = false;
     
     private Camera mainCamera;
 
@@ -21,6 +22,15 @@ public class Draggable : MonoBehaviour
     private Renderer[] rends;
     private Color[][] originalColors;
     private BallSpawner ballSpawner;
+
+    // Tower placement animation
+    private float placementTime = 0.4f;
+
+    // Tower placement audio
+    public AudioSource towerPlaceSFX;
+
+    // Money manager script
+    private MoneyManager moneyManagerScript;
 
     void Awake()
     {
@@ -43,6 +53,7 @@ public class Draggable : MonoBehaviour
 
     void Update()
     {
+        // Drags the tower to wherever the cursor is
         if (isDragging)
         {
             Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
@@ -50,7 +61,7 @@ public class Draggable : MonoBehaviour
 
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, groundMask))
             {
-                Vector3 desiredPos = hit.point + offset + Vector3.up * 0.85f;
+                Vector3 desiredPos = hit.point + offset + Vector3.up * 2f;
                 transform.position = desiredPos;
 
                 // Check for nearby objects
@@ -105,6 +116,7 @@ public class Draggable : MonoBehaviour
         }
     }
 
+    // When left mouse button is clicked and held, begin dragging the tower
     void OnMouseDown()
     {
         if (!isPlaced)
@@ -113,13 +125,16 @@ public class Draggable : MonoBehaviour
         }
     }
 
+    // When left mouse button is unheld, stop dragging the tower
     void OnMouseUp()
     {
         StopDrag();
     }
 
-    private void BeginDrag()
+    // Starts dragging the tower
+    public void BeginDrag(MoneyManager monManager = null)
     {
+        moneyManagerScript = monManager; 
         Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
@@ -135,6 +150,7 @@ public class Draggable : MonoBehaviour
         }
     }
 
+    // Stops dragging the tower
     private void StopDrag()
     {
         if (!canPlace)
@@ -143,15 +159,11 @@ public class Draggable : MonoBehaviour
             CancelDrag();
             return;
         }
-        isPlaced = true;
-        isDragging = false;
-        ApplyColor(1f);
-
-        if (ballSpawner != null)
+        if (!isPlaced)
         {
-            ballSpawner.enabled = true;
+            StartCoroutine(PlaceTower(gameObject.transform.position));
         }
-    }
+   }
 
     private void CancelDrag()
     {
@@ -171,6 +183,9 @@ public class Draggable : MonoBehaviour
                 Color finalColor = baseColor;
                 finalColor.a = alpha;
                 mat.color = finalColor;
+                mat.DisableKeyword("_ALPHATEST_ON");
+                mat.DisableKeyword("_ALPHABLEND_ON");
+                mat.DisableKeyword("_ALPHAPREMULTIPLY_ON");
 
                 if (alpha < 1f)
                 {
@@ -179,9 +194,6 @@ public class Draggable : MonoBehaviour
                     mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
                     mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
                     mat.SetInt("_ZWrite", 0);
-                    mat.DisableKeyword("_ALPHATEST_ON");
-                    mat.EnableKeyword("_ALPHABLEND_ON");
-                    mat.DisableKeyword("_ALPHAPREMULTIPLY_ON");
                     mat.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
                 }
                 else
@@ -191,9 +203,6 @@ public class Draggable : MonoBehaviour
                     mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
                     mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
                     mat.SetInt("_ZWrite", 1);
-                    mat.DisableKeyword("_ALPHATEST_ON");
-                    mat.DisableKeyword("_ALPHABLEND_ON");
-                    mat.DisableKeyword("_ALPHAPREMULTIPLY_ON");
                     mat.renderQueue = -1;
                 }
                     
@@ -203,9 +212,35 @@ public class Draggable : MonoBehaviour
         }
     }
 
-    // 🔹 Call this from BlockSource to force dragging immediately
-    public void StartDragAtCursor()
+    // 
+    private IEnumerator PlaceTower(Vector3 initialPos)
     {
-        BeginDrag();
+        moneyManagerScript.DecreaseMoney(5);
+        isPlaced = true;
+        isDragging = false;
+        ApplyColor(1f);
+        towerPlaceSFX?.Play();
+        float elapsedDelay = 0f;
+        Vector3 startPos = initialPos + new Vector3(0, 3, 0);
+        Vector3 endPos = initialPos;
+
+        while (elapsedDelay < placementTime)
+        {
+            while (ProjectileManager.IsFrozen)
+            {
+                yield return null;
+            }
+
+            elapsedDelay += Time.deltaTime;
+            float t = elapsedDelay / placementTime;
+            gameObject.transform.position = Vector3.Lerp(startPos, endPos, t);
+
+            yield return null;
+        }
+
+        if (ballSpawner != null)
+        {
+            ballSpawner.enabled = true;
+        }
     }
 }

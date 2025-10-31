@@ -2,22 +2,30 @@ using UnityEngine;
 
 public class CoinLogic : MonoBehaviour
 {
-    MoneyManagement moneyManager;
-    public GameObject MoneyManagerObject;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        moneyManager = MoneyManagerObject.GetComponent<MoneyManagement>();
-    }
+    //private MoneyManagement moneyManager;
+
+    // Assign the MoneyManager via Inspector or at runtime
+    public GameObject moneyManagerObject;
 
     // Update is called once per frame
     void Update()
     {
-
+        if (ProjectileManager.IsFrozen)
+        {
+            return;
+        }
+        // Spins coin
+        transform.rotation *= Quaternion.Euler(-90 * Time.deltaTime, 0, 0);
     }
 
-    private void OnDestroy()
+    // Call CollectCoin when the coin collides with drone collector
+    private void OnTriggerEnter(Collider other)
     {
-        moneyManager.CollectCoin();
+        if (other.CompareTag("Collector")) 
+        {
+            moneyManagerObject.GetComponent<MoneyManager>().CollectCoin();
+            Destroy(gameObject);
+        }
     }
 }
+
