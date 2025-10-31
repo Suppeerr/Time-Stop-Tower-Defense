@@ -27,7 +27,8 @@ public class LevelInstance : MonoBehaviour
         epath.addWaypoint(0, 0, 15);
         epath.addWaypoint(-11, 5, 15);
         epath.addWaypoint(0, 5,0);
-        epath.addWaypoint(0, 0, 15);
+        epath.addWaypoint(-11, 0, 10);
+        epath.addWaypoint(-15, 0, 15);
         spawnInterval = Random.Range(1f, 3f);
     }
     
