@@ -11,14 +11,14 @@ public class Drone : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Coin != null)
+        if (Coin != null && !ProjectileManager.IsFrozen)
         {
             Vector3 coinXZ = new Vector3(Coin.transform.position.x, Coin.transform.position.y, Coin.transform.position.z);
             Vector3 currXZ = (transform.position - new Vector3(0, transform.position.y, 0));
             Vector3 direction = coinXZ - currXZ;
             direction.Normalize();
             float rotateStep = 45 * Time.deltaTime;
-            Vector3 newDirection = Vector3.RotateTowards(transform.forward, direction, rotateStep, 0.0f);
+            Vector3 newDirection = Vector3.RotateTowards(transform.forward, direction, rotateStep, 0f);
             transform.rotation = Quaternion.LookRotation(newDirection);
             transform.position += transform.forward * speed * Time.deltaTime;
         }

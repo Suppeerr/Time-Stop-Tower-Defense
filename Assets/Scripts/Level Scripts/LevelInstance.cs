@@ -55,8 +55,8 @@ public class LevelInstance : MonoBehaviour
             elapsed = 0;
             if (lowStarting > 0)
             {
-                lowStarting -= 0.1f;
-                highStarting -= 0.1f;
+                lowStarting -= 0.04f;
+                highStarting -= 0.04f;
             }
         }
          if (!s_enabled) return;
