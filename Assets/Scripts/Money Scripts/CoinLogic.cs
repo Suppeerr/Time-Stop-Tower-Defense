@@ -23,7 +23,7 @@ public class CoinLogic : MonoBehaviour
     {
         if (other.CompareTag("Collector")) 
         {
-            moneyManagerObject.GetComponent<MoneyManagement>().CollectCoin();
+            moneyManagerObject.GetComponent<MoneyManager>().CollectCoin();
             Destroy(gameObject);
         }
     }
