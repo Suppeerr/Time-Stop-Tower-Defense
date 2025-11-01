@@ -8,7 +8,7 @@ public class MoneyManager : MonoBehaviour
 
     void Awake()
     {
-        money = 10;
+        money = 100;
         UpdateUI();
     }
 
