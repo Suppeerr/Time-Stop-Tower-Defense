@@ -28,7 +28,6 @@ public class HomingProjectile : MonoBehaviour
 
     private Rigidbody rb;
 
-
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -52,6 +51,38 @@ public class HomingProjectile : MonoBehaviour
         maxSpeed = stats.speed;
         aoe = stats.aoeRadius;
 
+        AssignNearestEnemy();
+
+        // Destroys projectile after destroyAfter seconds
+        if (destroyAfter > 0f)
+        {
+            Destroy(gameObject, destroyAfter);
+        }
+    }
+
+    // Updates for projectile physics 
+    void FixedUpdate()
+    {
+        if (ProjectileManager.IsFrozen)
+        {
+            return;
+        }
+        else if (rb.useGravity == false)
+        {
+            rb.useGravity = true;
+        }
+        if (target == null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        HomeToTarget();
+    }
+
+    // Assigns the nearest enemy to the projectile
+    private void AssignNearestEnemy()
+    {
         // Homes onto nearest enemy if no target assigned in BallSpawner
         if (target == null)
         {
@@ -78,31 +109,11 @@ public class HomingProjectile : MonoBehaviour
                 Destroy(gameObject);
             }
         }
-
-        // Destroys projectile after destroyAfter seconds
-        if (destroyAfter > 0f)
-        {
-            Destroy(gameObject, destroyAfter);
-        }
     }
 
-    // Updates for projectile physics 
-    void FixedUpdate()
+    // Homes the projectile to the given target
+    private void HomeToTarget()
     {
-        if (ProjectileManager.IsFrozen)
-        {
-            return;
-        }
-        else if (rb.useGravity == false)
-        {
-            rb.useGravity = true;
-        }
-        if (target == null)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
         // Vector to target
         Vector3 disp = target.position - transform.position;
         float distance = disp.magnitude;
@@ -121,7 +132,10 @@ public class HomingProjectile : MonoBehaviour
         // Clamp horizontal speed
         Vector3 horizontal = new Vector3(desiredVelocity.x, 0, desiredVelocity.z);
         if (horizontal.magnitude > maxSpeed)
+        {
             horizontal = horizontal.normalized * maxSpeed;
+        }
+            
         desiredVelocity.x = horizontal.x;
         desiredVelocity.z = horizontal.z;
 
@@ -131,7 +145,9 @@ public class HomingProjectile : MonoBehaviour
 
         // Rotate projectile to face movement
         if (rb.linearVelocity.sqrMagnitude > 0.001f)
+        {
             transform.rotation = Quaternion.LookRotation(rb.linearVelocity.normalized);
+        }
     }
 
     void OnCollisionEnter(Collision collision)
@@ -175,7 +191,7 @@ public class HomingProjectile : MonoBehaviour
     }
 
     // Spawns explosion
-    void SpawnExplosion()
+    private void SpawnExplosion()
     {
         if (sparksPrefab != null)
         {

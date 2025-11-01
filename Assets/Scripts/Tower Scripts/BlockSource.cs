@@ -60,7 +60,7 @@ public class BlockSource : MonoBehaviour
         }
         else
         {
-            StartCoroutine(FlashRed(0.5f));
+            StartCoroutine(FlashRed(0.4f));
         }
     }
     

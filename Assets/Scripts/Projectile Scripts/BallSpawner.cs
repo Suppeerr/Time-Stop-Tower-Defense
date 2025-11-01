@@ -37,7 +37,7 @@ public class BallSpawner : MonoBehaviour
         }
         if (!isCannon)
         {
-            SpawnNormal(ProjectileType.PrimaryNormal, transform.position, transform.rotation);
+            SpawnNormalRock(ProjectileType.PrimaryNormal, transform.position, transform.rotation);
         }
     }
 
@@ -50,13 +50,23 @@ public class BallSpawner : MonoBehaviour
         }
 
         timer += Time.deltaTime;
+
+        CheckIfCannon();
+        
+
+    }
+
+    // Spawns cannonball if spawner is a cannon and a normal rock otherwise
+    private void CheckIfCannon()
+    {
         if (isCannon)
         {
-            if (Mouse.current.leftButton.wasPressedThisFrame && timer >= spawnRate)
+            if ((Mouse.current.leftButton.wasPressedThisFrame || Keyboard.current.spaceKey.wasPressedThisFrame) && timer >= spawnRate)
             {
                 Ray ray = mainCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
+                int projectileLayer = LayerMask.GetMask("Normal Projectile");
                 float radius = 1f;
-                if (Physics.SphereCast(ray, radius, out var hit) && hit.collider.gameObject.tag == "Tower Projectile")
+                if (Physics.SphereCast(ray, radius, out var hit, Mathf.Infinity, projectileLayer))
                 {
                     SpawnCannonBall(hit.collider.gameObject, cannonBallPrefab);
                 }
@@ -64,9 +74,8 @@ public class BallSpawner : MonoBehaviour
         }
         else if (timer >= spawnRate)
         {
-            SpawnNormal(ProjectileType.PrimaryNormal, transform.position, transform.rotation);
+            SpawnNormalRock(ProjectileType.PrimaryNormal, transform.position, transform.rotation);
         }
-
     }
 
     // Cannon Ball Spawner
@@ -86,7 +95,7 @@ public class BallSpawner : MonoBehaviour
     }
 
     // Normal Rock Spawner
-    public void SpawnNormal(ProjectileType type, Vector3 position, Quaternion rotation)
+    public void SpawnNormalRock(ProjectileType type, Vector3 position, Quaternion rotation)
     {
         GameObject prefabToSpawn = null;
 
@@ -111,7 +120,7 @@ public class BallSpawner : MonoBehaviour
     }
 
     // Homing Rock Spawner
-    public void SpawnHoming(ProjectileType type, Vector3 position, Quaternion rotation)
+    public void SpawnHomingRock(ProjectileType type, Vector3 position, Quaternion rotation)
     {
         GameObject prefabToSpawn = null;
 
