@@ -150,6 +150,7 @@ public class HomingProjectile : MonoBehaviour
         }
     }
 
+    // Runs when projectile collides with a valid object
     void OnCollisionEnter(Collision collision)
     {
         SpawnExplosion();
@@ -170,7 +171,7 @@ public class HomingProjectile : MonoBehaviour
         Destroy(gameObject);
     }
 
-    // Enables effects
+    // Enables lightning and sphere emitter effects
     public void EnableEffects()
     {
         if (!ProjectileManager.IsFrozen)
@@ -190,7 +191,7 @@ public class HomingProjectile : MonoBehaviour
         }
     }
 
-    // Spawns explosion
+    // Spawns explosion on collision with enemy
     private void SpawnExplosion()
     {
         if (sparksPrefab != null)
@@ -208,6 +209,7 @@ public class HomingProjectile : MonoBehaviour
         }
     }
 
+    // Sets the homing projectile's target manually
     public void SetTarget(GameObject newTarget)
     {
         target = newTarget.transform;
