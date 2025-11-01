@@ -24,7 +24,9 @@ public class Draggable : MonoBehaviour
     private BallSpawner ballSpawner;
 
     // Tower placement animation
-    private float placementTime = 0.4f;
+    private float placementTime = 0.3f;
+    public ParticleSystem dirtBurstPrefab;
+    public ParticleSystem impactRingPrefab;
 
     // Tower placement audio
     public AudioSource towerPlaceSFX;
@@ -218,7 +220,7 @@ public class Draggable : MonoBehaviour
         }
     }
 
-    // 
+    // Places the tower with animations
     private IEnumerator PlaceTower(Vector3 initialPos)
     {
         moneyManagerScript.DecreaseMoney(5);
@@ -227,7 +229,7 @@ public class Draggable : MonoBehaviour
         ApplyColor(1f);
         towerPlaceSFX?.Play();
         float elapsedDelay = 0f;
-        Vector3 startPos = initialPos + new Vector3(0, 3, 0);
+        Vector3 startPos = initialPos + new Vector3(0f, 3f, 0f);
         Vector3 endPos = initialPos;
 
         while (elapsedDelay < placementTime)
@@ -242,6 +244,22 @@ public class Draggable : MonoBehaviour
             gameObject.transform.position = Vector3.Lerp(startPos, endPos, t);
 
             yield return null;
+        }
+
+        // Plays dirt burst animation
+        if (dirtBurstPrefab != null)
+        {
+            ParticleSystem d = Instantiate(dirtBurstPrefab, initialPos + new Vector3(0f, -0.8f, 0f), Quaternion.Euler(-90, 0, 0));
+            d.Play();
+            Destroy(d.gameObject, d.main.duration);
+        }
+
+        // Plays ring impact animation
+        if (dirtBurstPrefab != null)
+        {
+            ParticleSystem r = Instantiate(impactRingPrefab, initialPos + new Vector3(0f, -0.8f, 0f), Quaternion.Euler(-90, 0, 0));
+            r.Play();
+            Destroy(r.gameObject, r.main.duration);
         }
 
         if (ballSpawner != null)

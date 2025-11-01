@@ -169,6 +169,8 @@ MonoBehaviour:
   - Tower
   - GameController
   - Enemy
+  dirtBurstPrefab: {fileID: 1980934778042839552, guid: d50433ae2ba827c449530a081c20d5aa, type: 3}
+  impactRingPrefab: {fileID: 1980934778042839552, guid: 73406ae7cb214b641ba7126a4e142fb4, type: 3}
   towerPlaceSFX: {fileID: -8669533127056968713}
 --- !u!114 &7703208739090267004
 MonoBehaviour:
