@@ -17,7 +17,6 @@ public class MoneyManager : MonoBehaviour
     {
         if (moneyText != null)
         {
-            Debug.Log("Updating Money Count");
             moneyText.text = "Money: $" + money;
         }
     }

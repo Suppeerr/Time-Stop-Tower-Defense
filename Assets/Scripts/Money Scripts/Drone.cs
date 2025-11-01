@@ -5,7 +5,7 @@ using Vector3 = UnityEngine.Vector3;
 
 public class Drone : MonoBehaviour
 {
-    public float speed = 10.0f;
+    public float speed = 8.0f;
     private GameObject Coin;
 
     // Update is called once per frame

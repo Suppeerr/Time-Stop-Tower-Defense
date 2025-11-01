@@ -71,10 +71,10 @@ public class NormalProjectile : MonoBehaviour
             switch (this.type)
             {
                 case ProjectileType.PrimaryNormal:
-                    ballSpawner.SpawnHoming(ProjectileType.PrimaryHoming, transform.position, transform.rotation);
+                    ballSpawner.SpawnHomingRock(ProjectileType.PrimaryHoming, transform.position, transform.rotation);
                     break;
                 case ProjectileType.SecondaryNormal:
-                    ballSpawner.SpawnHoming(ProjectileType.SecondaryHoming, transform.position, transform.rotation);
+                    ballSpawner.SpawnHomingRock(ProjectileType.SecondaryHoming, transform.position, transform.rotation);
                     break;
             }
         }
@@ -93,7 +93,7 @@ public class NormalProjectile : MonoBehaviour
             {
                 float angle = ((float)i / (splitCount - 1) - 0.5f) * spreadAngle;
                 Quaternion rot = Quaternion.Euler(0, angle, 0) * transform.rotation;
-                ballSpawner.SpawnNormal(ProjectileType.SecondaryNormal, transform.position, rot);
+                ballSpawner.SpawnNormalRock(ProjectileType.SecondaryNormal, transform.position, rot);
             }
         }
 

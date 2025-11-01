@@ -53,7 +53,12 @@ public class Draggable : MonoBehaviour
 
     void Update()
     {
-        // Drags the tower to wherever the cursor is
+        DragToCursor();
+    }
+
+    // Drags the tower to wherever the cursor is
+    private void DragToCursor()
+    {
         if (isDragging)
         {
             Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
@@ -61,7 +66,14 @@ public class Draggable : MonoBehaviour
 
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, groundMask))
             {
-                Vector3 desiredPos = hit.point + offset + Vector3.up * 2f;
+                Vector3 desiredPos = hit.point + offset;
+
+                // Ensures correct Y position by sampling the ground height
+                if (Physics.Raycast(desiredPos + Vector3.up * 10f, Vector3.down, out RaycastHit groundHit, 20f, groundMask))
+                {
+                    // Snap to the real ground height
+                    desiredPos.y = groundHit.point.y + 0.67f;
+                }
                 transform.position = desiredPos;
 
                 // Check for nearby objects
@@ -123,12 +135,6 @@ public class Draggable : MonoBehaviour
         {
             BeginDrag();
         }
-    }
-
-    // When left mouse button is unheld, stop dragging the tower
-    void OnMouseUp()
-    {
-        StopDrag();
     }
 
     // Starts dragging the tower
