@@ -3912,6 +3912,10 @@ PrefabInstance:
       propertyPath: moneyText
       value: 
       objectReference: {fileID: 1824982895}
+    - target: {fileID: 4139720592874982916, guid: 5e975f2d35e2d5142be3924add9f6605, type: 3}
+      propertyPath: m_Size.x
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 7360054985597961396, guid: 5e975f2d35e2d5142be3924add9f6605, type: 3}
       propertyPath: m_fontAsset
       value: 

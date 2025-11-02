@@ -40,7 +40,7 @@ public class EnemyDamageIndicator : MonoBehaviour
                 yield return null;
             }
 
-            CheckEnemyDeath(dmgObj);
+            // CheckEnemyDeath(dmgObj);
             elapsedDelay += Time.deltaTime;
             float t = elapsedDelay / fadeDelay;
             dmgObj.transform.localPosition = Vector3.Lerp(startPos, endPos, t * floatSpeed);
@@ -59,7 +59,7 @@ public class EnemyDamageIndicator : MonoBehaviour
                 yield return null;
             }
 
-            CheckEnemyDeath(dmgObj);
+            // CheckEnemyDeath(dmgObj);
             elapsed += Time.deltaTime;
             float percentElapsed = elapsed / fadeDuration;
             float alpha = Mathf.Lerp(startAlpha, 0f, percentElapsed);

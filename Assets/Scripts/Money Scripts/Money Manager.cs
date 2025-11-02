@@ -22,7 +22,7 @@ public class MoneyManager : MonoBehaviour
     }
 
     // Public method for collecting coins
-    public void CollectCoin(int amount = 1)
+    public void UpdateMoney(int amount = 1)
     {
         money += amount;
         UpdateUI();

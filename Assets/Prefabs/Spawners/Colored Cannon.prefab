@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1771890141301099475}
   - component: {fileID: 5937233083017483740}
   m_Layer: 0
-  m_Name: Colored Cannon Model
+  m_Name: Colored Cannon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

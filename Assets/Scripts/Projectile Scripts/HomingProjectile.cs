@@ -4,11 +4,11 @@ using UnityEngine;
 public class HomingProjectile : MonoBehaviour
 {
     // Targeting
-    private Transform target;
+    protected Transform target;
     
     // Arc / Steering
-    private float steerSpeed = 10f;
-    private float maxSpeed = 10f;
+    protected float steerSpeed = 10f;
+    protected float maxSpeed = 10f;
     public float arcBoost = 2f;
 
     // Behavior / Type
@@ -61,7 +61,7 @@ public class HomingProjectile : MonoBehaviour
     }
 
     // Updates for projectile physics 
-    void FixedUpdate()
+    protected virtual void FixedUpdate()
     {
         if (ProjectileManager.IsFrozen)
         {
@@ -112,7 +112,7 @@ public class HomingProjectile : MonoBehaviour
     }
 
     // Homes the projectile to the given target
-    private void HomeToTarget()
+    protected virtual void HomeToTarget()
     {
         // Vector to target
         Vector3 disp = target.position - transform.position;

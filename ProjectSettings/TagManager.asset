@@ -12,6 +12,7 @@ TagManager:
   - Homing Projectile
   - Tower
   - Collector
+  - Safe Collector
   layers:
   - Default
   - TransparentFX
