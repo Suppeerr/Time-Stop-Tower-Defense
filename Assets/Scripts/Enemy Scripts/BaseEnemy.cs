@@ -163,6 +163,6 @@ public class BaseEnemy
     public virtual void OnDestroy() { }
     public virtual void OnDeath()
     {
-        CoinSpawner.Instance.SpawnCoin(visualObj.transform.position);
+        CoinSpawner.Instance.SpawnCoin(false, enemyPos: visualObj.transform.position);
     }
 }

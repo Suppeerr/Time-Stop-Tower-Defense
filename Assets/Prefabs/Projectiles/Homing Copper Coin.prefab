@@ -15,9 +15,10 @@ GameObject:
   - component: {fileID: 7762648189114632331}
   - component: {fileID: -8940064412942234332}
   - component: {fileID: 7378934519269849389}
+  - component: {fileID: 9115016389753444551}
   m_Layer: 0
-  m_Name: Copper Coin
-  m_TagString: Collectable
+  m_Name: Homing Copper Coin
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -132,8 +133,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5a086e44c2295b4f9f4977b5c535b12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CoinLogic
-  moneyManagerObject: {fileID: 3183156731030483837, guid: 5e975f2d35e2d5142be3924add9f6605, type: 3}
-  isProjectile: 0
+  isProjectile: 1
 --- !u!64 &-8940064412942234332
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -275,3 +275,23 @@ TrailRenderer:
   m_Autodestruct: 0
   m_Emitting: 1
   m_ApplyActiveColorSpace: 1
+--- !u!114 &9115016389753444551
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6112788603860036965}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4701f79bb3542b3449ed3a804de9bf50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  arcBoost: 10
+  destroyAfter: 15
+  type: 5
+  lightningRing: {fileID: 0}
+  sphereEmitter: {fileID: 0}
+  sparksPrefab: {fileID: 0}
+  flashPrefab: {fileID: 0}
+  statsContainer: {fileID: 11400000, guid: 0ed108a3a2db58946b6bdc754b742454, type: 2}

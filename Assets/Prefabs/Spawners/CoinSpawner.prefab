@@ -45,5 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CoinSpawnTest
   coinPrefab: {fileID: 6112788603860036965, guid: ad12ab3d4d6e52c49b81f2978ce9a611, type: 3}
-  spawnInterval: 1
-  moneyManagerObject: {fileID: 8233883291882911332, guid: 3f8ee4aa88993ed4783f20376d60e1a1, type: 3}
+  homingCoinPrefab: {fileID: 6112788603860036965, guid: 3aea3ce83f9a34a44b971eda2107625d, type: 3}
+  moneyManagerObject: {fileID: 3183156731030483837, guid: 5e975f2d35e2d5142be3924add9f6605, type: 3}
+  droneScript: {fileID: 4854173805529610830, guid: 2e4a83cc4c7337a4782704310684f988, type: 3}
+  isCoinLauncher: 0

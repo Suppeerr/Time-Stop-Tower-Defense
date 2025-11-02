@@ -7,11 +7,29 @@ public class Drone : MonoBehaviour
 {
     public float speed = 8.0f;
     private GameObject Coin;
+    private bool isCollecting = false;
+    private float checkInterval = 1f;
+    private float elapsed = 0f;
 
     // Update is called once per frame
     void Update()
     {
-        if (Coin != null && !ProjectileManager.IsFrozen)
+        if (ProjectileManager.IsFrozen || isCollecting)
+        {
+            return;
+        }
+
+        if (elapsed < checkInterval)
+        {
+            elapsed += Time.deltaTime;
+        }
+        else 
+        {
+            FindClosestCoin();
+            elapsed = 0f;
+        }
+
+        if (Coin != null)
         {
             Vector3 coinXZ = new Vector3(Coin.transform.position.x, Coin.transform.position.y, Coin.transform.position.z);
             Vector3 currXZ = (transform.position - new Vector3(0, transform.position.y, 0));
@@ -24,7 +42,7 @@ public class Drone : MonoBehaviour
         }
     }
 
-    public GameObject FindClosestCoin()
+    public void FindClosestCoin()
     {
         GameObject[] gos;
         gos = GameObject.FindGameObjectsWithTag("Collectable");
@@ -41,19 +59,16 @@ public class Drone : MonoBehaviour
                 distance = curDistance;
             }
         }
-        return closest;
+        Coin = closest;
     }
 
-    private void OnTriggerEnter(Collider other)
+    public void ChangeCoin(GameObject newCoin)
     {
-        if (other.gameObject.CompareTag("Collectable"))
-        {
-            Destroy(other.gameObject);
-            Coin = FindClosestCoin();
-        }
+        Coin = newCoin;
     }
 
-    public void changeCoin(GameObject newCoin){
-        Coin = newCoin;
+    public void ToggleCoinCollect(bool isCollect)
+    {
+        isCollecting = isCollect;
     }
 }

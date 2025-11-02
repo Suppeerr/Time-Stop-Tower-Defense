@@ -18,6 +18,7 @@ public static class GameInstance
         //currentLevel = new levelInstance();
     }
     */
+    
     static void LStart()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
