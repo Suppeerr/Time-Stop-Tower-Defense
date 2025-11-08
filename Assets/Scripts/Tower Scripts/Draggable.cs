@@ -21,15 +21,7 @@ public class Draggable : MonoBehaviour
     // Renderers and ballSpawner script
     private Renderer[] rends;
     private Color[][] originalColors;
-    private BallSpawner ballSpawner;
-
-    // Tower placement animation
-    private float placementTime = 0.3f;
-    public ParticleSystem dirtBurstPrefab;
-    public ParticleSystem impactRingPrefab;
-
-    // Tower placement audio
-    public AudioSource towerPlaceSFX;
+    public GameObject placedTowerPrefab;
 
     // Money manager script
     private MoneyManager moneyManagerScript;
@@ -38,7 +30,6 @@ public class Draggable : MonoBehaviour
     {
         mainCamera = Camera.main;
         rends = GetComponentsInChildren<Renderer>(true);
-        ballSpawner = GetComponent<BallSpawner>();
 
         // Store original tower colors
         originalColors = new Color[rends.Length][];
@@ -135,26 +126,21 @@ public class Draggable : MonoBehaviour
     {
         if (!isPlaced)
         {
-            BeginDrag();
+            BeginDrag(moneyManagerScript);
         }
     }
 
     // Starts dragging the tower
-    public void BeginDrag(MoneyManager monManager = null)
+    public void BeginDrag(MoneyManager moneyManager)
     {
-        moneyManagerScript = monManager; 
         Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
+        moneyManagerScript = moneyManager;
 
         if (Physics.Raycast(ray, out hit))
         {
             offset = transform.position - hit.point;
             isDragging = true;
-
-            if (ballSpawner != null)
-            {
-                ballSpawner.enabled = false;
-            }
         }
     }
 
@@ -163,16 +149,24 @@ public class Draggable : MonoBehaviour
     {
         if (!canPlace)
         {
-            // Cancel placement
             CancelDrag();
             return;
         }
         if (!isPlaced)
         {
-            StartCoroutine(PlaceTower(gameObject.transform.position));
-        }
-   }
+            moneyManagerScript.DecreaseMoney(5);
+            GameObject placedTower = Instantiate(placedTowerPrefab);
+            PlacedTower placedTowerScript = placedTower.GetComponent<PlacedTower>();
+            if (placedTowerScript != null)
+            {
+                placedTowerScript.StartCoroutine(placedTowerScript.PlaceTower(gameObject.transform.position));
+            }
 
+            Destroy(gameObject);
+        }
+    }
+   
+    // Cancels placement
     private void CancelDrag()
     {
         isDragging = false;
@@ -185,9 +179,14 @@ public class Draggable : MonoBehaviour
         foreach (Renderer rend in rends)
         {
             int j = 0;
+            int originalMaterialCount = originalColors[i].Length;
+
             foreach (Material mat in rend.materials)
             {
-                Color baseColor = useOriginal ? originalColors[i][j] : (tint ?? originalColors[i][j]);
+                Color baseColor = useOriginal 
+                ? originalColors[i][Mathf.Min(j, originalMaterialCount - 1)] 
+                : (tint ?? originalColors[i][Mathf.Min(j, originalMaterialCount - 1)]);
+
                 Color finalColor = baseColor;
                 finalColor.a = alpha;
                 mat.color = finalColor;
@@ -217,54 +216,6 @@ public class Draggable : MonoBehaviour
                 j++;
             }
             i++;
-        }
-    }
-
-    // Places the tower with animations
-    private IEnumerator PlaceTower(Vector3 initialPos)
-    {
-        moneyManagerScript.DecreaseMoney(5);
-        isPlaced = true;
-        isDragging = false;
-        ApplyColor(1f);
-        towerPlaceSFX?.Play();
-        float elapsedDelay = 0f;
-        Vector3 startPos = initialPos + new Vector3(0f, 3f, 0f);
-        Vector3 endPos = initialPos;
-
-        while (elapsedDelay < placementTime)
-        {
-            while (ProjectileManager.IsFrozen)
-            {
-                yield return null;
-            }
-
-            elapsedDelay += Time.deltaTime;
-            float t = elapsedDelay / placementTime;
-            gameObject.transform.position = Vector3.Lerp(startPos, endPos, t);
-
-            yield return null;
-        }
-
-        // Plays dirt burst animation
-        if (dirtBurstPrefab != null)
-        {
-            ParticleSystem d = Instantiate(dirtBurstPrefab, initialPos + new Vector3(0f, -0.8f, 0f), Quaternion.Euler(-90, 0, 0));
-            d.Play();
-            Destroy(d.gameObject, d.main.duration);
-        }
-
-        // Plays ring impact animation
-        if (dirtBurstPrefab != null)
-        {
-            ParticleSystem r = Instantiate(impactRingPrefab, initialPos + new Vector3(0f, -0.8f, 0f), Quaternion.Euler(-90, 0, 0));
-            r.Play();
-            Destroy(r.gameObject, r.main.duration);
-        }
-
-        if (ballSpawner != null)
-        {
-            ballSpawner.enabled = true;
         }
     }
 }

@@ -90,7 +90,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1ab1715d1fc6c44ee83dc8a8b5d820d7, type: 3}
       insertIndex: -1
-      addedObject: {fileID: -4034966173075197576}
+      addedObject: {fileID: 3241353290204463766}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1ab1715d1fc6c44ee83dc8a8b5d820d7, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4013129684662015688}
@@ -100,14 +100,17 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1ab1715d1fc6c44ee83dc8a8b5d820d7, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5452576504588569607}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1ab1715d1fc6c44ee83dc8a8b5d820d7, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -7879566757534537379}
   m_SourcePrefab: {fileID: 100100000, guid: 1ab1715d1fc6c44ee83dc8a8b5d820d7, type: 3}
 --- !u!1 &4926105239026105867 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 1ab1715d1fc6c44ee83dc8a8b5d820d7, type: 3}
   m_PrefabInstance: {fileID: 5232166046883529562}
   m_PrefabAsset: {fileID: 0}
---- !u!135 &-4034966173075197576
-SphereCollider:
+--- !u!64 &3241353290204463766
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -124,9 +127,10 @@ SphereCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -2432090755550338912, guid: 1ab1715d1fc6c44ee83dc8a8b5d820d7, type: 3}
 --- !u!54 &4013129684662015688
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -289,3 +293,18 @@ TrailRenderer:
   m_Autodestruct: 0
   m_Emitting: 1
   m_ApplyActiveColorSpace: 1
+--- !u!114 &-7879566757534537379
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4926105239026105867}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db38cd3e35c64d445a61f3a09ced16a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Clickable
+  outlineWidth: 4
+  isDragging: 0
+  isPlaced: 0

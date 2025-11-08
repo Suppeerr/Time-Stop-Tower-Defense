@@ -22,6 +22,8 @@ public class TimeStop : MonoBehaviour
     private float delayAfterSFX = .3f;
     private bool isCoroutineRunning = false;
     public GameObject beamSpawner;
+    private float secondsElapsed = 0f;
+    public StoredTimeManager storedTimeManager;
 
     // Once timestop is triggered, all animated objects freeze for the duration
     void Update()
@@ -72,6 +74,14 @@ public class TimeStop : MonoBehaviour
 
         while (duration > 0f)
         {
+            secondsElapsed += Time.deltaTime;
+
+            if (secondsElapsed >= 1f)
+            {
+                storedTimeManager.UpdateSeconds();
+                secondsElapsed = 0f;
+            }
+
             duration -= Time.deltaTime;
             yield return null;
         }
@@ -113,6 +123,5 @@ public class TimeStop : MonoBehaviour
             cooldownText.color = cooldownColor;
             cooldownText.gameObject.SetActive(cooldown > 0f);
         }
-        
     }
 }

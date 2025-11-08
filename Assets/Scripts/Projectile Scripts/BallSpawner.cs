@@ -65,7 +65,7 @@ public class BallSpawner : MonoBehaviour
             {
                 Ray ray = mainCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
                 int projectileLayer = LayerMask.GetMask("Normal Projectile");
-                float radius = 1f;
+                float radius = 0.5f;
                 if (Physics.SphereCast(ray, radius, out var hit, Mathf.Infinity, projectileLayer))
                 {
                     SpawnCannonBall(hit.collider.gameObject, cannonBallPrefab);
