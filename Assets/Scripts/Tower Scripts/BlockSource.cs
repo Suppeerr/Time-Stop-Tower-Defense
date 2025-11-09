@@ -51,6 +51,7 @@ public class BlockSource : MonoBehaviour
             Draggable draggable = newBlock.GetComponent<Draggable>();
             if (draggable != null)
             {
+                // Start dragging immediately
                 draggable.BeginDrag(moneyManagerScript);
             }
             else

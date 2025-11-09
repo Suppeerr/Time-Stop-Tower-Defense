@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1980934778042839552}
   - component: {fileID: 805704825249364413}
   m_Layer: 0
-  m_Name: Tower Placement Dirt Burst
+  m_Name: Dirt Burst
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -116,8 +116,8 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 2.1
-      minScalar: 1.8
+      scalar: 1.8
+      minScalar: 1.5
       maxCurve:
         serializedVersion: 2
         m_Curve:
