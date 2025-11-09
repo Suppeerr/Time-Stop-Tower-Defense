@@ -29,7 +29,7 @@ public class Waypoint
 
     public Vector3 position;
     public Vector3 modif;
-    public Quaternion facedirection;
+    public Quaternion faceDirection;
     public float dist;
 
     public Waypoint(Vector3 position, Vector3 source)
@@ -37,7 +37,7 @@ public class Waypoint
         this.position = position;
         dist = (position - source).magnitude;
         modif = (position - source).normalized;
-        facedirection = Quaternion.LookRotation((source - position).normalized);
+        faceDirection = Quaternion.LookRotation((source - position).normalized);
         Debug.Log($"Created New Waypoint: at {position}, modif {modif} ({dist})");
     }
 

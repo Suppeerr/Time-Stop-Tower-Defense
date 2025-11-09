@@ -5330,6 +5330,7 @@ MonoBehaviour:
   maxDur: 5
   rechargeRate: 1
   beamSpawner: {fileID: 8568205693058379883}
+  storedTimeManager: {fileID: 7245046123412355460, guid: b7bdf2e5e228a3544ab374fbd597190c, type: 3}
 --- !u!82 &249217828931615078
 AudioSource:
   m_ObjectHideFlags: 0
