@@ -155,17 +155,22 @@ public class HomingProjectile : MonoBehaviour
     {
         SpawnExplosion();
 
-         // Collider hit
-        GameObject hitObj = collision.collider.gameObject;
-
-        // Check up the hierarchy for an EnemyProxy
-        EnemyProxy proxy = hitObj.GetComponent<EnemyProxy>();
-        if (proxy == null)
-            proxy = hitObj.GetComponentInParent<EnemyProxy>();
-
-        if (proxy != null && proxy.enemyData != null)
+        // Get all colliders in radius
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, aoe);
+        
+        foreach (Collider col in hitColliders)
         {
-            proxy.enemyData.TakeDamage(new DamageInstance(damage));
+            // Check up the hierarchy for an EnemyProxy
+            EnemyProxy proxy = col.GetComponent<EnemyProxy>();
+            if (proxy == null)
+            {
+                proxy = col.GetComponentInParent<EnemyProxy>();
+            }  
+
+            if (proxy != null && proxy.enemyData != null)
+            {
+                proxy.enemyData.TakeDamage(new DamageInstance(damage));
+            }
         }
 
         Destroy(gameObject);
@@ -194,6 +199,11 @@ public class HomingProjectile : MonoBehaviour
     // Spawns explosion on collision with enemy
     private void SpawnExplosion()
     {
+        if (type == ProjectileType.PrimaryHoming)
+        {
+            ProjectileManager.Instance.PlayExplosionSound();
+        }
+        
         if (sparksPrefab != null)
         {
             ParticleSystem s = Instantiate(sparksPrefab, transform.position, transform.rotation);

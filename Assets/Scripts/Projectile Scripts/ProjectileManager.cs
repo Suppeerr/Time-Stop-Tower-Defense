@@ -5,6 +5,7 @@ public class ProjectileManager : MonoBehaviour
 {
     public static ProjectileManager Instance;
     public AudioSource parrySFX;
+    public AudioSource explosionSFX;
 
     public static bool IsFrozen { get; private set; } = false;
     List<Rigidbody> activeProjectiles = new List<Rigidbody>();
@@ -92,5 +93,11 @@ public class ProjectileManager : MonoBehaviour
             }
         }
         savedVelocities.Clear();
+    }
+
+    // Plays explosion sound 
+    public void PlayExplosionSound()
+    {
+        explosionSFX.Play();
     }
 }
