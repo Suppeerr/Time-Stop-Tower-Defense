@@ -8,7 +8,7 @@ public class MoneyManager : MonoBehaviour
 
     void Awake()
     {
-        money = 10;
+        money = 100;
         UpdateUI();
     }
 
@@ -17,13 +17,12 @@ public class MoneyManager : MonoBehaviour
     {
         if (moneyText != null)
         {
-            Debug.Log("Updating Money Count");
             moneyText.text = "Money: $" + money;
         }
     }
 
     // Public method for collecting coins
-    public void CollectCoin(int amount = 1)
+    public void UpdateMoney(int amount = 1)
     {
         money += amount;
         UpdateUI();

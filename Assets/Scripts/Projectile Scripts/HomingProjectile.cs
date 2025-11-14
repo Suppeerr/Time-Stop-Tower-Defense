@@ -4,11 +4,11 @@ using UnityEngine;
 public class HomingProjectile : MonoBehaviour
 {
     // Targeting
-    private Transform target;
+    protected Transform target;
     
     // Arc / Steering
-    private float steerSpeed = 10f;
-    private float maxSpeed = 10f;
+    protected float steerSpeed = 10f;
+    protected float maxSpeed = 10f;
     public float arcBoost = 2f;
 
     // Behavior / Type
@@ -27,7 +27,6 @@ public class HomingProjectile : MonoBehaviour
     private float aoe;
 
     private Rigidbody rb;
-
 
     void Awake()
     {
@@ -52,6 +51,38 @@ public class HomingProjectile : MonoBehaviour
         maxSpeed = stats.speed;
         aoe = stats.aoeRadius;
 
+        AssignNearestEnemy();
+
+        // Destroys projectile after destroyAfter seconds
+        if (destroyAfter > 0f)
+        {
+            Destroy(gameObject, destroyAfter);
+        }
+    }
+
+    // Updates for projectile physics 
+    protected virtual void FixedUpdate()
+    {
+        if (ProjectileManager.IsFrozen)
+        {
+            return;
+        }
+        else if (rb.useGravity == false)
+        {
+            rb.useGravity = true;
+        }
+        if (target == null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        HomeToTarget();
+    }
+
+    // Assigns the nearest enemy to the projectile
+    private void AssignNearestEnemy()
+    {
         // Homes onto nearest enemy if no target assigned in BallSpawner
         if (target == null)
         {
@@ -78,31 +109,11 @@ public class HomingProjectile : MonoBehaviour
                 Destroy(gameObject);
             }
         }
-
-        // Destroys projectile after destroyAfter seconds
-        if (destroyAfter > 0f)
-        {
-            Destroy(gameObject, destroyAfter);
-        }
     }
 
-    // Updates for projectile physics 
-    void FixedUpdate()
+    // Homes the projectile to the given target
+    protected virtual void HomeToTarget()
     {
-        if (ProjectileManager.IsFrozen)
-        {
-            return;
-        }
-        else if (rb.useGravity == false)
-        {
-            rb.useGravity = true;
-        }
-        if (target == null)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
         // Vector to target
         Vector3 disp = target.position - transform.position;
         float distance = disp.magnitude;
@@ -121,7 +132,10 @@ public class HomingProjectile : MonoBehaviour
         // Clamp horizontal speed
         Vector3 horizontal = new Vector3(desiredVelocity.x, 0, desiredVelocity.z);
         if (horizontal.magnitude > maxSpeed)
+        {
             horizontal = horizontal.normalized * maxSpeed;
+        }
+            
         desiredVelocity.x = horizontal.x;
         desiredVelocity.z = horizontal.z;
 
@@ -131,30 +145,38 @@ public class HomingProjectile : MonoBehaviour
 
         // Rotate projectile to face movement
         if (rb.linearVelocity.sqrMagnitude > 0.001f)
+        {
             transform.rotation = Quaternion.LookRotation(rb.linearVelocity.normalized);
+        }
     }
 
+    // Runs when projectile collides with a valid object
     void OnCollisionEnter(Collision collision)
     {
         SpawnExplosion();
 
-         // Collider hit
-        GameObject hitObj = collision.collider.gameObject;
-
-        // Check up the hierarchy for an EnemyProxy
-        EnemyProxy proxy = hitObj.GetComponent<EnemyProxy>();
-        if (proxy == null)
-            proxy = hitObj.GetComponentInParent<EnemyProxy>();
-
-        if (proxy != null && proxy.enemyData != null)
+        // Get all colliders in radius
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, aoe);
+        
+        foreach (Collider col in hitColliders)
         {
-            proxy.enemyData.TakeDamage(new DamageInstance(damage));
+            // Check up the hierarchy for an EnemyProxy
+            EnemyProxy proxy = col.GetComponent<EnemyProxy>();
+            if (proxy == null)
+            {
+                proxy = col.GetComponentInParent<EnemyProxy>();
+            }  
+
+            if (proxy != null && proxy.enemyData != null)
+            {
+                proxy.enemyData.TakeDamage(new DamageInstance(damage));
+            }
         }
 
         Destroy(gameObject);
     }
 
-    // Enables effects
+    // Enables lightning and sphere emitter effects
     public void EnableEffects()
     {
         if (!ProjectileManager.IsFrozen)
@@ -174,9 +196,14 @@ public class HomingProjectile : MonoBehaviour
         }
     }
 
-    // Spawns explosion
-    void SpawnExplosion()
+    // Spawns explosion on collision with enemy
+    private void SpawnExplosion()
     {
+        if (type == ProjectileType.PrimaryHoming)
+        {
+            ProjectileManager.Instance.PlayExplosionSound();
+        }
+        
         if (sparksPrefab != null)
         {
             ParticleSystem s = Instantiate(sparksPrefab, transform.position, transform.rotation);
@@ -192,6 +219,7 @@ public class HomingProjectile : MonoBehaviour
         }
     }
 
+    // Sets the homing projectile's target manually
     public void SetTarget(GameObject newTarget)
     {
         target = newTarget.transform;

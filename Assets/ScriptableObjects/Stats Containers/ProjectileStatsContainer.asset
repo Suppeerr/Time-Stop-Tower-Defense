@@ -25,3 +25,7 @@ MonoBehaviour:
     damage: 300
     speed: 25
     aoeRadius: 0
+  - type: 5
+    damage: 600
+    speed: 30
+    aoeRadius: 0

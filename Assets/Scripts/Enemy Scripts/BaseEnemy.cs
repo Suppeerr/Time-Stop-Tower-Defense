@@ -147,7 +147,7 @@ public class BaseEnemy
                 return;
             }
             targ_waypoint = spath.waypoints[currentWaypoint];
-            visualObj.transform.rotation = visObjbaseRot * spath.waypoints[currentWaypoint].facedirection;
+            visualObj.transform.rotation = visObjbaseRot * spath.waypoints[currentWaypoint].faceDirection;
             Vector3 testv = visualObj.transform.eulerAngles;
             visualObj.transform.rotation = Quaternion.Euler(-testv.z, testv.y, -testv.x); //correct facing direction
         }
@@ -163,6 +163,6 @@ public class BaseEnemy
     public virtual void OnDestroy() { }
     public virtual void OnDeath()
     {
-        CoinSpawner.Instance.SpawnCoin(visualObj.transform.position);
+        CoinSpawner.Instance.SpawnCoin(false, enemyPos: visualObj.transform.position);
     }
 }

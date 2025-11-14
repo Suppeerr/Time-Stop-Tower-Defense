@@ -12,6 +12,7 @@ public class LevelInstance : MonoBehaviour
     private float elapsed = 0f;
     private float lowStarting = 3f;
     private float highStarting = 5f;
+    private float ramping = 0.04f;
     GameObject ePrefab;
 
     public void Awake()
@@ -55,8 +56,8 @@ public class LevelInstance : MonoBehaviour
             elapsed = 0;
             if (lowStarting > 0)
             {
-                lowStarting -= 0.1f;
-                highStarting -= 0.1f;
+                lowStarting -= ramping;
+                highStarting -= ramping;
             }
         }
          if (!s_enabled) return;
