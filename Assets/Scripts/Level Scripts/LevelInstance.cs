@@ -24,26 +24,25 @@ public class LevelInstance : MonoBehaviour
 
         Debug.Log("levelInst enabled");
         ePrefab = (GameObject)Resources.Load("Normal Bandit");
-        //this would be ideally loaded from a data structure or from file before the scene begins
+        //this would be ideally loaded from a data structure or from file before the scene begin
 
         loadWaypointPrefabs();
-
-
+        
         spawnInterval = Random.Range(1f, 3f);
     }
 
     public void loadWaypointPrefabs()
-    {
-        var temp_wp = GameObject.FindGameObjectsWithTag("Waypoint");
-
-        foreach (GameObject wp in temp_wp.Reverse())
         {
-            epath.addWaypoint(wp.transform.position);
-            Object.Destroy(wp);
+            var temp_wp = GameObject.FindGameObjectsWithTag("Waypoint");
+
+            foreach (GameObject wp in temp_wp.Reverse())
+            {
+                epath.addWaypoint(wp.transform.position);
+                Object.Destroy(wp);
+            }
+            
         }
-        
-    }
-    
+
     public void Update()
     {
         if (ProjectileManager.IsFrozen)
