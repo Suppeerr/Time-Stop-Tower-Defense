@@ -23,7 +23,7 @@ public class BlockSource : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (ProjectileManager.IsFrozen)
+        if (ProjectileManager.IsFrozen || BaseHealthManager.IsGameOver)
         {
             return;
         }

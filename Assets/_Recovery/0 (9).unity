@@ -2140,6 +2140,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
+--- !u!114 &1299799684 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1447231539062008851, guid: 68fdb8c0b18ae194eb06e97259e474a0, type: 3}
+  m_PrefabInstance: {fileID: 1351638913}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!4 &1319967708 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1889997507367471034, guid: e84fa3d83bdf1144fa1600798639e08f, type: 3}
@@ -2161,7 +2172,7 @@ PrefabInstance:
     - target: {fileID: -3446773890192744314, guid: 68fdb8c0b18ae194eb06e97259e474a0, type: 3}
       propertyPath: baseHpText
       value: 
-      objectReference: {fileID: 1351638914}
+      objectReference: {fileID: 1299799684}
     - target: {fileID: 1447231539062008851, guid: 68fdb8c0b18ae194eb06e97259e474a0, type: 3}
       propertyPath: m_fontColor.b
       value: 0
@@ -2223,17 +2234,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 68fdb8c0b18ae194eb06e97259e474a0, type: 3}
---- !u!114 &1351638914 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1447231539062008851, guid: 68fdb8c0b18ae194eb06e97259e474a0, type: 3}
-  m_PrefabInstance: {fileID: 1351638913}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!1 &1439725352
 GameObject:
   m_ObjectHideFlags: 0

@@ -121,6 +121,7 @@ public class BaseEnemy
     {
         OnReachEnd();
         _s_clearself();
+        BaseHealthManager.Instance.UpdateBaseHP(-50);
         Debug.Log("enemy reached end");
     }
 
