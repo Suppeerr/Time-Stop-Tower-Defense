@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine;
+using System.Linq;
 
 public class LevelInstance : MonoBehaviour
 {
@@ -24,18 +25,23 @@ public class LevelInstance : MonoBehaviour
         Debug.Log("levelInst enabled");
         ePrefab = (GameObject)Resources.Load("Normal Bandit");
         //this would be ideally loaded from a data structure or from file before the scene begins
-        epath.addWaypoint(0, 0, 0);
-        epath.addWaypoint(0, 0, 15);
-        epath.addWaypoint(-11, 0, 15);
-        epath.addWaypoint(0, 0, 0);
-        /*
-        epath.addWaypoint(0, 0,0);
-        epath.addWaypoint(0, 0, 15);
-        epath.addWaypoint(-11, 5, 15);
-        epath.addWaypoint(0, 5,0);
-        epath.addWaypoint(-11, 0, 10);
-        epath.addWaypoint(-15, 0, 15);*/
+
+        loadWaypointPrefabs();
+
+
         spawnInterval = Random.Range(1f, 3f);
+    }
+
+    public void loadWaypointPrefabs()
+    {
+        var temp_wp = GameObject.FindGameObjectsWithTag("Waypoint");
+
+        foreach (GameObject wp in temp_wp.Reverse())
+        {
+            epath.addWaypoint(wp.transform.position);
+            Object.Destroy(wp);
+        }
+        
     }
     
     public void Update()

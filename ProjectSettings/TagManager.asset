@@ -13,6 +13,7 @@ TagManager:
   - Tower
   - Collector
   - Safe Collector
+  - Waypoint
   layers:
   - Default
   - TransparentFX
