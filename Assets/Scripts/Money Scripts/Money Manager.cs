@@ -8,7 +8,7 @@ public class MoneyManager : MonoBehaviour
 
     void Awake()
     {
-        money = 100;
+        money = 10;
         UpdateUI();
     }
 
@@ -21,7 +21,7 @@ public class MoneyManager : MonoBehaviour
         }
     }
 
-    // Public method for collecting coins
+    // Increments money by amount
     public void UpdateMoney(int amount = 1)
     {
         money += amount;
