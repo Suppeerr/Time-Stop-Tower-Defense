@@ -1,8 +1,9 @@
 public enum ProjectileType
 {
-    CannonBall, 
+    CannonBall,
     PrimaryHoming,
     PrimaryNormal,
     SecondaryHoming,
-    SecondaryNormal
+    SecondaryNormal,
+    Coin
 }

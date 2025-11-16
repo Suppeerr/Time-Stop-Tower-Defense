@@ -5,33 +5,65 @@ using Vector3 = UnityEngine.Vector3;
 
 public class Drone : MonoBehaviour
 {
-    public float speed = 10.0f;
+    public float speed = 8.0f;
     private GameObject Coin;
-    
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-
-    }
+    private bool isCollecting = false;
+    private float checkInterval = 1f;
+    private float elapsed = 0f;
 
     // Update is called once per frame
     void Update()
     {
-        Coin = FindClosestCoin();
+        if (ProjectileManager.IsFrozen || isCollecting)
+        {
+            return;
+        }
+
+        if (elapsed < checkInterval)
+        {
+            elapsed += Time.deltaTime;
+        }
+        else 
+        {
+            FindClosestCoin();
+            elapsed = 0f;
+        }
+
         if (Coin != null)
         {
-            Vector3 coinXZ = new Vector3(Coin.transform.position.x, Coin.transform.position.y, Coin.transform.position.z);
-            Vector3 currXZ = (transform.position - new Vector3(0, transform.position.y, 0));
+            float fixedY = transform.position.y;
+
+            // XZ positions only
+            Vector3 coinXZ = new Vector3(Coin.transform.position.x, 0f, Coin.transform.position.z);
+            Vector3 currXZ = new Vector3(transform.position.x, 0f, transform.position.z);
+
             Vector3 direction = coinXZ - currXZ;
-            direction.Normalize();
-            float rotateStep = 45 * Time.deltaTime;
-            Vector3 newDirection = Vector3.RotateTowards(transform.forward, direction, rotateStep, 0.0f);
-            transform.rotation = Quaternion.LookRotation(newDirection);
-            transform.position += transform.forward * speed * Time.deltaTime;
-        }
+            float distance = direction.magnitude;
+
+            if (distance > 0.001f)
+            {
+                direction.Normalize();
+
+                // Rotation
+                float rotateStep = 45f * Time.deltaTime;
+                Vector3 newDirection = Vector3.RotateTowards(transform.forward, direction, rotateStep, 0f);
+                transform.rotation = Quaternion.LookRotation(newDirection);
+
+                // Movement, clamped to avoid overshoot
+                float moveStep = speed * Time.deltaTime;
+                if (moveStep > distance)
+                {
+                    moveStep = distance;
+                }
+                transform.position += transform.forward * moveStep;
+
+                // Keep Y level fixed
+                transform.position = new Vector3(transform.position.x, fixedY, transform.position.z);
+            }
+}
     }
 
-    private GameObject FindClosestCoin()
+    public void FindClosestCoin()
     {
         GameObject[] gos;
         gos = GameObject.FindGameObjectsWithTag("Collectable");
@@ -48,14 +80,16 @@ public class Drone : MonoBehaviour
                 distance = curDistance;
             }
         }
-        return closest;
+        Coin = closest;
     }
 
-    private void OnTriggerEnter(Collider other)
+    public void ChangeCoin(GameObject newCoin)
     {
-        if (other.gameObject.CompareTag("Collectable"))
-        {
-            Destroy(other.gameObject);
-        }
+        Coin = newCoin;
+    }
+
+    public void ToggleCoinCollect(bool isCollect)
+    {
+        isCollecting = isCollect;
     }
 }

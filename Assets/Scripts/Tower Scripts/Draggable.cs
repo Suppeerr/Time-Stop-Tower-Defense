@@ -21,13 +21,7 @@ public class Draggable : MonoBehaviour
     // Renderers and ballSpawner script
     private Renderer[] rends;
     private Color[][] originalColors;
-    private BallSpawner ballSpawner;
-
-    // Tower placement animation
-    private float placementTime = 0.4f;
-
-    // Tower placement audio
-    public AudioSource towerPlaceSFX;
+    public GameObject placedTowerPrefab;
 
     // Money manager script
     private MoneyManager moneyManagerScript;
@@ -36,7 +30,6 @@ public class Draggable : MonoBehaviour
     {
         mainCamera = Camera.main;
         rends = GetComponentsInChildren<Renderer>(true);
-        ballSpawner = GetComponent<BallSpawner>();
 
         // Store original tower colors
         originalColors = new Color[rends.Length][];
@@ -53,7 +46,12 @@ public class Draggable : MonoBehaviour
 
     void Update()
     {
-        // Drags the tower to wherever the cursor is
+        DragToCursor();
+    }
+
+    // Drags the tower to wherever the cursor is
+    private void DragToCursor()
+    {
         if (isDragging)
         {
             Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
@@ -61,7 +59,14 @@ public class Draggable : MonoBehaviour
 
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, groundMask))
             {
-                Vector3 desiredPos = hit.point + offset + Vector3.up * 2f;
+                Vector3 desiredPos = hit.point + offset;
+
+                // Ensures correct Y position by sampling the ground height
+                if (Physics.Raycast(desiredPos + Vector3.up * 10f, Vector3.down, out RaycastHit groundHit, 20f, groundMask))
+                {
+                    // Snap to the real ground height
+                    desiredPos.y = groundHit.point.y + 0.67f;
+                }
                 transform.position = desiredPos;
 
                 // Check for nearby objects
@@ -121,32 +126,21 @@ public class Draggable : MonoBehaviour
     {
         if (!isPlaced)
         {
-            BeginDrag();
+            BeginDrag(moneyManagerScript);
         }
     }
 
-    // When left mouse button is unheld, stop dragging the tower
-    void OnMouseUp()
-    {
-        StopDrag();
-    }
-
     // Starts dragging the tower
-    public void BeginDrag(MoneyManager monManager = null)
+    public void BeginDrag(MoneyManager moneyManager)
     {
-        moneyManagerScript = monManager; 
         Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
+        moneyManagerScript = moneyManager;
 
         if (Physics.Raycast(ray, out hit))
         {
             offset = transform.position - hit.point;
             isDragging = true;
-
-            if (ballSpawner != null)
-            {
-                ballSpawner.enabled = false;
-            }
         }
     }
 
@@ -155,16 +149,24 @@ public class Draggable : MonoBehaviour
     {
         if (!canPlace)
         {
-            // Cancel placement
             CancelDrag();
             return;
         }
         if (!isPlaced)
         {
-            StartCoroutine(PlaceTower(gameObject.transform.position));
-        }
-   }
+            moneyManagerScript.DecreaseMoney(5);
+            GameObject placedTower = Instantiate(placedTowerPrefab);
+            PlacedTower placedTowerScript = placedTower.GetComponent<PlacedTower>();
+            if (placedTowerScript != null)
+            {
+                placedTowerScript.StartCoroutine(placedTowerScript.PlaceTower(gameObject.transform.position));
+            }
 
+            Destroy(gameObject);
+        }
+    }
+   
+    // Cancels placement
     private void CancelDrag()
     {
         isDragging = false;
@@ -177,9 +179,14 @@ public class Draggable : MonoBehaviour
         foreach (Renderer rend in rends)
         {
             int j = 0;
+            int originalMaterialCount = originalColors[i].Length;
+
             foreach (Material mat in rend.materials)
             {
-                Color baseColor = useOriginal ? originalColors[i][j] : (tint ?? originalColors[i][j]);
+                Color baseColor = useOriginal 
+                ? originalColors[i][Mathf.Min(j, originalMaterialCount - 1)] 
+                : (tint ?? originalColors[i][Mathf.Min(j, originalMaterialCount - 1)]);
+
                 Color finalColor = baseColor;
                 finalColor.a = alpha;
                 mat.color = finalColor;
@@ -209,38 +216,6 @@ public class Draggable : MonoBehaviour
                 j++;
             }
             i++;
-        }
-    }
-
-    // 
-    private IEnumerator PlaceTower(Vector3 initialPos)
-    {
-        moneyManagerScript.DecreaseMoney(5);
-        isPlaced = true;
-        isDragging = false;
-        ApplyColor(1f);
-        towerPlaceSFX?.Play();
-        float elapsedDelay = 0f;
-        Vector3 startPos = initialPos + new Vector3(0, 3, 0);
-        Vector3 endPos = initialPos;
-
-        while (elapsedDelay < placementTime)
-        {
-            while (ProjectileManager.IsFrozen)
-            {
-                yield return null;
-            }
-
-            elapsedDelay += Time.deltaTime;
-            float t = elapsedDelay / placementTime;
-            gameObject.transform.position = Vector3.Lerp(startPos, endPos, t);
-
-            yield return null;
-        }
-
-        if (ballSpawner != null)
-        {
-            ballSpawner.enabled = true;
         }
     }
 }

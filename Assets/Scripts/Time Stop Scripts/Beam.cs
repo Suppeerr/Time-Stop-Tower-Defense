@@ -25,7 +25,7 @@ public class BeamZap : MonoBehaviour
 
     void Update()
     {
-        if (Mouse.current.leftButton.wasPressedThisFrame && ProjectileManager.IsFrozen)
+        if ((Mouse.current.leftButton.wasPressedThisFrame || Keyboard.current.spaceKey.wasPressedThisFrame) && ProjectileManager.IsFrozen)
         {
             FireZap();
         }
@@ -44,8 +44,9 @@ public class BeamZap : MonoBehaviour
         Ray ray = mainCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
         RaycastHit hit;
         float radius = 1f;
+        int projectileLayer = LayerMask.GetMask("Normal Projectile");
 
-        if (Physics.SphereCast(ray, radius, out hit) && hit.collider.gameObject.CompareTag("Tower Projectile"))
+        if (Physics.SphereCast(ray, radius, out hit, Mathf.Infinity, projectileLayer))
         {
             GameObject hitProj = hit.collider.gameObject;
             NormalProjectile normalProj = hitProj.GetComponent<NormalProjectile>();
@@ -70,10 +71,10 @@ public class BeamZap : MonoBehaviour
                 {
                     case ProjectileType.PrimaryNormal:
                         normalProj.MarkDestroyedByParry();
-                        ballSpawner?.SpawnHoming(ProjectileType.PrimaryHoming, hitProj.transform.position, hitProj.transform.rotation);
+                        ballSpawner?.SpawnHomingRock(ProjectileType.PrimaryHoming, hitProj.transform.position, hitProj.transform.rotation);
                         break;
                     case ProjectileType.SecondaryNormal:
-                        ballSpawner?.SpawnHoming(ProjectileType.SecondaryHoming, hitProj.transform.position, hitProj.transform.rotation);
+                        ballSpawner?.SpawnHomingRock(ProjectileType.SecondaryHoming, hitProj.transform.position, hitProj.transform.rotation);
                         break;
                 }
             }

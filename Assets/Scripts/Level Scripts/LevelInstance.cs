@@ -1,10 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine;
+using System.Linq;
 
 public class LevelInstance : MonoBehaviour
 {
-    public EnemyPath epath = new EnemyPath(); //could be array if we want multiple paths
+    public enemyWaypointPath epath = new enemyWaypointPath(); //could be array if we want multiple paths
     List<BaseEnemy> enemies = new List<BaseEnemy>();
     public List<BaseEnemy> queueRemove = new List<BaseEnemy>();
     bool s_enabled = false;
@@ -12,6 +13,7 @@ public class LevelInstance : MonoBehaviour
     private float elapsed = 0f;
     private float lowStarting = 3f;
     private float highStarting = 5f;
+    private float ramping = 0.04f;
     GameObject ePrefab;
 
     public void Awake()
@@ -22,14 +24,25 @@ public class LevelInstance : MonoBehaviour
 
         Debug.Log("levelInst enabled");
         ePrefab = (GameObject)Resources.Load("Normal Bandit");
-        //this would be ideally loaded from a data structure or from file before the scene begins
-        epath.addWaypoint(0, 0);
-        epath.addWaypoint(0, 15);
-        epath.addWaypoint(-11, 15);
-        epath.addWaypoint(0, 0);
+        //this would be ideally loaded from a data structure or from file before the scene begin
+
+        loadWaypointPrefabs();
+        
         spawnInterval = Random.Range(1f, 3f);
     }
-    
+
+    public void loadWaypointPrefabs()
+        {
+            var temp_wp = GameObject.FindGameObjectsWithTag("Waypoint");
+
+            foreach (GameObject wp in temp_wp.Reverse())
+            {
+                epath.addWaypoint(wp.transform.position);
+                Object.Destroy(wp);
+            }
+            
+        }
+
     public void Update()
     {
         if (ProjectileManager.IsFrozen)
@@ -48,8 +61,8 @@ public class LevelInstance : MonoBehaviour
             elapsed = 0;
             if (lowStarting > 0)
             {
-                lowStarting -= 0.1f;
-                highStarting -= 0.1f;
+                lowStarting -= ramping;
+                highStarting -= ramping;
             }
         }
          if (!s_enabled) return;
