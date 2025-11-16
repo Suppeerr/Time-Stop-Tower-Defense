@@ -26,7 +26,7 @@ public static class GameInstance
 
     static void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (scene.name == "Gameplay and Mechanics"){
+        if (scene.name == "Gameplay and Mechanics" || scene.name == "Level 1"){
             Debug.Log("gameInst started");
             clevel = new GameObject();
             clevel.AddComponent<LevelInstance>();

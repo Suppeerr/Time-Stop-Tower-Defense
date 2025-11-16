@@ -19,7 +19,7 @@ public class LevelInstance : MonoBehaviour
     public void Awake()
     {
         Debug.Log("levelInst started");
-        if (SceneManager.GetActiveScene().name.Equals("Gameplay and Mechanics")) s_enabled = true;
+        if (SceneManager.GetActiveScene().name.Equals("Gameplay and Mechanics") || SceneManager.GetActiveScene().name.Equals("Level 1")) s_enabled = true;
         if (!s_enabled) return;
 
         Debug.Log("levelInst enabled");
