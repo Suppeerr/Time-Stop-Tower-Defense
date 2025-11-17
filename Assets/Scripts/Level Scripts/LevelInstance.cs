@@ -5,7 +5,7 @@ using System.Linq;
 
 public class LevelInstance : MonoBehaviour
 {
-    public enemyWaypointPath epath = new enemyWaypointPath(); //could be array if we want multiple paths
+    public EnemyWaypointPath epath = new EnemyWaypointPath(); //could be array if we want multiple paths
     List<BaseEnemy> enemies = new List<BaseEnemy>();
     public List<BaseEnemy> queueRemove = new List<BaseEnemy>();
     bool s_enabled = false;
@@ -15,33 +15,41 @@ public class LevelInstance : MonoBehaviour
     private float highStarting = 5f;
     private float ramping = 0.04f;
     GameObject ePrefab;
+    public static LevelInstance instance;
 
     public void Awake()
     {
+        instance = this;
         Debug.Log("levelInst started");
-        if (SceneManager.GetActiveScene().name.Equals("Gameplay and Mechanics")) s_enabled = true;
+        if (SceneManager.GetActiveScene().name.Equals("Gameplay and Mechanics") || SceneManager.GetActiveScene().name.Equals("Level 1")) s_enabled = true;
         if (!s_enabled) return;
 
         Debug.Log("levelInst enabled");
         ePrefab = (GameObject)Resources.Load("Normal Bandit");
         //this would be ideally loaded from a data structure or from file before the scene begin
-
-        loadWaypointPrefabs();
+        LoadWaypointPrefabs();
         
         spawnInterval = Random.Range(1f, 3f);
     }
 
-    public void loadWaypointPrefabs()
-        {
-            var temp_wp = GameObject.FindGameObjectsWithTag("Waypoint");
+    public void LoadWaypointPrefabs()
+    {
+        GameObject pathObj = GameObject.FindWithTag("Path");
 
-            foreach (GameObject wp in temp_wp.Reverse())
-            {
-                epath.addWaypoint(wp.transform.position);
-                Object.Destroy(wp);
-            }
-            
+        if (pathObj == null)
+        {
+            Debug.LogError("No object tagged WaypointRoot found!");
+            return;
         }
+
+        Transform path = pathObj.transform;
+
+        foreach (Transform child in path)
+        {
+            epath.addWaypoint(child.position);
+            child.gameObject.SetActive(false);
+        }
+    }
 
     public void Update()
     {
@@ -104,5 +112,31 @@ public class LevelInstance : MonoBehaviour
         BaseEnemy enemy = new BaseEnemy();
         enemy.Init(ePrefab, this, epath, EnemyType.NormalBandit);
         enemies.Add(enemy);
+    }
+
+    public BaseEnemy GetFirstEnemy()
+    {
+        float currentWaypointDist = -1;
+        float furthestWaypoint = -1;
+        BaseEnemy firstEnemy = null;
+
+        foreach(var enemy in enemies)
+        {
+            float cw = enemy.GetCurrentWaypoint();
+            float cd = enemy.GetCurDistTraveled();
+            if (cw > furthestWaypoint || (cw == furthestWaypoint && cd > currentWaypointDist))
+            {
+                firstEnemy = enemy;
+                furthestWaypoint = cw;
+                currentWaypointDist = cd;
+            }
+        }
+        
+        return firstEnemy;
+    }
+
+    public static LevelInstance GetLevelInstance()
+    {
+        return instance;
     }
 }

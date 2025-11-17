@@ -55,7 +55,11 @@ public class NormalProjectile : MonoBehaviour
             parryDeath = true;
             BecomeHoming();
         }
-        else if (collision.collider.CompareTag("Ground"))
+        else if (collision.collider.CompareTag("Ground") && type == ProjectileType.PrimaryNormal)
+        {
+            SplitAndDestroy();
+        }
+        else
         {
             Destroy(gameObject);
         }
