@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class enemyWaypointPath
+public class EnemyWaypointPath
 {
     public Waypoint[] waypoints { get; private set; } = new Waypoint[0];
     public void addWaypoint(float x, float y, float z)

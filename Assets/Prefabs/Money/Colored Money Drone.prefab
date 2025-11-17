@@ -445,7 +445,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f75df1acee3a3546ab96e4f50de6a21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Drone
-  speed: 8
+  speed: 12
 --- !u!1 &1156135826086504517 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1409986926226888049, guid: 7e81607bb0cac4061b970ca89b80c69d, type: 3}
