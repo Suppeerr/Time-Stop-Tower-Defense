@@ -5,6 +5,7 @@ public class HomingProjectile : MonoBehaviour
 {
     // Targeting
     protected Transform target;
+    LevelInstance level;
     
     // Arc / Steering
     protected float steerSpeed = 10f;
@@ -34,6 +35,7 @@ public class HomingProjectile : MonoBehaviour
         ProjectileManager.Instance.RegisterProjectile(rb);
         rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
         rb.linearVelocity = Vector3.zero;
+        level = LevelInstance.GetLevelInstance();
 
         if (ProjectileManager.IsFrozen)
         {
@@ -51,7 +53,14 @@ public class HomingProjectile : MonoBehaviour
         maxSpeed = stats.speed;
         aoe = stats.aoeRadius;
 
-        AssignNearestEnemy();
+        if (type == ProjectileType.PrimaryHoming)
+        {
+            AssignNearestEnemy();
+        }
+        else if (type == ProjectileType.SecondaryHoming)
+        {
+            AssignFirstEnemy();
+        }
 
         // Destroys projectile after destroyAfter seconds
         if (destroyAfter > 0f)
@@ -80,10 +89,26 @@ public class HomingProjectile : MonoBehaviour
         HomeToTarget();
     }
 
+    // Assigns the first enemy to the projectile
+    private void AssignFirstEnemy()
+    {
+        if (target == null)
+        {
+            BaseEnemy firstEnemy = level.GetFirstEnemy();
+            if (firstEnemy != null)
+            {
+                target = firstEnemy.visualObj.transform;
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
+        }
+    }
+
     // Assigns the nearest enemy to the projectile
     private void AssignNearestEnemy()
     {
-        // Homes onto nearest enemy if no target assigned in BallSpawner
         if (target == null)
         {
             GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
@@ -221,7 +246,10 @@ public class HomingProjectile : MonoBehaviour
     // Sets the homing projectile's target manually
     public void SetTarget(GameObject newTarget)
     {
-        target = newTarget.transform;
+        if (target == null)
+        {
+            target = newTarget.transform;
+        }
     }
 
     // Does damage to hit targets in a radius
