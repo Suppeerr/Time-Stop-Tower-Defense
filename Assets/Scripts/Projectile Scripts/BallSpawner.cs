@@ -115,7 +115,7 @@ public class BallSpawner : MonoBehaviour
             return;
         }
 
-        Instantiate(prefabToSpawn, position, rotation);
+        Instantiate(prefabToSpawn, position + Vector3.up * 0.1f, rotation);
         timer = 0f;
     }
 
