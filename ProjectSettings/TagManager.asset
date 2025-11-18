@@ -14,6 +14,7 @@ TagManager:
   - Collector
   - Safe Collector
   - Waypoint
+  - Path
   layers:
   - Default
   - TransparentFX

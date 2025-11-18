@@ -20,7 +20,7 @@ public class BaseEnemy
     private float speed;
 
     public EnemyType type;
-    public enemyWaypointPath spath;
+    public EnemyWaypointPath spath;
     public int currentWaypoint = 1;
     public float curdist_traveled;
 
@@ -33,7 +33,7 @@ public class BaseEnemy
 
     public Quaternion visObjbaseRot;
 
-    public void Init(GameObject prefab, LevelInstance level, enemyWaypointPath spath, EnemyType eType)
+    public void Init(GameObject prefab, LevelInstance level, EnemyWaypointPath spath, EnemyType eType)
     {
         //other init also goes here...
         // Assigns stat values to enemies
@@ -155,6 +155,16 @@ public class BaseEnemy
 
         curdist_traveled += distance_traveled;
         s_position += distance_traveled * targ_waypoint.modif;
+    }
+
+    public float GetCurDistTraveled()
+    {
+        return curdist_traveled;
+    }
+
+    public float GetCurrentWaypoint()
+    {
+        return currentWaypoint;
     }
 
 

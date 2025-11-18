@@ -2,10 +2,10 @@ using UnityEngine;
 
 public class CoinLogic : MonoBehaviour
 {
+    // Scripts and transforms
     private MoneyManager moneyManagerScript;
     private Drone droneScript;
     private Transform launcher;
-
 
     private float floatSpeed = 0.1f;
     private bool isBeingVacuumed = false;
@@ -14,13 +14,8 @@ public class CoinLogic : MonoBehaviour
     void Awake()
     {
         droneScript ??= FindFirstObjectByType<Drone>();
-        moneyManagerScript = GameObject.Find("Money Safe")?.GetComponent<MoneyManager>();
+        moneyManagerScript = GameObject.Find("Safe Base")?.GetComponent<MoneyManager>();
         launcher = GameObject.Find("Coin Launcher")?.transform;
-        
-        if (launcher == null)
-        {
-            Debug.LogError("Coin Launcher not found in the scene!");
-        }
     }
 
     // Update is called once per frame

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyStatsContainer
   stats:
   - type: 0
-    hp: 3000
+    hp: 2400
     spd: 4
     def: 0
   - type: 1
