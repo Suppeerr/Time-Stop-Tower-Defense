@@ -17,7 +17,7 @@ public class MoneyManager : MonoBehaviour
     {
         if (moneyText != null)
         {
-            moneyText.text = "Money: $" + money;
+            moneyText.text = money + " Coins";
         }
     }
 
