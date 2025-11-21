@@ -15,7 +15,7 @@ MonoBehaviour:
   stats:
   - type: 0
     damage: 0
-    speed: 40
+    speed: 45
     aoeRadius: 0
   - type: 1
     damage: 600

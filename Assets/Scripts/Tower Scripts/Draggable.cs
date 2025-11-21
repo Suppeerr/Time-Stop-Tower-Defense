@@ -26,6 +26,10 @@ public class Draggable : MonoBehaviour
     // Money manager script
     private MoneyManager moneyManagerScript;
 
+    // Dragging start and stop events
+    public static event System.Action OnDragStart;
+    public static event System.Action OnDragEnd;
+
     void Awake()
     {
         mainCamera = Camera.main;
@@ -72,10 +76,15 @@ public class Draggable : MonoBehaviour
                 // Check for nearby objects
                 Collider[] nearby = Physics.OverlapSphere(desiredPos, placementRadius);
                 canPlace = true;
+                bool insidePlacementZone = false;
 
                 // Update color based on placement validity
                 foreach (Collider col in nearby)
                 {
+                    if (col.CompareTag("Placement Zone"))
+                    {
+                        insidePlacementZone = true;
+                    }
                     foreach (string invTag in invalidTags)
                     {
                         if (col.CompareTag(invTag) && col.gameObject != gameObject)
@@ -88,6 +97,10 @@ public class Draggable : MonoBehaviour
                     {
                         break;
                     }
+                }
+                if (!insidePlacementZone)
+                {
+                    canPlace = false;
                 }
 
                 if (canPlace)
@@ -140,6 +153,7 @@ public class Draggable : MonoBehaviour
         if (Physics.Raycast(ray, out hit))
         {
             offset = transform.position - hit.point;
+            OnDragStart?.Invoke();
             isDragging = true;
         }
     }
@@ -147,6 +161,7 @@ public class Draggable : MonoBehaviour
     // Stops dragging the tower
     private void StopDrag()
     {
+        OnDragEnd?.Invoke();
         if (!canPlace)
         {
             CancelDrag();
@@ -171,6 +186,11 @@ public class Draggable : MonoBehaviour
     {
         isDragging = false;
         Destroy(gameObject);
+    }
+
+    public bool GetIsDragging()
+    {
+        return isDragging;
     }
 
     private void ApplyColor(float alpha = 1f, Color? tint = null, bool useOriginal = true)

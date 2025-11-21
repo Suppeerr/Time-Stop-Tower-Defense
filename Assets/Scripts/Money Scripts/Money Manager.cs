@@ -8,7 +8,7 @@ public class MoneyManager : MonoBehaviour
 
     void Awake()
     {
-        money = 100;
+        money = 10;
         UpdateUI();
     }
 
@@ -17,11 +17,11 @@ public class MoneyManager : MonoBehaviour
     {
         if (moneyText != null)
         {
-            moneyText.text = "Money: $" + money;
+            moneyText.text = money + " Coins";
         }
     }
 
-    // Public method for collecting coins
+    // Increments money by amount
     public void UpdateMoney(int amount = 1)
     {
         money += amount;

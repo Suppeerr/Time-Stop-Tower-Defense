@@ -5,6 +5,7 @@ public class HomingProjectile : MonoBehaviour
 {
     // Targeting
     protected Transform target;
+    LevelInstance level;
     
     // Arc / Steering
     protected float steerSpeed = 10f;
@@ -34,6 +35,7 @@ public class HomingProjectile : MonoBehaviour
         ProjectileManager.Instance.RegisterProjectile(rb);
         rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
         rb.linearVelocity = Vector3.zero;
+        level = LevelInstance.GetLevelInstance();
 
         if (ProjectileManager.IsFrozen)
         {
@@ -51,7 +53,14 @@ public class HomingProjectile : MonoBehaviour
         maxSpeed = stats.speed;
         aoe = stats.aoeRadius;
 
-        AssignNearestEnemy();
+        if (type == ProjectileType.PrimaryHoming)
+        {
+            AssignNearestEnemy();
+        }
+        else if (type == ProjectileType.SecondaryHoming)
+        {
+            AssignFirstEnemy();
+        }
 
         // Destroys projectile after destroyAfter seconds
         if (destroyAfter > 0f)
@@ -80,10 +89,26 @@ public class HomingProjectile : MonoBehaviour
         HomeToTarget();
     }
 
+    // Assigns the first enemy to the projectile
+    private void AssignFirstEnemy()
+    {
+        if (target == null)
+        {
+            BaseEnemy firstEnemy = level.GetFirstEnemy();
+            if (firstEnemy != null)
+            {
+                target = firstEnemy.visualObj.transform;
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
+        }
+    }
+
     // Assigns the nearest enemy to the projectile
     private void AssignNearestEnemy()
     {
-        // Homes onto nearest enemy if no target assigned in BallSpawner
         if (target == null)
         {
             GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
@@ -155,23 +180,22 @@ public class HomingProjectile : MonoBehaviour
     {
         SpawnExplosion();
 
-        // Get all colliders in radius
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, aoe);
-        
-        foreach (Collider col in hitColliders)
+        if (type == ProjectileType.PrimaryHoming)
         {
-            // Check up the hierarchy for an EnemyProxy
-            EnemyProxy proxy = col.GetComponent<EnemyProxy>();
-            if (proxy == null)
+            // Get all colliders in radius - AoE damage
+            Collider[] hitColliders = Physics.OverlapSphere(transform.position, aoe);
+            
+            foreach (Collider col in hitColliders)
             {
-                proxy = col.GetComponentInParent<EnemyProxy>();
-            }  
-
-            if (proxy != null && proxy.enemyData != null)
-            {
-                proxy.enemyData.TakeDamage(new DamageInstance(damage));
+                DoAoEDamage(col);
             }
         }
+        else
+        {
+            // Single target damage
+            DoSingleTargetDamage(collision);
+        }
+        
 
         Destroy(gameObject);
     }
@@ -222,7 +246,42 @@ public class HomingProjectile : MonoBehaviour
     // Sets the homing projectile's target manually
     public void SetTarget(GameObject newTarget)
     {
-        target = newTarget.transform;
+        if (target == null && newTarget != null)
+        {
+            target = newTarget.transform;
+        }
+    }
+
+    // Does damage to hit targets in a radius
+    private void DoAoEDamage(Collider col)
+    {
+        // Check up the hierarchy for an EnemyProxy
+        EnemyProxy proxy = col.GetComponent<EnemyProxy>();
+        if (proxy == null)
+        {
+            proxy = col.GetComponentInParent<EnemyProxy>();
+        }  
+
+        if (proxy != null && proxy.enemyData != null)
+        {
+            proxy.enemyData.TakeDamage(new DamageInstance(damage));
+        }
+    }
+
+    // Does damage to a single hit target
+    private void DoSingleTargetDamage(Collision collision)
+    {
+        // Check up the hierarchy for an EnemyProxy
+        EnemyProxy proxy = collision.collider.GetComponent<EnemyProxy>();
+        if (proxy == null)
+        {
+            proxy = collision.collider.GetComponentInParent<EnemyProxy>();
+        }  
+
+        if (proxy != null && proxy.enemyData != null)
+        {
+            proxy.enemyData.TakeDamage(new DamageInstance(damage));
+        }
     }
 
     // Unregisters projectiles when destroyed

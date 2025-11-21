@@ -8,7 +8,7 @@ public class ProjectileManager : MonoBehaviour
     public AudioSource explosionSFX;
 
     public static bool IsFrozen { get; private set; } = false;
-    List<Rigidbody> activeProjectiles = new List<Rigidbody>();
+    public List<Rigidbody> activeProjectiles = new List<Rigidbody>();
     Dictionary<Rigidbody, Vector3> savedVelocities = new Dictionary<Rigidbody, Vector3>();
 
     // Avoids duplicates of this object
@@ -99,5 +99,16 @@ public class ProjectileManager : MonoBehaviour
     public void PlayExplosionSound()
     {
         explosionSFX.Play();
+    }
+
+    // Clears all projectiles on game over
+    public void DestroyAllProjectiles()
+    {
+        foreach (var p in activeProjectiles)
+        {
+            Destroy(p.gameObject);
+        }
+
+        activeProjectiles.Clear();
     }
 }
