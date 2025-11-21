@@ -39,7 +39,7 @@ public class BaseHealthManager : MonoBehaviour
     {
         if (baseHpText != null)
         {
-            baseHpText.text = "Base Health: " + currentBaseHp + " hp";
+            baseHpText.text = currentBaseHp + " HP";
             if (currentBaseHp <= 0)
             {
                 baseHpText.text = "Game Over!";

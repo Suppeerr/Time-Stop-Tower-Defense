@@ -16,6 +16,7 @@ TagManager:
   - Waypoint
   - Path
   - Workshop UI
+  - Placement Zone
   layers:
   - Default
   - TransparentFX

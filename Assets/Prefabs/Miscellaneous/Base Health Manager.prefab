@@ -156,6 +156,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3906503082476275410}
     m_Modifications:
+    - target: {fileID: 2247368466106039172, guid: da6d56b1eeade1f43a736be6dcd108fa, type: 3}
+      propertyPath: m_fontSize
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2247368466106039172, guid: da6d56b1eeade1f43a736be6dcd108fa, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 4779208602970844128, guid: da6d56b1eeade1f43a736be6dcd108fa, type: 3}
       propertyPath: m_Name
       value: Base Health Indicator
