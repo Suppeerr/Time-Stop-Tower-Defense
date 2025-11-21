@@ -15,6 +15,7 @@ TagManager:
   - Safe Collector
   - Waypoint
   - Path
+  - Workshop UI
   - Placement Zone
   layers:
   - Default

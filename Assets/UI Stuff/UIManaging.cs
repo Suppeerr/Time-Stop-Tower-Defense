@@ -21,8 +21,8 @@ public class UIManaging : MonoBehaviour
     void Start()
     {
         VisualElement root = GetComponent<UIDocument>().rootVisualElement;
-        string[] levelNames = {"Sandcat", "Volcano", "Dog"};
-        string[] temp = {"Level 1 Map", "Money System", "Gameplay and Mechanics"};
+        string[] levelNames = {"Sandcat", "Volcano", "Dog"}; //I will change the names of containers in ui to match this
+        string[] temp = {"Level 1", "Level 1", "Level 1"}; //Change this to modify scene redirects
         levelCount = levelNames.Length;
         //List<VisualElement> Lvls = new List<VisualElement>();
         List<Button> ButR = root.Query<Button>("Right").ToList();
