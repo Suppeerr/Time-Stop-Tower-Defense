@@ -246,7 +246,7 @@ public class HomingProjectile : MonoBehaviour
     // Sets the homing projectile's target manually
     public void SetTarget(GameObject newTarget)
     {
-        if (target == null)
+        if (target == null && newTarget != null)
         {
             target = newTarget.transform;
         }

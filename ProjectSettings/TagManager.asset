@@ -15,6 +15,7 @@ TagManager:
   - Safe Collector
   - Waypoint
   - Path
+  - Placement Zone
   layers:
   - Default
   - TransparentFX
