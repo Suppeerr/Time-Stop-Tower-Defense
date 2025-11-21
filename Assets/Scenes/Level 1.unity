@@ -5594,6 +5594,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 183411659010679045}
     m_Modifications:
+    - target: {fileID: 585301200853253681, guid: c1114cefe4fb876498e2f028be5c1de6, type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1426561517719448672, guid: c1114cefe4fb876498e2f028be5c1de6, type: 3}
       propertyPath: m_Name
       value: Money Indicator Canvas
