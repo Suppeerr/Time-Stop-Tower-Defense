@@ -12,8 +12,8 @@ EditorBuildSettings:
     path: Assets/Scenes/Money System.unity
     guid: 02ba150703963f145954430ad4896cc7
   - enabled: 1
-    path: Assets/Scenes/Level 1 Map.unity
-    guid: 627d99231549e0c45911a04b3a94cf00
+    path: Assets/Scenes/Level 1.unity
+    guid: 44d8ce6b6aafe5d4dbe899fe524f124d
   - enabled: 1
     path: Assets/Scenes/Gameplay and Mechanics.unity
     guid: 0f55f7d9c420cfd4e84f4b7dec23ce28
