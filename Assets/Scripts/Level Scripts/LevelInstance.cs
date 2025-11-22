@@ -11,13 +11,13 @@ public class LevelInstance : MonoBehaviour
     bool s_enabled = false;
     private float spawnInterval;
     private float elapsed = 0f;
-    private float lowStarting = 3f;
-    private float highStarting = 5f;
+    private float lowStarting = 3.5f;
+    private float highStarting = 5.5f;
     private float ramping = 0.04f;
     GameObject ePrefab;
     public static LevelInstance instance;
 
-    public void Awake()
+    public void Init()
     {
         instance = this;
         Debug.Log("levelInst started");

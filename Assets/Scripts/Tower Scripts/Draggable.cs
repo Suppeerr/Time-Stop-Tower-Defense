@@ -58,6 +58,7 @@ public class Draggable : MonoBehaviour
     {
         if (isDragging)
         {
+            bool insidePlacementZone = false;
             Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
 
@@ -76,7 +77,6 @@ public class Draggable : MonoBehaviour
                 // Check for nearby objects
                 Collider[] nearby = Physics.OverlapSphere(desiredPos, placementRadius);
                 canPlace = true;
-                bool insidePlacementZone = false;
 
                 // Update color based on placement validity
                 foreach (Collider col in nearby)
@@ -98,12 +98,8 @@ public class Draggable : MonoBehaviour
                         break;
                     }
                 }
-                if (!insidePlacementZone)
-                {
-                    canPlace = false;
-                }
 
-                if (canPlace)
+                if (canPlace && insidePlacementZone)
                 {
                     ApplyColor(0.6f);
                 }
@@ -116,7 +112,7 @@ public class Draggable : MonoBehaviour
             // Stop dragging if mouse released
             if (Input.GetMouseButtonUp(0))
             {
-                if (canPlace)
+                if (canPlace && insidePlacementZone)
                 {
                     StopDrag();
                 }
@@ -149,12 +145,13 @@ public class Draggable : MonoBehaviour
         Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
         moneyManagerScript = moneyManager;
+        OnDragStart?.Invoke();
+        isDragging = true;
 
         if (Physics.Raycast(ray, out hit))
         {
             offset = transform.position - hit.point;
-            OnDragStart?.Invoke();
-            isDragging = true;
+            
         }
     }
 
@@ -184,6 +181,7 @@ public class Draggable : MonoBehaviour
     // Cancels placement
     private void CancelDrag()
     {
+        OnDragEnd?.Invoke();
         isDragging = false;
         Destroy(gameObject);
     }

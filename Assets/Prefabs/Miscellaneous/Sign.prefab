@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8373831238568392779}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Sign
-  m_TagString: Untagged
+  m_TagString: Tower
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -49,7 +49,7 @@ GameObject:
   - component: {fileID: 8811495771698326638}
   - component: {fileID: 1311649695855008470}
   - component: {fileID: 5772826317573171330}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -159,7 +159,7 @@ GameObject:
   - component: {fileID: 5102502073376552406}
   - component: {fileID: 1350313540673410121}
   - component: {fileID: 2451172123069295857}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Point Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -287,7 +287,7 @@ GameObject:
   - component: {fileID: 8660187089625818400}
   - component: {fileID: 6384612455663487772}
   - component: {fileID: 659563263388856938}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -398,7 +398,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2072877616705707598}
   - component: {fileID: 1480113659253687367}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Hammer Icon (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -489,7 +489,7 @@ GameObject:
   - component: {fileID: 3334811291336238301}
   - component: {fileID: 5093524796529786688}
   - component: {fileID: 4940539723713244912}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Point Light (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -615,7 +615,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2748003569224237176}
   - component: {fileID: 2963491016721985883}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Hammer Icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
