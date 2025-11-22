@@ -19,6 +19,11 @@ public class DayAndNightAdjustment : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (ProjectileManager.IsFrozen)
+        {
+            return;
+        }
+        
         if (elapsed < switchInterval)
         {
             elapsed += Time.deltaTime;
