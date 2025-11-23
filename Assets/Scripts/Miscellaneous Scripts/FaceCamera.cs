@@ -12,8 +12,12 @@ public class UIFaceCamera : MonoBehaviour
     // Updates to make UI face camera
     void Update()
     {
-        transform.LookAt
-        (transform.position + CameraSwitch.CurrentCamera.transform.rotation * Vector3.forward,
-         CameraSwitch.CurrentCamera.transform.rotation * Vector3.up);
+        if (CameraSwitch.CurrentCamera == null) 
+        {
+            return;
+        }
+
+        Vector3 dir = transform.position - CameraSwitch.CurrentCamera.transform.position;
+        transform.rotation = Quaternion.LookRotation(dir, Vector3.up);
     }
 }

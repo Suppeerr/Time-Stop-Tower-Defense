@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7163687827582731721}
   - component: {fileID: 585301200853253681}
   - component: {fileID: 786240890347329218}
+  - component: {fileID: 4812433416491796241}
   m_Layer: 0
   m_Name: Money Indicator Canvas
   m_TagString: Untagged
@@ -102,6 +103,18 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &4812433416491796241
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1426561517719448672}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a64b0bbbaaafa5a42957e19107d6611d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIFaceCamera
 --- !u!1 &8026053389722543063
 GameObject:
   m_ObjectHideFlags: 0

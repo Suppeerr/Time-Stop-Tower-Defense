@@ -29,6 +29,7 @@ public class BaseEnemy
     public GameObject enemyvObjPrefab;
     public EnemyHealthBar healthbar;
     public EnemyDamageIndicator damageIndicator;
+    public EnemyCounter enemyCounterScript;
     public LevelInstance level;
 
     public Quaternion visObjbaseRot;
@@ -82,6 +83,7 @@ public class BaseEnemy
         // The enemy dies if its hp becomes 0 or less
         if (hp <= 0)
         {
+            enemyCounterScript.IncrementCount();
             OnDeath();
             _s_clearself();
         }
@@ -104,6 +106,9 @@ public class BaseEnemy
         // Gets healthbar
         healthbar = visualObj.GetComponentInChildren<EnemyHealthBar>();
         healthbar?.Init(baseHp);
+
+        // Gets enemies defeated counter
+        enemyCounterScript = GameObject.Find("Enemies Defeated Manager")?.GetComponent<EnemyCounter>();
     }
     public void As_update()
     {

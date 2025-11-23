@@ -34,7 +34,7 @@ Transform:
   m_Children:
   - {fileID: 3455751916909724047}
   - {fileID: 691305500844785566}
-  - {fileID: 5111098861246171590}
+  - {fileID: 7629578930340497183}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &1695653633799354963
@@ -195,7 +195,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!1001 &1455296450853203675
+--- !u!1001 &4268762230965051394
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -210,30 +210,6 @@ PrefabInstance:
     - target: {fileID: 1426561517719448672, guid: c1114cefe4fb876498e2f028be5c1de6, type: 3}
       propertyPath: m_Name
       value: Money Indicator Canvas
-      objectReference: {fileID: 0}
-    - target: {fileID: 2983202885446355622, guid: c1114cefe4fb876498e2f028be5c1de6, type: 3}
-      propertyPath: m_text
-      value: 'Money: $10'
-      objectReference: {fileID: 0}
-    - target: {fileID: 2983202885446355622, guid: c1114cefe4fb876498e2f028be5c1de6, type: 3}
-      propertyPath: m_fontSize
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 2983202885446355622, guid: c1114cefe4fb876498e2f028be5c1de6, type: 3}
-      propertyPath: m_fontSizeBase
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 2983202885446355622, guid: c1114cefe4fb876498e2f028be5c1de6, type: 3}
-      propertyPath: m_VerticalAlignment
-      value: 512
-      objectReference: {fileID: 0}
-    - target: {fileID: 3457857448629782610, guid: c1114cefe4fb876498e2f028be5c1de6, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 25
-      objectReference: {fileID: 0}
-    - target: {fileID: 3457857448629782610, guid: c1114cefe4fb876498e2f028be5c1de6, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 5970652965529626397, guid: c1114cefe4fb876498e2f028be5c1de6, type: 3}
       propertyPath: m_Pivot.x
@@ -301,11 +277,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5970652965529626397, guid: c1114cefe4fb876498e2f028be5c1de6, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -4.09
+      value: -4.72
       objectReference: {fileID: 0}
     - target: {fileID: 5970652965529626397, guid: c1114cefe4fb876498e2f028be5c1de6, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.449
+      value: -0.45
       objectReference: {fileID: 0}
     - target: {fileID: 5970652965529626397, guid: c1114cefe4fb876498e2f028be5c1de6, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -324,10 +300,10 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c1114cefe4fb876498e2f028be5c1de6, type: 3}
---- !u!224 &5111098861246171590 stripped
+--- !u!224 &7629578930340497183 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5970652965529626397, guid: c1114cefe4fb876498e2f028be5c1de6, type: 3}
-  m_PrefabInstance: {fileID: 1455296450853203675}
+  m_PrefabInstance: {fileID: 4268762230965051394}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6761450426164405220
 PrefabInstance:

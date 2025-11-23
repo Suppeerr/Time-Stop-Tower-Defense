@@ -11,9 +11,9 @@ public class LevelInstance : MonoBehaviour
     bool s_enabled = false;
     private float spawnInterval = 3f;
     private float elapsed = 0f;
-    private float lowStarting = 3.5f;
+    private float lowStarting = 4f;
     private float highStarting = 5.5f;
-    private float ramping = 0.04f;
+    private float ramping = 0.045f;
     GameObject ePrefab;
     public static LevelInstance Instance { get; private set; }
 
@@ -65,7 +65,7 @@ public class LevelInstance : MonoBehaviour
             SpawnEnemyTest();
             spawnInterval = Random.Range(lowStarting, highStarting);
             elapsed = 0;
-            if (lowStarting > 0)
+            if (lowStarting > 0.5f)
             {
                 lowStarting -= ramping;
                 highStarting -= ramping;
