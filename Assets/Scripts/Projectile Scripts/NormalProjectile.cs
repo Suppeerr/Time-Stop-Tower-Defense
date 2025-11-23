@@ -9,7 +9,7 @@ public class NormalProjectile : MonoBehaviour
     public float initialYVel = 0f;
     private float initialZVel = -1f;
     private float gravityMultiplier = 0.7f;
-    private int splitCount = 3;
+    private int splitCount = 2;
     public float spreadAngle = 30f;
     private float destroyAfter = 3f;
     private float lifetime = 0f;

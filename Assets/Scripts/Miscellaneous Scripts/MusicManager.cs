@@ -4,11 +4,13 @@ using System.Collections;
 public class MusicManager : MonoBehaviour
 {
     public AudioSource valleyTrack;
+    private Coroutine fadeRoutine;
     private float originalVolume;
     private float fadeDuration = 1.6f;
     private float normalPitch = 1.0f;
     private float frozenPitch = 0.6f;
     private bool lastFrozenState = false;
+    
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -22,11 +24,21 @@ public class MusicManager : MonoBehaviour
         {
             if (ProjectileManager.IsFrozen)
             {
-                StartCoroutine(FadeOut());
+                if (fadeRoutine != null)
+                {
+                    StopCoroutine(fadeRoutine);
+                }
+
+                fadeRoutine = StartCoroutine(FadeOut());
             }
             else
             {
-                StartCoroutine(FadeIn());
+                if (fadeRoutine != null)
+                {
+                    StopCoroutine(fadeRoutine);
+                }
+
+                fadeRoutine = StartCoroutine(FadeIn());
             }
 
             lastFrozenState = ProjectileManager.IsFrozen;
