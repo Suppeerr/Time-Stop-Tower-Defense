@@ -19181,6 +19181,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: facff11d35624654c8d410d53d3e0609, type: 3}
+--- !u!114 &1126982979 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8335442978605386118, guid: 68fdb8c0b18ae194eb06e97259e474a0, type: 3}
+  m_PrefabInstance: {fileID: 1159305960}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!1001 &1134259503
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19553,7 +19564,7 @@ PrefabInstance:
     - target: {fileID: -3446773890192744314, guid: 68fdb8c0b18ae194eb06e97259e474a0, type: 3}
       propertyPath: baseHpText
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1126982979}
     - target: {fileID: 1885063304248326968, guid: 68fdb8c0b18ae194eb06e97259e474a0, type: 3}
       propertyPath: m_LocalPosition.z
       value: 0
@@ -19570,6 +19581,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3372660008242584034, guid: 68fdb8c0b18ae194eb06e97259e474a0, type: 3}
+      propertyPath: m_Name
+      value: Base Health Indicator
+      objectReference: {fileID: 0}
     - target: {fileID: 3906503082476275410, guid: 68fdb8c0b18ae194eb06e97259e474a0, type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
@@ -19581,6 +19596,10 @@ PrefabInstance:
     - target: {fileID: 3906503082476275410, guid: 68fdb8c0b18ae194eb06e97259e474a0, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 16.062
+      objectReference: {fileID: 0}
+    - target: {fileID: 4162180384705129025, guid: 68fdb8c0b18ae194eb06e97259e474a0, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 2000
       objectReference: {fileID: 0}
     - target: {fileID: 6808283007791042516, guid: 68fdb8c0b18ae194eb06e97259e474a0, type: 3}
       propertyPath: m_SizeDelta.x
@@ -36706,7 +36725,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3904462451544696180, guid: 638d79491cb0b9a42be0f4a970327af2, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4349666091383684732, guid: 638d79491cb0b9a42be0f4a970327af2, type: 3}
       propertyPath: m_LocalPosition.x
