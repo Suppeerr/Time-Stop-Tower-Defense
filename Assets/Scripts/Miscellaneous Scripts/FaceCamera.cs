@@ -7,17 +7,13 @@ public class UIFaceCamera : MonoBehaviour
     // Initiates camera to the main camera
     void Start()
     {
-        if (mainCamera == null)
-        {
-            mainCamera = Camera.main;
-        }
     }
     
     // Updates to make UI face camera
     void Update()
     {
         transform.LookAt
-        (transform.position + mainCamera.transform.rotation * Vector3.forward,
-         mainCamera.transform.rotation * Vector3.up);
+        (transform.position + CameraSwitch.CurrentCamera.transform.rotation * Vector3.forward,
+         CameraSwitch.CurrentCamera.transform.rotation * Vector3.up);
     }
 }

@@ -16,8 +16,6 @@ public class Draggable : MonoBehaviour
     private bool canPlace = true;
     private bool isPlaced = false;
     
-    private Camera mainCamera;
-
     // Renderers and ballSpawner script
     private Renderer[] rends;
     private Color[][] originalColors;
@@ -32,7 +30,6 @@ public class Draggable : MonoBehaviour
 
     void Awake()
     {
-        mainCamera = Camera.main;
         rends = GetComponentsInChildren<Renderer>(true);
 
         // Store original tower colors
@@ -58,7 +55,8 @@ public class Draggable : MonoBehaviour
     {
         if (isDragging)
         {
-            Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+            bool insidePlacementZone = false;
+            Ray ray = CameraSwitch.CurrentCamera.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
 
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, groundMask))
@@ -76,7 +74,6 @@ public class Draggable : MonoBehaviour
                 // Check for nearby objects
                 Collider[] nearby = Physics.OverlapSphere(desiredPos, placementRadius);
                 canPlace = true;
-                bool insidePlacementZone = false;
 
                 // Update color based on placement validity
                 foreach (Collider col in nearby)
@@ -98,12 +95,8 @@ public class Draggable : MonoBehaviour
                         break;
                     }
                 }
-                if (!insidePlacementZone)
-                {
-                    canPlace = false;
-                }
 
-                if (canPlace)
+                if (canPlace && insidePlacementZone)
                 {
                     ApplyColor(0.6f);
                 }
@@ -116,7 +109,7 @@ public class Draggable : MonoBehaviour
             // Stop dragging if mouse released
             if (Input.GetMouseButtonUp(0))
             {
-                if (canPlace)
+                if (canPlace && insidePlacementZone)
                 {
                     StopDrag();
                 }
@@ -146,15 +139,16 @@ public class Draggable : MonoBehaviour
     // Starts dragging the tower
     public void BeginDrag(MoneyManager moneyManager)
     {
-        Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+        Ray ray = CameraSwitch.CurrentCamera.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
         moneyManagerScript = moneyManager;
+        OnDragStart?.Invoke();
+        isDragging = true;
 
         if (Physics.Raycast(ray, out hit))
         {
             offset = transform.position - hit.point;
-            OnDragStart?.Invoke();
-            isDragging = true;
+            
         }
     }
 
@@ -184,6 +178,7 @@ public class Draggable : MonoBehaviour
     // Cancels placement
     private void CancelDrag()
     {
+        OnDragEnd?.Invoke();
         isDragging = false;
         Destroy(gameObject);
     }

@@ -4,8 +4,9 @@ public class PlacementZone : MonoBehaviour
 {
     [SerializeField] private GameObject zoneVisual;
 
-    void Start()
+    void Awake()
     {
+        OnEnable();
         HideZone();
     }
 
