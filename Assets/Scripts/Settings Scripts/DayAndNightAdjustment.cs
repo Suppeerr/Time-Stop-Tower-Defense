@@ -6,7 +6,7 @@ public class DayAndNightAdjustment : MonoBehaviour
     public Material nightSkybox;
     private Light dirLight;
     private float elapsed = 0f;
-    private float switchInterval = 10f;
+    private float switchInterval = 20f;
     private bool isDay = true;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created

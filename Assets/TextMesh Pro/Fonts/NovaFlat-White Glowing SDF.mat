@@ -25,7 +25,9 @@ Material:
     serializedVersion: 3
     m_TexEnvs: []
     m_Ints: []
-    m_Floats: []
+    m_Floats:
+    - _OutlineWidth: 0.4
+    - _ScaleRatioA: 0.6006006
     m_Colors:
     - _GlowColor: {r: 2.1185472, g: 2.1185472, b: 2.1185472, a: 1}
   m_BuildTextureStacks: []

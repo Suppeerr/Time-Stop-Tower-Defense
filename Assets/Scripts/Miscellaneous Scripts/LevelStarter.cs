@@ -1,16 +1,30 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class LevelStarter : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public static LevelStarter Instance;
+    public static bool HasLevelStarted { get; private set; }
+
+    void Awake()
     {
-        
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+
+        // Freezes time until level starts
+        Time.timeScale = 0f;
+        HasLevelStarted = false;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        
+        if (Keyboard.current.enterKey.wasPressedThisFrame)
+        {
+            Time.timeScale = 1f;
+            HasLevelStarted = true;
+            gameObject.SetActive(false);
+        }
     }
 }

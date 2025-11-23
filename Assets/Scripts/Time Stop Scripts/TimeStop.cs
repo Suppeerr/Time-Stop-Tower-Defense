@@ -1,8 +1,8 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 using System;
 using System.Collections;
 using TMPro;
-using UnityEngine.InputSystem;
 
 public class TimeStop : MonoBehaviour
 {
@@ -28,7 +28,7 @@ public class TimeStop : MonoBehaviour
     // Once timestop is triggered, all animated objects freeze for the duration
     void Update()
     {
-        if (BaseHealthManager.IsGameOver)
+        if (!LevelStarter.HasLevelStarted || BaseHealthManager.IsGameOver)
         {
             return;
         }

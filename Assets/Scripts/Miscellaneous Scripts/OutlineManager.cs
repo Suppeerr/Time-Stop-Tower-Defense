@@ -19,8 +19,11 @@ public class OutlineManager : MonoBehaviour
     // Set outline on a Clickable object, disabling previous one if necessary
     public void SetOutline(Clickable clickable)
     {
-        if (currentOutlined == clickable) return;
-
+        if (currentOutlined == clickable || !LevelStarter.HasLevelStarted || BaseHealthManager.IsGameOver)
+        {
+            return;
+        }
+        
         if (currentOutlined != null)
         {
             currentOutlined.DisableOutline();

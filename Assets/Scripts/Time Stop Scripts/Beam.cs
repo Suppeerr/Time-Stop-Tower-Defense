@@ -10,16 +10,11 @@ public class BeamZap : MonoBehaviour
     public float maxDistance = 50f;
     public LayerMask hitLayers;
     private float zapDuration = 0.1f; // how long it stays visible
-    private Camera mainCamera;
     public BallSpawner ballSpawner;
     public AudioSource zapSFX;
 
     void Start()
     {
-        if (mainCamera == null)
-        {
-            mainCamera = Camera.main;
-        }
         gameObject.SetActive(false);
     }
 
@@ -41,7 +36,7 @@ public class BeamZap : MonoBehaviour
         Vector3 endPos = Vector3.zero;
 
         // Raycast in the direction the tower is facing
-        Ray ray = mainCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
+        Ray ray = CameraSwitch.CurrentCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
         RaycastHit hit;
         float radius = 1f;
         int projectileLayer = LayerMask.GetMask("Normal Projectile");

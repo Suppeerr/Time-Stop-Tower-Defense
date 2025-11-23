@@ -16,8 +16,6 @@ public class Draggable : MonoBehaviour
     private bool canPlace = true;
     private bool isPlaced = false;
     
-    private Camera mainCamera;
-
     // Renderers and ballSpawner script
     private Renderer[] rends;
     private Color[][] originalColors;
@@ -32,7 +30,6 @@ public class Draggable : MonoBehaviour
 
     void Awake()
     {
-        mainCamera = Camera.main;
         rends = GetComponentsInChildren<Renderer>(true);
 
         // Store original tower colors
@@ -59,7 +56,7 @@ public class Draggable : MonoBehaviour
         if (isDragging)
         {
             bool insidePlacementZone = false;
-            Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+            Ray ray = CameraSwitch.CurrentCamera.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
 
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, groundMask))
@@ -142,7 +139,7 @@ public class Draggable : MonoBehaviour
     // Starts dragging the tower
     public void BeginDrag(MoneyManager moneyManager)
     {
-        Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+        Ray ray = CameraSwitch.CurrentCamera.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
         moneyManagerScript = moneyManager;
         OnDragStart?.Invoke();

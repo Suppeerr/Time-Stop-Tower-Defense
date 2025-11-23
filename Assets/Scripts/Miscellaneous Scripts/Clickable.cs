@@ -4,7 +4,6 @@ using UnityEngine;
 public class Clickable : MonoBehaviour
 {
     private Outline outline;
-    private Camera mainCamera;
     [SerializeField] private float outlineWidth;
 
     private bool isHovered = false;
@@ -25,15 +24,10 @@ public class Clickable : MonoBehaviour
         }
     }
 
-    private void Start()
-    {
-        mainCamera = Camera.main;
-    }
-
     private void Update()
     {
         // Raycast to detect hovering
-        Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+        Ray ray = CameraSwitch.CurrentCamera.ScreenPointToRay(Input.mousePosition);
         bool hoveringThisFrame = false;
 
         if (gameObject.layer == LayerMask.NameToLayer("Normal Projectile"))
