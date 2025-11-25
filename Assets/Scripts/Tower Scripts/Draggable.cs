@@ -16,8 +16,6 @@ public class Draggable : MonoBehaviour
     private bool canPlace = true;
     private bool isPlaced = false;
     
-    private Camera mainCamera;
-
     // Renderers and ballSpawner script
     private Renderer[] rends;
     private Color[][] originalColors;
@@ -26,9 +24,12 @@ public class Draggable : MonoBehaviour
     // Money manager script
     private MoneyManager moneyManagerScript;
 
+    // Dragging start and stop events
+    public static event System.Action OnDragStart;
+    public static event System.Action OnDragEnd;
+
     void Awake()
     {
-        mainCamera = Camera.main;
         rends = GetComponentsInChildren<Renderer>(true);
 
         // Store original tower colors
@@ -54,7 +55,8 @@ public class Draggable : MonoBehaviour
     {
         if (isDragging)
         {
-            Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+            bool insidePlacementZone = false;
+            Ray ray = CameraSwitch.CurrentCamera.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
 
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, groundMask))
@@ -76,6 +78,10 @@ public class Draggable : MonoBehaviour
                 // Update color based on placement validity
                 foreach (Collider col in nearby)
                 {
+                    if (col.CompareTag("Placement Zone"))
+                    {
+                        insidePlacementZone = true;
+                    }
                     foreach (string invTag in invalidTags)
                     {
                         if (col.CompareTag(invTag) && col.gameObject != gameObject)
@@ -90,7 +96,7 @@ public class Draggable : MonoBehaviour
                     }
                 }
 
-                if (canPlace)
+                if (canPlace && insidePlacementZone)
                 {
                     ApplyColor(0.6f);
                 }
@@ -103,7 +109,7 @@ public class Draggable : MonoBehaviour
             // Stop dragging if mouse released
             if (Input.GetMouseButtonUp(0))
             {
-                if (canPlace)
+                if (canPlace && insidePlacementZone)
                 {
                     StopDrag();
                 }
@@ -133,20 +139,23 @@ public class Draggable : MonoBehaviour
     // Starts dragging the tower
     public void BeginDrag(MoneyManager moneyManager)
     {
-        Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+        Ray ray = CameraSwitch.CurrentCamera.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
         moneyManagerScript = moneyManager;
+        OnDragStart?.Invoke();
+        isDragging = true;
 
         if (Physics.Raycast(ray, out hit))
         {
             offset = transform.position - hit.point;
-            isDragging = true;
+            
         }
     }
 
     // Stops dragging the tower
     private void StopDrag()
     {
+        OnDragEnd?.Invoke();
         if (!canPlace)
         {
             CancelDrag();
@@ -169,8 +178,14 @@ public class Draggable : MonoBehaviour
     // Cancels placement
     private void CancelDrag()
     {
+        OnDragEnd?.Invoke();
         isDragging = false;
         Destroy(gameObject);
+    }
+
+    public bool GetIsDragging()
+    {
+        return isDragging;
     }
 
     private void ApplyColor(float alpha = 1f, Color? tint = null, bool useOriginal = true)

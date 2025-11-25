@@ -33,7 +33,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _CubemapPosition: -0.2
+    - _CubemapPosition: -0.1
     - _CubemapTransition: 0
     - _Cubemapp: 1
     - _EnableFog: 0

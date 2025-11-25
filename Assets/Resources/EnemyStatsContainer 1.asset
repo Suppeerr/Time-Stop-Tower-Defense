@@ -15,7 +15,7 @@ MonoBehaviour:
   stats:
   - type: 0
     hp: 2400
-    spd: 4
+    spd: 3.5
     def: 0
   - type: 1
     hp: 850

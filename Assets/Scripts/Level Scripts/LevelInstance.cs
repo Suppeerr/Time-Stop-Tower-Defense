@@ -9,27 +9,25 @@ public class LevelInstance : MonoBehaviour
     List<BaseEnemy> enemies = new List<BaseEnemy>();
     public List<BaseEnemy> queueRemove = new List<BaseEnemy>();
     bool s_enabled = false;
-    private float spawnInterval;
+    private float spawnInterval = 3f;
     private float elapsed = 0f;
-    private float lowStarting = 3f;
-    private float highStarting = 5f;
-    private float ramping = 0.04f;
+    private float lowStarting = 4f;
+    private float highStarting = 5.5f;
+    private float ramping = 0.045f;
     GameObject ePrefab;
-    public static LevelInstance instance;
+    public static LevelInstance Instance { get; private set; }
 
     public void Awake()
     {
-        instance = this;
-        Debug.Log("levelInst started");
+        Instance = this;
+        ePrefab = (GameObject)Resources.Load("Normal Bandit");
         if (SceneManager.GetActiveScene().name.Equals("Gameplay and Mechanics") || SceneManager.GetActiveScene().name.Equals("Level 1")) s_enabled = true;
         if (!s_enabled) return;
 
         Debug.Log("levelInst enabled");
-        ePrefab = (GameObject)Resources.Load("Normal Bandit");
+
         //this would be ideally loaded from a data structure or from file before the scene begin
         LoadWaypointPrefabs();
-        
-        spawnInterval = Random.Range(1f, 3f);
     }
 
     public void LoadWaypointPrefabs()
@@ -38,7 +36,7 @@ public class LevelInstance : MonoBehaviour
 
         if (pathObj == null)
         {
-            Debug.LogError("No object tagged WaypointRoot found!");
+            Debug.LogError("No object tagged Path found!");
             return;
         }
 
@@ -53,7 +51,7 @@ public class LevelInstance : MonoBehaviour
 
     public void Update()
     {
-        if (ProjectileManager.IsFrozen)
+        if (ProjectileManager.IsFrozen || !LevelStarter.HasLevelStarted)
         {
             return;
         }
@@ -67,7 +65,7 @@ public class LevelInstance : MonoBehaviour
             SpawnEnemyTest();
             spawnInterval = Random.Range(lowStarting, highStarting);
             elapsed = 0;
-            if (lowStarting > 0)
+            if (lowStarting > 0.5f)
             {
                 lowStarting -= ramping;
                 highStarting -= ramping;
@@ -133,10 +131,5 @@ public class LevelInstance : MonoBehaviour
         }
         
         return firstEnemy;
-    }
-
-    public static LevelInstance GetLevelInstance()
-    {
-        return instance;
     }
 }

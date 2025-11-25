@@ -17,13 +17,13 @@ public class BlockSource : MonoBehaviour
     void Start()
     {
         moneyManagerScript = moneyManager.GetComponent<MoneyManager>();
-        costIndicator.text = "Cost: $" + splitterCost;
+        costIndicator.text = splitterCost + " Coins";
         costIndicator.color = baseColor;
     }
 
     private void OnMouseDown()
     {
-        if (ProjectileManager.IsFrozen || BaseHealthManager.IsGameOver)
+        if (ProjectileManager.IsFrozen || !LevelStarter.HasLevelStarted || BaseHealthManager.IsGameOver)
         {
             return;
         }

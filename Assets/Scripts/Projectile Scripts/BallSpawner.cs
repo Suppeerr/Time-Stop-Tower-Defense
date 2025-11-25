@@ -24,17 +24,11 @@ public class BallSpawner : MonoBehaviour
     public ParticleSystem muzzleFlash;
     public AudioSource cannonBlastSFX;
 
-    // Ray Trace Camera
-    private Camera mainCamera;
-
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         spawnRate = 1f / spawnPerSecond;
-        if (mainCamera == null)
-        {
-            mainCamera = Camera.main;
-        }
+
         if (!isCannon)
         {
             SpawnNormalRock(ProjectileType.PrimaryNormal, transform.position, transform.rotation);
@@ -63,7 +57,7 @@ public class BallSpawner : MonoBehaviour
         {
             if ((Mouse.current.leftButton.wasPressedThisFrame || Keyboard.current.spaceKey.wasPressedThisFrame) && timer >= spawnRate)
             {
-                Ray ray = mainCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
+                Ray ray = CameraSwitch.CurrentCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
                 int projectileLayer = LayerMask.GetMask("Normal Projectile");
                 float radius = 0.5f;
                 if (Physics.SphereCast(ray, radius, out var hit, Mathf.Infinity, projectileLayer))
@@ -115,7 +109,7 @@ public class BallSpawner : MonoBehaviour
             return;
         }
 
-        Instantiate(prefabToSpawn, position, rotation);
+        Instantiate(prefabToSpawn, position + Vector3.up * 0.1f, rotation);
         timer = 0f;
     }
 

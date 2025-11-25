@@ -1,8 +1,8 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 using System;
 using System.Collections;
 using TMPro;
-using UnityEngine.InputSystem;
 
 public class TimeStop : MonoBehaviour
 {
@@ -28,6 +28,11 @@ public class TimeStop : MonoBehaviour
     // Once timestop is triggered, all animated objects freeze for the duration
     void Update()
     {
+        if (!LevelStarter.HasLevelStarted || BaseHealthManager.IsGameOver)
+        {
+            return;
+        }
+        
         // Recharge duration when inactive
         if (!active && duration < maxDur)
         {
@@ -57,7 +62,7 @@ public class TimeStop : MonoBehaviour
         }
         if (active && isCoroutineRunning && Keyboard.current.tKey.wasPressedThisFrame)
         {
-            EndTimestop(2f);
+            EndTimestop(3f);
         }
     }
 
@@ -85,7 +90,7 @@ public class TimeStop : MonoBehaviour
             duration -= Time.deltaTime;
             yield return null;
         }
-        EndTimestop(1f);
+        EndTimestop(3f);
     }
 
     // Ends the timestop

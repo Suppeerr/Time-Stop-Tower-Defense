@@ -5,7 +5,7 @@ public class HomingProjectile : MonoBehaviour
 {
     // Targeting
     protected Transform target;
-    LevelInstance level;
+    private LevelInstance level;
     
     // Arc / Steering
     protected float steerSpeed = 10f;
@@ -35,7 +35,7 @@ public class HomingProjectile : MonoBehaviour
         ProjectileManager.Instance.RegisterProjectile(rb);
         rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
         rb.linearVelocity = Vector3.zero;
-        level = LevelInstance.GetLevelInstance();
+        level = LevelInstance.Instance;
 
         if (ProjectileManager.IsFrozen)
         {
@@ -246,7 +246,7 @@ public class HomingProjectile : MonoBehaviour
     // Sets the homing projectile's target manually
     public void SetTarget(GameObject newTarget)
     {
-        if (target == null)
+        if (target == null && newTarget != null)
         {
             target = newTarget.transform;
         }
