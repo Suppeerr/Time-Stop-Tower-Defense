@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8373831238568392779}
   m_Layer: 10
-  m_Name: Sign
+  m_Name: Placement Zone Sign
   m_TagString: Tower
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -50,7 +50,7 @@ GameObject:
   - component: {fileID: 1311649695855008470}
   - component: {fileID: 5772826317573171330}
   m_Layer: 10
-  m_Name: Cube
+  m_Name: Sign Top
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -288,7 +288,7 @@ GameObject:
   - component: {fileID: 6384612455663487772}
   - component: {fileID: 659563263388856938}
   m_Layer: 10
-  m_Name: Cylinder
+  m_Name: Sign Post
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

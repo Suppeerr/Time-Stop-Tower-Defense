@@ -13,8 +13,6 @@ public class LevelStarter : MonoBehaviour
             Instance = this;
         }
 
-        // Freezes time until level starts
-        Time.timeScale = 0f;
         HasLevelStarted = false;
     }
 
@@ -22,7 +20,6 @@ public class LevelStarter : MonoBehaviour
     {
         if (Keyboard.current.enterKey.wasPressedThisFrame)
         {
-            Time.timeScale = 1f;
             HasLevelStarted = true;
             gameObject.SetActive(false);
         }

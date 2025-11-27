@@ -2,6 +2,14 @@ using UnityEngine;
 
 public class HomingCoin : HomingProjectile
 {
+    void Awake()
+    {
+        rb = GetComponent<Rigidbody>();
+        ProjectileManager.Instance.RegisterProjectile(rb);
+        rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
+        rb.linearVelocity = Vector3.zero;
+    }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {

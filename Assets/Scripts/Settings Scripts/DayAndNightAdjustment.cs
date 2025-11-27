@@ -7,6 +7,7 @@ public class DayAndNightAdjustment : MonoBehaviour
     private Light dirLight;
     private float elapsed = 0f;
     private float switchInterval = 20f;
+    private float rotation = 0f;
     private bool isDay = true;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -42,6 +43,17 @@ public class DayAndNightAdjustment : MonoBehaviour
                 ChangeToNight();
             }
         }
+
+        RenderSettings.skybox.SetFloat("_Rotation", rotation);
+        if (rotation < 360f)
+        {
+            rotation += Time.deltaTime;
+        }
+        else
+        {
+            rotation = 0f;
+        }
+        
     }
 
     private void ChangeToDay()

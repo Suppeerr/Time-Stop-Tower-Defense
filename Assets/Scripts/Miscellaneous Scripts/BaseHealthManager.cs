@@ -8,6 +8,7 @@ public class BaseHealthManager : MonoBehaviour
     public static bool IsGameOver { get; private set; }
     private int startingBaseHp;
     private int currentBaseHp;
+    private bool textEnabled = false;
 
     // Avoids duplicates of this object
     private void Awake()
@@ -24,10 +25,16 @@ public class BaseHealthManager : MonoBehaviour
         startingBaseHp = 500;
         currentBaseHp = startingBaseHp;
         UpdateUI();
+        baseHpText.enabled = false;
     }
 
     void Update()
     {
+        if (LevelStarter.HasLevelStarted && textEnabled == false)
+        {
+            textEnabled = true;
+            baseHpText.enabled = true;
+        }
         if (currentBaseHp <= 0)
         {
             ToggleGameOver();

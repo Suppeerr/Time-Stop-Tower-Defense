@@ -27,7 +27,7 @@ public class HomingProjectile : MonoBehaviour
     private int damage;
     private float aoe;
 
-    private Rigidbody rb;
+    protected Rigidbody rb;
 
     void Awake()
     {
