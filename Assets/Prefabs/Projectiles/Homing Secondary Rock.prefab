@@ -276,7 +276,8 @@ MonoBehaviour:
   arcBoost: 1
   destroyAfter: 15
   type: 3
-  lightningRing: {fileID: 4435260511220201041}
+  normalLightningRingPrefab: {fileID: 472945448216530197, guid: 73463932c03cbba409d6cd242964ba32, type: 3}
+  upgradedLightningRingPrefab: {fileID: 472945448216530197, guid: 01bbac061358a0e4e91355aeff964640, type: 3}
   sphereEmitter: {fileID: 0}
   sparksPrefab: {fileID: 0}
   flashPrefab: {fileID: 7997670102530097760, guid: 98102383d125fc548a3479625c6a5a0f, type: 3}
@@ -543,14 +544,3 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 49564678509850226, guid: 73463932c03cbba409d6cd242964ba32, type: 3}
   m_PrefabInstance: {fileID: 4168981984837887433}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &4435260511220201041 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 312444823839380376, guid: 73463932c03cbba409d6cd242964ba32, type: 3}
-  m_PrefabInstance: {fileID: 4168981984837887433}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0a85209d4cd69d6469a10459b6fd20f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'

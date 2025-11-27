@@ -258,17 +258,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 49564678509850226, guid: 73463932c03cbba409d6cd242964ba32, type: 3}
   m_PrefabInstance: {fileID: 4210370430219664937}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &4483398782256819633 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 312444823839380376, guid: 73463932c03cbba409d6cd242964ba32, type: 3}
-  m_PrefabInstance: {fileID: 4210370430219664937}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0a85209d4cd69d6469a10459b6fd20f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
 --- !u!1001 &4695582430446830645
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -615,7 +604,8 @@ MonoBehaviour:
   arcBoost: 1
   destroyAfter: 15
   type: 1
-  lightningRing: {fileID: 4483398782256819633}
+  normalLightningRingPrefab: {fileID: 472945448216530197, guid: 73463932c03cbba409d6cd242964ba32, type: 3}
+  upgradedLightningRingPrefab: {fileID: 472945448216530197, guid: 01bbac061358a0e4e91355aeff964640, type: 3}
   sphereEmitter: {fileID: 5858631500589620279}
   sparksPrefab: {fileID: 289052098803796386, guid: 47fa2cba6ed93234da89e8e5587d4932, type: 3}
   flashPrefab: {fileID: 1264171774926734363, guid: ce225acb2fd38304d996153b91c960b9, type: 3}
@@ -636,4 +626,4 @@ MonoBehaviour:
   spheresPerSecond: 10
   sphereSpeed: 1
   lifetime: 0.3
-  spawnRadius: 0.4
+  spawnRadius: 0.7

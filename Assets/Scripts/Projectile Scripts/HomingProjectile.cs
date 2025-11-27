@@ -17,7 +17,8 @@ public class HomingProjectile : MonoBehaviour
     public ProjectileType type;
 
     // Effects
-    public LightningRing lightningRing;
+    public GameObject normalLightningRingPrefab;
+    public GameObject upgradedLightningRingPrefab;
     public GlowingSphereEmitter sphereEmitter;
     public ParticleSystem sparksPrefab;
     public ParticleSystem flashPrefab;
@@ -208,10 +209,9 @@ public class HomingProjectile : MonoBehaviour
             return;
         }
 
-        if (lightningRing != null)
+        if (normalLightningRingPrefab != null)
         {
-            lightningRing.enabled = true;
-            lightningRing.SetVisible(true);
+            Instantiate(upgradedLightningRingPrefab, transform);
         }
 
         if (sphereEmitter != null)
