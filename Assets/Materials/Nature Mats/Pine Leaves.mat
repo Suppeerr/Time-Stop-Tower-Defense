@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Pine Leaves
-  m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 38bfd27b5269e734883d83ca5fa5b812, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -17,8 +17,7 @@ Material:
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
-  stringTagMap:
-    RenderType: Opaque
+  stringTagMap: {}
   disabledShaderPasses:
   - MOTIONVECTORS
   m_LockedProperties: 
@@ -101,9 +100,14 @@ Material:
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
+    - _MaxHeight: 1
     - _Metallic: 0
+    - _NoiseScale: 100
+    - _Noise_Strength: 1
     - _OcclusionStrength: 1
     - _Parallax: 0.005
+    - _PivotOffset: 1
+    - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
     - _Smoothness: 0.3
@@ -112,9 +116,13 @@ Material:
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
     - _Surface: 0
+    - _SwayAmount: 0.03
+    - _SwaySpeed: 1.5
+    - _TreeSeed: 1
     - _WorkflowMode: 1
     - _XRMotionVectorsPass: 1
     - _ZWrite: 1
+    - _pivotOffset: 1
     m_Colors:
     - _BaseColor: {r: 0, g: 0.3921569, b: 0, a: 1}
     - _Color: {r: 0, g: 0.39215687, b: 0, a: 1}

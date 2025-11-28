@@ -77,6 +77,8 @@ public class TimeStop : MonoBehaviour
         timeStop?.Invoke(true);
         beamSpawner.SetActive(true);
 
+        UpdateParticles();
+
         while (duration > 0f)
         {
             secondsElapsed += Time.deltaTime;
@@ -103,6 +105,8 @@ public class TimeStop : MonoBehaviour
         timeStopEndSFX?.Play();
         cooldown = cd;
         beamSpawner.SetActive(false);
+
+        UpdateParticles();
     }
 
     // Updates timestop timers
@@ -127,6 +131,28 @@ public class TimeStop : MonoBehaviour
             cooldownText.text = cooldown.ToString("F1");
             cooldownText.color = cooldownColor;
             cooldownText.gameObject.SetActive(cooldown > 0f);
+        }
+    }
+
+    private void UpdateParticles()
+    {
+        ParticleSystem[] allParticles = FindObjectsByType<ParticleSystem>(FindObjectsSortMode.None);
+        foreach (var ps in allParticles)
+        {
+            if (ps.gameObject.layer == LayerMask.NameToLayer("Ignore Time Stop"))
+            {
+                continue;
+            }
+
+            if (active == true)
+            {
+                ps.Pause(true);
+            }
+            else
+            {
+                ps.Play(true);
+            }
+            
         }
     }
 }

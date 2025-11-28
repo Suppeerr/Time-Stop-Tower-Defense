@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 using System.Collections;
 
 public class Draggable : MonoBehaviour
@@ -20,9 +21,6 @@ public class Draggable : MonoBehaviour
     private Renderer[] rends;
     private Color[][] originalColors;
     public GameObject placedTowerPrefab;
-
-    // Money manager script
-    private MoneyManager moneyManagerScript;
 
     // Dragging start and stop events
     public static event System.Action OnDragStart;
@@ -120,7 +118,7 @@ public class Draggable : MonoBehaviour
             }
 
             // Cancel drag if time stopped or x pressed
-            if (ProjectileManager.IsFrozen || Input.GetKeyDown(KeyCode.X))
+            if (ProjectileManager.IsFrozen || Keyboard.current.xKey.wasPressedThisFrame)
             {
                 CancelDrag();
             }
@@ -132,16 +130,15 @@ public class Draggable : MonoBehaviour
     {
         if (!isPlaced)
         {
-            BeginDrag(moneyManagerScript);
+            BeginDrag();
         }
     }
 
     // Starts dragging the tower
-    public void BeginDrag(MoneyManager moneyManager)
+    public void BeginDrag()
     {
         Ray ray = CameraSwitch.CurrentCamera.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
-        moneyManagerScript = moneyManager;
         OnDragStart?.Invoke();
         isDragging = true;
 
@@ -163,7 +160,6 @@ public class Draggable : MonoBehaviour
         }
         if (!isPlaced)
         {
-            moneyManagerScript.DecreaseMoney(5);
             GameObject placedTower = Instantiate(placedTowerPrefab);
             PlacedTower placedTowerScript = placedTower.GetComponent<PlacedTower>();
             if (placedTowerScript != null)

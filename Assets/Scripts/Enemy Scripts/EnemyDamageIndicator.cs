@@ -18,6 +18,12 @@ public class EnemyDamageIndicator : MonoBehaviour
         GameObject dmgObj = Instantiate(damageIndicator, enemy.transform);
         dmgObj.transform.localScale = Vector3.one;
         TMP_Text dmgText = dmgObj.GetComponentInChildren<TMP_Text>();
+
+        if (dmg >= 1000)
+        {
+            dmgText.fontSize = 8f;
+        }
+
         dmgText.text = dmg.ToString();
         SetAlpha(1f, dmgText);
 

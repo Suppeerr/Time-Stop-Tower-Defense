@@ -16,7 +16,7 @@ public class BallSpawner : MonoBehaviour
     public float spawnPerSecond = 5f;
     public bool isCannon = false;
     private float spawnRate;
-    private float timer = 0f;
+    private float timer = 1f;
     public Transform shootPoint;
 
     // Effects and Audio
@@ -28,17 +28,12 @@ public class BallSpawner : MonoBehaviour
     void Start()
     {
         spawnRate = 1f / spawnPerSecond;
-
-        if (!isCannon)
-        {
-            SpawnNormalRock(ProjectileType.PrimaryNormal, transform.position, transform.rotation);
-        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (ProjectileManager.IsFrozen)
+        if (ProjectileManager.IsFrozen || !LevelStarter.HasLevelStarted)
         {
             return;
         }
@@ -46,8 +41,6 @@ public class BallSpawner : MonoBehaviour
         timer += Time.deltaTime;
 
         CheckIfCannon();
-        
-
     }
 
     // Spawns cannonball if spawner is a cannon and a normal rock otherwise
@@ -135,6 +128,8 @@ public class BallSpawner : MonoBehaviour
         }
 
         GameObject homingProjectile = Instantiate(prefabToSpawn, position, rotation);
-        homingProjectile.GetComponent<HomingProjectile>().EnableEffects();
+        HomingProjectile homingProjScript = homingProjectile.GetComponent<HomingProjectile>();
+        homingProjScript.EnableNormalEffects();
+        homingProjScript.IncrementChargeLevel();
     }
 }
