@@ -38246,6 +38246,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: House&Monument 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1765151732725312339, guid: ed7dc294c0a6e144ead3db0c24070ea3, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1765151732725312339, guid: ed7dc294c0a6e144ead3db0c24070ea3, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.8
+      objectReference: {fileID: 0}
     - target: {fileID: 2806941929214994622, guid: ed7dc294c0a6e144ead3db0c24070ea3, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 

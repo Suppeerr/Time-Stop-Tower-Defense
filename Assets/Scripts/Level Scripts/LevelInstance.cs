@@ -132,4 +132,31 @@ public class LevelInstance : MonoBehaviour
         
         return firstEnemy;
     }
+
+    public BaseEnemy GetSecondEnemy()
+    {
+        float currentWaypointDist = -1;
+        float furthestWaypoint = -1;
+        BaseEnemy firstEnemy = GetFirstEnemy();
+        BaseEnemy secondEnemy = null;
+
+        foreach(var enemy in enemies)
+        {
+            if (enemy == firstEnemy)
+            {
+                continue;
+            }
+            
+            float cw = enemy.GetCurrentWaypoint();
+            float cd = enemy.GetCurDistTraveled();
+            if (cw > furthestWaypoint || (cw == furthestWaypoint && cd > currentWaypointDist))
+            {
+                secondEnemy = enemy;
+                furthestWaypoint = cw;
+                currentWaypointDist = cd;
+            }
+        }
+        
+        return secondEnemy;
+    }
 }

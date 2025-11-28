@@ -128,6 +128,8 @@ public class BallSpawner : MonoBehaviour
         }
 
         GameObject homingProjectile = Instantiate(prefabToSpawn, position, rotation);
-        homingProjectile.GetComponent<HomingProjectile>().EnableEffects();
+        HomingProjectile homingProjScript = homingProjectile.GetComponent<HomingProjectile>();
+        homingProjScript.EnableNormalEffects();
+        homingProjScript.IncrementChargeLevel();
     }
 }

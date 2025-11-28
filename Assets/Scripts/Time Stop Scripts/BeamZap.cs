@@ -38,18 +38,25 @@ public class BeamZap : MonoBehaviour
         // Raycast in the direction the tower is facing
         Ray ray = CameraSwitch.CurrentCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
         RaycastHit hit;
-        float radius = 1f;
-        int projectileLayer = LayerMask.GetMask("Normal Projectile");
+        float radius = 0.8f;
+        int projectileLayers = LayerMask.GetMask("Normal Projectile", "Homing Projectile");
 
-        if (Physics.SphereCast(ray, radius, out hit, Mathf.Infinity, projectileLayer))
+        if (Physics.SphereCast(ray, radius, out hit, Mathf.Infinity, projectileLayers))
         {
             GameObject hitProj = hit.collider.gameObject;
-            NormalProjectile normalProj = hitProj.GetComponent<NormalProjectile>();
-            HomingProjectile homingProj = hitProj.GetComponent<HomingProjectile>();
+            NormalProjectile normalProjScript = hitProj.GetComponent<NormalProjectile>();
+            HomingProjectile homingProjScript = hitProj.GetComponent<HomingProjectile>();
 
-            if (homingProj != null)
+            if (homingProjScript != null)
             {
-                homingProj.EnableEffects();
+                homingProjScript.IncrementChargeLevel();
+                homingProjScript.ChangeLayer();
+                homingProjScript.EnableUpgradedEffects();
+
+                if (homingProjScript.type == ProjectileType.PrimaryHoming)
+                {
+                    homingProjScript.AddDamage(400);
+                }
             }
 
             beam.enabled = true;
@@ -58,28 +65,30 @@ public class BeamZap : MonoBehaviour
             beam.SetPosition(1, endPos);
             zapSFX?.Play();
 
-            if (normalProj != null)
+            if (normalProjScript != null)
             {
-                normalProj.MarkDestroyedByParry();
+                normalProjScript.MarkDestroyedByParry();
 
-                switch (normalProj.type)
+                switch (normalProjScript.type)
                 {
                     case ProjectileType.PrimaryNormal:
-                        normalProj.MarkDestroyedByParry();
                         ballSpawner?.SpawnHomingRock(ProjectileType.PrimaryHoming, hitProj.transform.position, hitProj.transform.rotation);
                         break;
                     case ProjectileType.SecondaryNormal:
                         ballSpawner?.SpawnHomingRock(ProjectileType.SecondaryHoming, hitProj.transform.position, hitProj.transform.rotation);
                         break;
                 }
+                Destroy(hitProj); 
             }
-
-            Destroy(hitProj); 
         }
-
 
         // Disable beam
         yield return new WaitForSeconds(zapDuration);
+        beam.enabled = false;
+    }
+
+    void OnDisable()
+    {
         beam.enabled = false;
     }
 }

@@ -1,25 +1,50 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 using System.Collections;
 
 public class PlacedTower : MonoBehaviour
 {
-    // ballSpawner script
+    // Ball spawner script
     private BallSpawner ballSpawner;
 
     // Tower placement animation
     private float placementTime = 0.3f;
     private float placementHeight = 3f;
+    private bool isPlaced = false;
     public ParticleSystem dirtBurstPrefab;
     public ParticleSystem impactRingPrefab;
 
     // Tower placement audio
     public AudioSource towerPlaceSFX;
 
+    // Raycasting
+    private static LayerMask towerLayer;
+
+    // Money manager script
+    private MoneyManager moneyManagerScript;
+
     void Awake()
     {
+        moneyManagerScript = GameObject.Find("Safe Base")?.GetComponent<MoneyManager>();
         ballSpawner = GetComponent<BallSpawner>();
         ballSpawner.enabled = false;
+        towerLayer = LayerMask.GetMask("Tower");
+    }
 
+    void Update()
+    {
+        if (isPlaced && Keyboard.current.xKey.wasPressedThisFrame)
+        {
+            Ray ray = CameraSwitch.CurrentCamera.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, towerLayer))
+            {
+                if (hit.collider.transform == this.transform)
+                {
+                    moneyManagerScript.UpdateMoney(4);
+                Destroy(this.gameObject);
+                }
+            }
+        }
     }
 
     // Places the tower with animations
@@ -28,6 +53,7 @@ public class PlacedTower : MonoBehaviour
         towerPlaceSFX?.Play();
         float elapsedDelay = 0f;
         Vector3 startPos = endPos + Vector3.up * placementHeight;
+        moneyManagerScript.DecreaseMoney(5);
 
         while (elapsedDelay < placementTime)
         {
@@ -63,5 +89,7 @@ public class PlacedTower : MonoBehaviour
         {
             ballSpawner.enabled = true;
         }
+
+        isPlaced = true;
     }
 }

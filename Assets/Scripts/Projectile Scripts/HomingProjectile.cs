@@ -5,7 +5,11 @@ public class HomingProjectile : MonoBehaviour
 {
     // Targeting
     protected Transform target;
+    private Transform lastHitEnemy;
+    private int hitEnemies = 0;
+    private bool isPiercing = false;
     private LevelInstance level;
+    private Collider myCollider;
     
     // Arc / Steering
     protected float steerSpeed = 10f;
@@ -20,8 +24,9 @@ public class HomingProjectile : MonoBehaviour
     public GameObject normalLightningRingPrefab;
     public GameObject upgradedLightningRingPrefab;
     public GlowingSphereEmitter sphereEmitter;
-    public ParticleSystem sparksPrefab;
-    public ParticleSystem flashPrefab;
+    public GameObject normalExplosionPrefab;
+    public GameObject upgradedExplosionPrefab;
+    private int chargeLevel = 0;
 
     // Stats
     public ProjectileStatsContainer statsContainer;
@@ -37,6 +42,7 @@ public class HomingProjectile : MonoBehaviour
         rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
         rb.linearVelocity = Vector3.zero;
         level = LevelInstance.Instance;
+        myCollider = GetComponent<Collider>();
 
         if (ProjectileManager.IsFrozen)
         {
@@ -72,7 +78,7 @@ public class HomingProjectile : MonoBehaviour
 
     // Updates for projectile physics 
     protected virtual void FixedUpdate()
-    {
+    {        
         if (ProjectileManager.IsFrozen)
         {
             return;
@@ -81,7 +87,8 @@ public class HomingProjectile : MonoBehaviour
         {
             rb.useGravity = true;
         }
-        if (target == null)
+
+        if ((target == null && !isPiercing) || BaseHealthManager.IsGameOver)
         {
             Destroy(gameObject);
             return;
@@ -90,58 +97,25 @@ public class HomingProjectile : MonoBehaviour
         HomeToTarget();
     }
 
-    // Assigns the first enemy to the projectile
-    private void AssignFirstEnemy()
-    {
-        if (target == null)
-        {
-            BaseEnemy firstEnemy = level.GetFirstEnemy();
-            if (firstEnemy != null)
-            {
-                target = firstEnemy.visualObj.transform;
-            }
-            else
-            {
-                Destroy(gameObject);
-            }
-        }
-    }
-
-    // Assigns the nearest enemy to the projectile
-    private void AssignNearestEnemy()
-    {
-        if (target == null)
-        {
-            GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
-            GameObject closest = null;
-            float minDist = Mathf.Infinity;
-            Vector3 pos = transform.position;
-
-            foreach (GameObject e in enemies)
-            {
-                float dist = (e.transform.position - pos).sqrMagnitude;
-                if (dist < minDist)
-                {
-                    closest = e;
-                    minDist = dist;
-                }
-            }
-            if (closest != null)
-            {
-                target = closest.transform;
-            }
-            else
-            {
-                Destroy(gameObject);
-            }
-        }
-    }
-
     // Homes the projectile to the given target
     protected virtual void HomeToTarget()
     {
+        if (!target)
+        {
+            if (isPiercing)
+            {
+                AssignSecondEnemy();
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
+
+            return;
+        }
+
         // Vector to target
-        Vector3 disp = target.position - transform.position;
+        Vector3 disp = target.position - rb.position;
         float distance = disp.magnitude;
 
         // Estimate time to reach target
@@ -179,67 +153,103 @@ public class HomingProjectile : MonoBehaviour
     // Runs when projectile collides with a valid object
     void OnCollisionEnter(Collision collision)
     {
-        SpawnExplosion();
-
         if (type == ProjectileType.PrimaryHoming)
         {
-            // Get all colliders in radius - AoE damage
-            Collider[] hitColliders = Physics.OverlapSphere(transform.position, aoe);
-            
-            foreach (Collider col in hitColliders)
+            if (chargeLevel <= 1)
             {
-                DoAoEDamage(col);
+                DoAoEDamage(0f);
+                SpawnNormalExplosion();
             }
+            else
+            {
+                DoAoEDamage(2f);
+                SpawnUpgradedExplosion();
+            }
+
+            Destroy(gameObject);
+            return;
         }
-        else
+
+        // Single target damage
+        DoSingleTargetDamage(collision);
+        SpawnNormalExplosion();
+
+        if (chargeLevel == 2 && hitEnemies < 1)
         {
-            // Single target damage
-            DoSingleTargetDamage(collision);
-        }
-        
+            Collider enemyCol = collision.collider;
+            Physics.IgnoreCollision(myCollider, enemyCol, true);
+            lastHitEnemy = enemyCol.transform;
+            isPiercing = true;
+
+            hitEnemies++;
+            
+            target = null;
+            AssignSecondEnemy();
+            
+            return;
+        }    
 
         Destroy(gameObject);
     }
 
-    // Enables lightning and sphere emitter effects
-    public void EnableEffects()
+    // Assigns the first enemy to the projectile
+    private void AssignFirstEnemy()
     {
-        if (!ProjectileManager.IsFrozen)
+        BaseEnemy firstEnemy = level.GetFirstEnemy();
+        if (firstEnemy != null)
         {
-            return;
+            target = firstEnemy.visualObj.transform;
         }
-
-        if (normalLightningRingPrefab != null)
+        else
         {
-            Instantiate(upgradedLightningRingPrefab, transform);
-        }
-
-        if (sphereEmitter != null)
-        {
-            sphereEmitter.enabled = true;
+            Destroy(gameObject);
         }
     }
 
-    // Spawns explosion on collision with enemy
-    private void SpawnExplosion()
+    // Assigns the second enemy to the projectile
+    private void AssignSecondEnemy()
     {
-        if (type == ProjectileType.PrimaryHoming)
+        BaseEnemy secondEnemy = level.GetSecondEnemy();
+        if (secondEnemy != null)
         {
-            ProjectileManager.Instance.PlayExplosionSound();
+            target = secondEnemy.visualObj.transform;
         }
-        
-        if (sparksPrefab != null)
+        else
         {
-            ParticleSystem s = Instantiate(sparksPrefab, transform.position, transform.rotation);
-            s.Play();
-            Destroy(s.gameObject, s.main.duration);
+            Destroy(gameObject);
         }
+    }
 
-        if (flashPrefab != null)
+    // Assigns the nearest enemy to the projectile
+    private void AssignNearestEnemy()
+    {
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        GameObject closest = null;
+        float minDist = Mathf.Infinity;
+        Vector3 pos = transform.position;
+
+        foreach (GameObject e in enemies)
         {
-            ParticleSystem f = Instantiate(flashPrefab, transform.position, transform.rotation);
-            f.Play();
-            Destroy(f.gameObject, f.main.duration);
+            Transform t = e.transform;
+            if (t == lastHitEnemy)
+            {
+                continue;
+            }
+
+            float dist = (e.transform.position - pos).sqrMagnitude;
+            if (dist < minDist)
+            {
+                closest = e;
+                minDist = dist;
+            }
+        }
+        if (closest != null)
+        {
+            target = closest.transform;
+        }
+        else
+        {
+            Destroy(gameObject);
         }
     }
 
@@ -252,20 +262,90 @@ public class HomingProjectile : MonoBehaviour
         }
     }
 
-    // Does damage to hit targets in a radius
-    private void DoAoEDamage(Collider col)
+    // Enables normal lightning and sphere emitter effects
+    public void EnableNormalEffects()
     {
-        // Check up the hierarchy for an EnemyProxy
-        EnemyProxy proxy = col.GetComponent<EnemyProxy>();
-        if (proxy == null)
+        if (!ProjectileManager.IsFrozen)
         {
-            proxy = col.GetComponentInParent<EnemyProxy>();
-        }  
-
-        if (proxy != null && proxy.enemyData != null)
-        {
-            proxy.enemyData.TakeDamage(new DamageInstance(damage));
+            return;
         }
+
+        if (normalLightningRingPrefab != null)
+        {
+            Instantiate(normalLightningRingPrefab, transform);
+        }
+
+        if (sphereEmitter != null)
+        {
+            sphereEmitter.enabled = true;
+        }
+    }
+
+    // Enables upgraded lightning effects
+    public void EnableUpgradedEffects()
+    {
+        if (!ProjectileManager.IsFrozen)
+        {
+            return;
+        }
+
+        if (upgradedLightningRingPrefab != null)
+        {
+            Instantiate(upgradedLightningRingPrefab, transform);
+        }
+    }
+
+    // Spawns normal explosion on collision with enemy
+    private void SpawnNormalExplosion()
+    {
+        if (type == ProjectileType.PrimaryHoming)
+        {
+            ProjectileManager.Instance.PlayExplosionSound();
+        }
+        
+        if (normalExplosionPrefab != null)
+        {
+            GameObject normEx = Instantiate(normalExplosionPrefab, transform.position, transform.rotation);
+            Destroy(normEx, 0.8f);
+        }
+    }
+
+    // Spawns upgraded explosion on collision with enemy
+    private void SpawnUpgradedExplosion()
+    {
+        if (type == ProjectileType.PrimaryHoming)
+        {
+            ProjectileManager.Instance.PlayExplosionSound();
+        }
+
+        if (upgradedExplosionPrefab != null)
+        {
+            GameObject upgradedEx = Instantiate(upgradedExplosionPrefab, transform.position, transform.rotation);
+            Destroy(upgradedEx, 1f);
+        }
+    }
+
+    // Does damage to hit targets in a radius
+    private void DoAoEDamage(float aoeBoost)
+    {
+        // Get all colliders in radius - AoE damage
+            Collider[] hitColliders = Physics.OverlapSphere(transform.position, aoe + aoeBoost);
+            
+            foreach (Collider col in hitColliders)
+            {
+                // Check up the hierarchy for an EnemyProxy
+                EnemyProxy proxy = col.GetComponent<EnemyProxy>();
+                if (proxy == null)
+                {
+                    proxy = col.GetComponentInParent<EnemyProxy>();
+                }  
+
+                if (proxy != null && proxy.enemyData != null)
+                {
+                    proxy.enemyData.TakeDamage(new DamageInstance(damage));
+                }
+            }
+        
     }
 
     // Does damage to a single hit target
@@ -282,6 +362,30 @@ public class HomingProjectile : MonoBehaviour
         {
             proxy.enemyData.TakeDamage(new DamageInstance(damage));
         }
+    }
+
+    // Returns the charge level on the projectile
+    public int GetChargeLevel()
+    {
+        return chargeLevel;
+    }
+
+    // Increments the charge level on the projectile by one
+    public void IncrementChargeLevel()
+    {
+        chargeLevel++;
+    }
+
+    // Changes layer mask of projectile to ignore raycast
+    public void ChangeLayer()
+    {
+        gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
+    }
+
+    // Adds damage to the projectile
+    public void AddDamage(int dmg)
+    {
+        damage += dmg;
     }
 
     // Unregisters projectiles when destroyed
