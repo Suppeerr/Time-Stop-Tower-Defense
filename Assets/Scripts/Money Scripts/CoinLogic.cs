@@ -14,7 +14,7 @@ public class CoinLogic : MonoBehaviour
     void Awake()
     {
         droneScript ??= FindFirstObjectByType<Drone>();
-        moneyManagerScript = GameObject.Find("Safe Base")?.GetComponent<MoneyManager>();
+        moneyManagerScript = GameObject.Find("Money Manager")?.GetComponent<MoneyManager>();
         launcher = GameObject.Find("Coin Launcher")?.transform;
     }
 

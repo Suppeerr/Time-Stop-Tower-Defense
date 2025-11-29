@@ -22,6 +22,15 @@ public class StoredTimeManager : MonoBehaviour
         {
             storedTimeText.color = Color.white;
         }
+
+        if (CameraSwitch.ActiveCam == 2)
+        {
+            storedTimeText.rectTransform.anchoredPosition = new Vector3(-292, 140, 0);
+        }
+        else
+        {
+            storedTimeText.rectTransform.anchoredPosition = new Vector3(296, 140, 0);
+        }
     }
 
     // Calls whenever seconds changes
@@ -29,7 +38,7 @@ public class StoredTimeManager : MonoBehaviour
     {
         if (storedTimeText != null)
         {
-            storedTimeText.text = "Seconds: " + seconds + "s";
+            storedTimeText.text = seconds + "s Stored";
         }
     }
 

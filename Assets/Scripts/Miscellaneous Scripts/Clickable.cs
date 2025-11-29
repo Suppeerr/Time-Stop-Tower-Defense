@@ -20,7 +20,7 @@ public class Clickable : MonoBehaviour
 
         if (clickableLayers == 0)
         {
-            clickableLayers = LayerMask.GetMask("Tower", "Normal Projectile");
+            clickableLayers = LayerMask.GetMask("Tower", "Normal Projectile", "Upgradable");
         }
     }
 

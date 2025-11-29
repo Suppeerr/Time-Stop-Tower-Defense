@@ -12,6 +12,18 @@ public class MoneyManager : MonoBehaviour
         UpdateUI();
     }
 
+    void Update()
+    {
+        if (CameraSwitch.ActiveCam == 2)
+        {
+            moneyText.rectTransform.anchoredPosition = new Vector3(-292, 187, 0);
+        }
+        else
+        {
+            moneyText.rectTransform.anchoredPosition = new Vector3(295, 187, 0);
+        }
+    }
+
     // Calls whenever money changes
     private void UpdateUI()
     {

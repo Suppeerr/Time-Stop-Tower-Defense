@@ -25,7 +25,7 @@ public class PlacedTower : MonoBehaviour
 
     void Awake()
     {
-        moneyManagerScript = GameObject.Find("Safe Base")?.GetComponent<MoneyManager>();
+        moneyManagerScript = GameObject.Find("Money Manager")?.GetComponent<MoneyManager>();
         ballSpawner = GetComponent<BallSpawner>();
         ballSpawner.enabled = false;
         towerLayer = LayerMask.GetMask("Tower");
