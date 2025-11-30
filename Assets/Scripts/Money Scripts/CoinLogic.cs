@@ -7,14 +7,14 @@ public class CoinLogic : MonoBehaviour
     private Drone droneScript;
     private Transform launcher;
 
-    private float floatSpeed = 0.1f;
+    private float floatSpeed = 0.15f;
     private bool isBeingVacuumed = false;
     [SerializeField] private bool isProjectile;
 
     void Awake()
     {
         droneScript ??= FindFirstObjectByType<Drone>();
-        moneyManagerScript = GameObject.Find("Safe Base")?.GetComponent<MoneyManager>();
+        moneyManagerScript = GameObject.Find("Money Manager")?.GetComponent<MoneyManager>();
         launcher = GameObject.Find("Coin Launcher")?.transform;
     }
 
