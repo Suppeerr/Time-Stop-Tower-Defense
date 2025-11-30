@@ -75,10 +75,10 @@ public class NormalProjectile : MonoBehaviour
             switch (this.type)
             {
                 case ProjectileType.PrimaryNormal:
-                    ballSpawner.SpawnHomingRock(ProjectileType.PrimaryHoming, transform.position, transform.rotation);
+                    ballSpawner.SpawnHomingRock(ProjectileType.PrimaryHoming, transform.position, transform.rotation, true);
                     break;
                 case ProjectileType.SecondaryNormal:
-                    ballSpawner.SpawnHomingRock(ProjectileType.SecondaryHoming, transform.position, transform.rotation);
+                    ballSpawner.SpawnHomingRock(ProjectileType.SecondaryHoming, transform.position, transform.rotation, true);
                     break;
             }
         }

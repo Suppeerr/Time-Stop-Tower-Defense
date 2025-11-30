@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3059350587155225639}
   - component: {fileID: 1390056524060155494}
   - component: {fileID: 4310395940814167356}
+  - component: {fileID: 8351794263328122303}
   m_Layer: 10
   m_Name: Splitter Cost Canvas
   m_TagString: Untagged
@@ -37,7 +38,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: -0.13, y: 4.13}
-  m_SizeDelta: {x: 8, y: 3}
+  m_SizeDelta: {x: 10, y: 3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &3059350587155225639
 Canvas:
@@ -102,6 +103,18 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &8351794263328122303
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4975131979937371132}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a64b0bbbaaafa5a42957e19107d6611d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIFaceCamera
 --- !u!1 &7823844757286164284
 GameObject:
   m_ObjectHideFlags: 0
@@ -137,7 +150,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: -0.103}
-  m_SizeDelta: {x: 8, y: 2}
+  m_SizeDelta: {x: 10, y: 2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7357065559128081965
 CanvasRenderer:
@@ -194,8 +207,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 1.5
-  m_fontSizeBase: 1.5
+  m_fontSize: 2
+  m_fontSizeBase: 2
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -468,7 +481,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BlockSource
   draggablePrefab: {fileID: 6898122641207344880, guid: 49799072ecd15f24ca39153b363aea7b, type: 3}
-  moneyManager: {fileID: 1803446607113895204, guid: bb8127b9a048bdb41a1f2490fca57baa, type: 3}
+  moneyManager: {fileID: 512543691613768955, guid: 6af270975557f7840ad466eccca25463, type: 3}
   costIndicator: {fileID: 5287561117171305400}
   baseGlowColor: {r: 4.541206, g: 4.2558947, b: 0, a: 1}
   invalidGlowColor: {r: 4.5412064, g: 0, b: 0, a: 1}

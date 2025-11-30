@@ -30,7 +30,7 @@ Material:
     - _OutlineSoftness: 0.2
     - _OutlineWidth: 0.5
     - _ScaleRatioA: 0.8333333
-    - _ScaleRatioB: 0.6770833
+    - _ScaleRatioB: 0.59375
     m_Colors:
     - _GlowColor: {r: 4.2370944, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []

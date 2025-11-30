@@ -9,14 +9,15 @@ public class CameraSwitch : MonoBehaviour
 
     public Camera overlayCam;
 
-    private int activeCam = 1;
+    public static int ActiveCam { get; private set; }
 
     public static Camera CurrentCamera { get; private set; }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        SetActiveCamera(activeCam);
+        ActiveCam = 1;
+        SetActiveCamera(ActiveCam);
         SyncOverlayCamera();
     }
 
@@ -25,20 +26,20 @@ public class CameraSwitch : MonoBehaviour
     {
         if (Keyboard.current.cKey.wasPressedThisFrame)
         {
-            if (activeCam == 1)
+            if (ActiveCam == 1)
             {
-                activeCam = 2;
+                ActiveCam = 2;
             }
-            else if (activeCam == 2)
+            else if (ActiveCam == 2)
             {
-                activeCam = 3;
+                ActiveCam = 3;
             }
             else
             {
-                activeCam = 1;
+                ActiveCam = 1;
             }
 
-            SetActiveCamera(activeCam);
+            SetActiveCamera(ActiveCam);
             SyncOverlayCamera();
         }
     }
@@ -52,11 +53,11 @@ public class CameraSwitch : MonoBehaviour
 
     private void SyncOverlayCamera()
     {
-        if (activeCam == 1)
+        if (ActiveCam == 1)
         {
             CurrentCamera = mainCam1;
         }
-        else if (activeCam == 2)
+        else if (ActiveCam == 2)
         {
             CurrentCamera = mainCam2;
         }

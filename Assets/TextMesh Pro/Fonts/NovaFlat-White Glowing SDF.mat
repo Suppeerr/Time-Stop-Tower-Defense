@@ -27,8 +27,8 @@ Material:
     m_Ints: []
     m_Floats:
     - _OutlineWidth: 0.6
-    - _ScaleRatioA: 0.52493435
+    - _ScaleRatioA: 0.6006006
     m_Colors:
-    - _GlowColor: {r: 2.1185472, g: 2.1185472, b: 2.1185472, a: 1}
+    - _GlowColor: {r: 2.6082375, g: 2.6082375, b: 2.6082375, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

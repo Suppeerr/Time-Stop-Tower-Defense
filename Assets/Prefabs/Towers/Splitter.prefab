@@ -194,8 +194,7 @@ MonoBehaviour:
   cannonBallPrefab: {fileID: 0}
   spawnPerSecond: 0.4
   isCannon: 0
-  shootPoint: {fileID: 0}
-  barrelAim: {fileID: 0}
+  isAutoCannon: 0
   muzzleFlash: {fileID: 0}
   cannonBlastSFX: {fileID: 0}
 --- !u!114 &-1808297460465936315
