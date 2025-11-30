@@ -33,18 +33,7 @@ public class PlacedTower : MonoBehaviour
 
     void Update()
     {
-        if (isPlaced && Keyboard.current.xKey.wasPressedThisFrame)
-        {
-            Ray ray = CameraSwitch.CurrentCamera.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, towerLayer))
-            {
-                if (hit.collider.transform == this.transform)
-                {
-                    moneyManagerScript.UpdateMoney(4);
-                Destroy(this.gameObject);
-                }
-            }
-        }
+        SellTower();
     }
 
     // Places the tower with animations
@@ -91,5 +80,25 @@ public class PlacedTower : MonoBehaviour
         }
 
         isPlaced = true;
+        TowerManager.Instance.RegisterTower(this.gameObject);
+    }
+
+    // Sells tower if x pressed while cursor is hovering over
+    private void SellTower()
+    {
+        // Tower Selling
+        if (isPlaced && Keyboard.current.xKey.wasPressedThisFrame)
+        {
+            Ray ray = CameraSwitch.CurrentCamera.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, towerLayer))
+            {
+                if (hit.collider.transform == this.transform)
+                {
+                    moneyManagerScript.UpdateMoney(4);
+                    TowerManager.Instance.UnregisterTower(this.gameObject);
+                    Destroy(this.gameObject);
+                }
+            }
+        }
     }
 }

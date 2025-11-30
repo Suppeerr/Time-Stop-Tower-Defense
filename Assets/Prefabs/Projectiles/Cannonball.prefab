@@ -156,10 +156,11 @@ MonoBehaviour:
   arcBoost: 10
   destroyAfter: 10
   type: 0
-  lightningRing: {fileID: 0}
+  normalLightningRingPrefab: {fileID: 0}
+  upgradedLightningRingPrefab: {fileID: 0}
   sphereEmitter: {fileID: 0}
-  sparksPrefab: {fileID: 0}
-  flashPrefab: {fileID: 0}
+  normalExplosionPrefab: {fileID: 0}
+  upgradedExplosionPrefab: {fileID: 0}
   statsContainer: {fileID: 11400000, guid: 0ed108a3a2db58946b6bdc754b742454, type: 2}
 --- !u!96 &2129917304383257204
 TrailRenderer:

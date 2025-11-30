@@ -16,11 +16,11 @@ public class MoneyManager : MonoBehaviour
     {
         if (CameraSwitch.ActiveCam == 2)
         {
-            moneyText.rectTransform.anchoredPosition = new Vector3(-292, 187, 0);
+            moneyText.rectTransform.anchoredPosition = new Vector2(-292, 187);
         }
         else
         {
-            moneyText.rectTransform.anchoredPosition = new Vector3(295, 187, 0);
+            moneyText.rectTransform.anchoredPosition = new Vector2(295, 187);
         }
     }
 

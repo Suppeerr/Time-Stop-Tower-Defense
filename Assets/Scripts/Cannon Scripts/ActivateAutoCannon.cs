@@ -6,6 +6,7 @@ public class ActivateAutoCannon : MonoBehaviour
     private Vector3 originalPos;
     private float activationTime = 1.5f;
     private bool isActivated = false;
+    public BallSpawner ballSpawner;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -35,6 +36,12 @@ public class ActivateAutoCannon : MonoBehaviour
     {
         // towerPlaceSFX?.Play();
 
+        foreach (Transform child in transform) 
+        {
+            child.gameObject.SetActive(true);
+        }
+        isActivated = true;
+
         float elapsedDelay = 0f;
 
         while (elapsedDelay < activationTime)
@@ -49,6 +56,11 @@ public class ActivateAutoCannon : MonoBehaviour
             transform.position = Vector3.Lerp(originalPos, originalPos + Vector3.left * 0.95f, t);
 
             yield return null;
+
+            if (ballSpawner != null)
+            {
+                ballSpawner.enabled = true;
+            }
         }
     }
 }

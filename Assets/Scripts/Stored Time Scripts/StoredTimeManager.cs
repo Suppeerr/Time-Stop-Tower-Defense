@@ -4,6 +4,7 @@ using TMPro;
 public class StoredTimeManager : MonoBehaviour
 {
     private int seconds;
+    private int maxSeconds = 25;
     [SerializeField] private TMP_Text storedTimeText;
 
     void Awake()
@@ -45,7 +46,11 @@ public class StoredTimeManager : MonoBehaviour
     // Public method for updating seconds
     public void UpdateSeconds(int amount = 1)
     {
-        seconds += amount;
+        if (seconds < maxSeconds)
+        {
+            seconds += amount;
+        }
+        
         UpdateUI();
     }
 
