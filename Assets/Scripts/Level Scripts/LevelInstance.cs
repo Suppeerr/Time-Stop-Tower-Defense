@@ -65,7 +65,7 @@ public class LevelInstance : MonoBehaviour
             SpawnEnemyTest();
             spawnInterval = Random.Range(lowStarting, highStarting);
             elapsed = 0;
-            if (lowStarting > 0.8f)
+            if (lowStarting > 0.6f)
             {
                 lowStarting -= ramping;
                 highStarting -= ramping;

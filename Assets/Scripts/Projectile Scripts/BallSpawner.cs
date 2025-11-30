@@ -19,6 +19,7 @@ public class BallSpawner : MonoBehaviour
     public float spawnPerSecond = 5f;
     public bool isCannon = false;
     public bool isAutoCannon = false;
+    private bool isPrePlaced = false;
     private float spawnRate;
     private float timer = 1f;
     private Transform shootPoint;
@@ -74,6 +75,12 @@ public class BallSpawner : MonoBehaviour
         }
         else if (timer >= spawnRate)
         {
+            if (isPrePlaced)
+            {
+                timer = 1f;
+                isPrePlaced = false;
+                return;
+            }
             SpawnNormalRock(ProjectileType.PrimaryNormal, transform.position, transform.rotation);
         }
     }
@@ -152,7 +159,16 @@ public class BallSpawner : MonoBehaviour
         {
             homingProjScript.ChangeLayer();
         }
+        
         homingProjScript.EnableNormalEffects();
         homingProjScript.IncrementChargeLevel();
+    }
+
+    void OnEnable()
+    {
+        if (!LevelStarter.HasLevelStarted)
+        {
+            isPrePlaced = true;
+        }
     }
 }
