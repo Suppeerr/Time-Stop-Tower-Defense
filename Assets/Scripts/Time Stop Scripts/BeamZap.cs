@@ -83,11 +83,12 @@ public class BeamZap : MonoBehaviour
                 {
                     homingProjScript.AddDamage(400);
                 }
-                yield break;
             }
-
-            SpawnHomingProjectile(hitProj, normalProjScript);
-            Destroy(hitProj);
+            if (normalProjScript != null)
+            {
+                SpawnHomingProjectile(hitProj, normalProjScript);
+                Destroy(hitProj);
+            }   
         }
 
         // Disable beam
