@@ -1,13 +1,16 @@
+using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.SceneManagement;
-using UnityEngine;
 using System.Linq;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LevelInstance : MonoBehaviour
 {
     public EnemyWaypointPath epath = new EnemyWaypointPath(); //could be array if we want multiple paths
     List<BaseEnemy> enemies = new List<BaseEnemy>();
     public List<BaseEnemy> queueRemove = new List<BaseEnemy>();
+
+
     bool s_enabled = false;
     private float spawnInterval;
     private float elapsed = 0f;
@@ -17,6 +20,7 @@ public class LevelInstance : MonoBehaviour
     GameObject ePrefab;
     public static LevelInstance instance;
 
+    EnemySpawnHandler sptest;
     public void Awake()
     {
         instance = this;
@@ -30,6 +34,8 @@ public class LevelInstance : MonoBehaviour
         LoadWaypointPrefabs();
         
         spawnInterval = Random.Range(1f, 3f);
+
+        sptest = new EnemySpawnHandler(this, Application.dataPath + "/Data/Levels/TSTD Data - "+ SceneManager.GetActiveScene().name +".csv");
     }
 
     public void LoadWaypointPrefabs()
@@ -53,6 +59,7 @@ public class LevelInstance : MonoBehaviour
 
     public void Update()
     {
+        if (!s_enabled) return;
         if (ProjectileManager.IsFrozen)
         {
             return;
@@ -73,7 +80,7 @@ public class LevelInstance : MonoBehaviour
                 highStarting -= ramping;
             }
         }
-         if (!s_enabled) return;
+        sptest.update();
 
         // Temporary list to hold enemies to remove
         List<BaseEnemy> toRemove = new List<BaseEnemy>();
@@ -108,10 +115,20 @@ public class LevelInstance : MonoBehaviour
 
     public void SpawnEnemyTest()
     {
+        return;
         Debug.Log("levelInst spawned enemy");
         BaseEnemy enemy = new BaseEnemy();
         enemy.Init(ePrefab, this, epath, EnemyType.NormalBandit);
         enemies.Add(enemy);
+    }
+
+    public void SpawnEnemy(string enemy_type, float scale)
+    {
+        Debug.Log("levelInst spawned enemy");
+        BaseEnemy enemy = new BaseEnemy();
+        enemy.Init(ePrefab, this, epath, EnemyType.NormalBandit);
+        enemies.Add(enemy);
+        return;
     }
 
     public BaseEnemy GetFirstEnemy()
