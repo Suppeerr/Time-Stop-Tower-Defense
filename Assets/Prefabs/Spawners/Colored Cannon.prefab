@@ -102,6 +102,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98c73760247936d418333d8d4f887cc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BallSpawner
+  projectileManager: {fileID: 0}
   homingPrimaryPrefab: {fileID: 0}
   homingSecondaryPrefab: {fileID: 0}
   normalPrimaryPrefab: {fileID: 0}
@@ -109,6 +110,7 @@ MonoBehaviour:
   cannonBallPrefab: {fileID: 3039730848133068532, guid: 76a0f53a8c93b88499398cce0977bd8f, type: 3}
   spawnPerSecond: 2.5
   isCannon: 1
+  isAutoCannon: 0
   shootPoint: {fileID: 1889997507367471034}
   barrelAim: {fileID: 648633440711191226}
   muzzleFlash: {fileID: 4375674266797349781}
@@ -126,7 +128,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 4881a155874ddf14285ac78120be52be, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.4
+  m_Volume: 0.3
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -276,7 +278,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: abc33ee824d995843b3d2625f563010a, type: 2}
+  - {fileID: 2100000, guid: 7885eeae911dcae429b4f4033758b8c8, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -605,6 +607,10 @@ PrefabInstance:
     - target: {fileID: 4383929892771231714, guid: 99ff06ece2c7cff42a193f43e62ad6e7, type: 3}
       propertyPath: lengthInSec
       value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4383929892771231714, guid: 99ff06ece2c7cff42a193f43e62ad6e7, type: 3}
+      propertyPath: playOnAwake
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4383929892771231714, guid: 99ff06ece2c7cff42a193f43e62ad6e7, type: 3}
       propertyPath: ShapeModule.angle

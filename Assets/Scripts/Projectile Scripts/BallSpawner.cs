@@ -5,6 +5,9 @@ using System.Collections;
 
 public class BallSpawner : MonoBehaviour
 {
+    // Projectile Manager Script
+    private ProjectileManager projectileManagerScript;
+
     // Projectile Prefabs
     public GameObject homingPrimaryPrefab;
     public GameObject homingSecondaryPrefab;
@@ -15,36 +18,32 @@ public class BallSpawner : MonoBehaviour
     // Spawn Settings
     public float spawnPerSecond = 5f;
     public bool isCannon = false;
+    public bool isAutoCannon = false;
+    private bool isPrePlaced = false;
     private float spawnRate;
-    private float timer = 0f;
-    public Transform shootPoint;
+    private float timer = 1f;
+    private Transform shootPoint;
 
     // Effects and Audio
-    public BarrelAim barrelAim;
+    private BarrelAim barrelAim;
     public ParticleSystem muzzleFlash;
     public AudioSource cannonBlastSFX;
-
-    // Ray Trace Camera
-    private Camera mainCamera;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        barrelAim = GetComponentInParent<BarrelAim>();
+        shootPoint = this.transform;
+
+        projectileManagerScript = ProjectileManager.Instance.GetComponent<ProjectileManager>();
+        
         spawnRate = 1f / spawnPerSecond;
-        if (mainCamera == null)
-        {
-            mainCamera = Camera.main;
-        }
-        if (!isCannon)
-        {
-            SpawnNormalRock(ProjectileType.PrimaryNormal, transform.position, transform.rotation);
-        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (ProjectileManager.IsFrozen)
+        if (ProjectileManager.IsFrozen || !LevelStarter.HasLevelStarted)
         {
             return;
         }
@@ -52,8 +51,6 @@ public class BallSpawner : MonoBehaviour
         timer += Time.deltaTime;
 
         CheckIfCannon();
-        
-
     }
 
     // Spawns cannonball if spawner is a cannon and a normal rock otherwise
@@ -63,7 +60,7 @@ public class BallSpawner : MonoBehaviour
         {
             if ((Mouse.current.leftButton.wasPressedThisFrame || Keyboard.current.spaceKey.wasPressedThisFrame) && timer >= spawnRate)
             {
-                Ray ray = mainCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
+                Ray ray = CameraSwitch.CurrentCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
                 int projectileLayer = LayerMask.GetMask("Normal Projectile");
                 float radius = 0.5f;
                 if (Physics.SphereCast(ray, radius, out var hit, Mathf.Infinity, projectileLayer))
@@ -72,8 +69,18 @@ public class BallSpawner : MonoBehaviour
                 }
             }
         }
+        else if (isAutoCannon && timer >= spawnRate)
+        {
+            SpawnCannonBall(projectileManagerScript.GetRandomNormalProjectile(), cannonBallPrefab);
+        }
         else if (timer >= spawnRate)
         {
+            if (isPrePlaced)
+            {
+                timer = 1f;
+                isPrePlaced = false;
+                return;
+            }
             SpawnNormalRock(ProjectileType.PrimaryNormal, transform.position, transform.rotation);
         }
     }
@@ -81,12 +88,17 @@ public class BallSpawner : MonoBehaviour
     // Cannon Ball Spawner
     public void SpawnCannonBall(GameObject target, GameObject projectilePrefab)
     {
-        StartCoroutine(FireWithAim(target, projectilePrefab));
+        FireWithAim(target, projectilePrefab);
     }
 
-    private IEnumerator FireWithAim(GameObject target, GameObject projectilePrefab)
+    private void FireWithAim(GameObject target, GameObject projectilePrefab)
     {
-        yield return StartCoroutine(barrelAim.AimAtTarget(target));
+        if (target == null)
+        {
+            return;
+        }
+
+        barrelAim?.AimAtTarget(target.transform);
         GameObject proj = Instantiate(projectilePrefab, shootPoint.position, shootPoint.rotation);
         proj.GetComponent<HomingProjectile>()?.SetTarget(target);
         cannonBlastSFX?.Play();
@@ -120,7 +132,7 @@ public class BallSpawner : MonoBehaviour
     }
 
     // Homing Rock Spawner
-    public void SpawnHomingRock(ProjectileType type, Vector3 position, Quaternion rotation)
+    public void SpawnHomingRock(ProjectileType type, Vector3 position, Quaternion rotation, bool cannonParried = false)
     {
         GameObject prefabToSpawn = null;
 
@@ -141,6 +153,22 @@ public class BallSpawner : MonoBehaviour
         }
 
         GameObject homingProjectile = Instantiate(prefabToSpawn, position, rotation);
-        homingProjectile.GetComponent<HomingProjectile>().EnableEffects();
+        HomingProjectile homingProjScript = homingProjectile.GetComponent<HomingProjectile>();
+        
+        if (cannonParried)
+        {
+            homingProjScript.ChangeLayer();
+        }
+        
+        homingProjScript.EnableNormalEffects();
+        homingProjScript.IncrementChargeLevel();
+    }
+
+    void OnEnable()
+    {
+        if (!LevelStarter.HasLevelStarted)
+        {
+            isPrePlaced = true;
+        }
     }
 }

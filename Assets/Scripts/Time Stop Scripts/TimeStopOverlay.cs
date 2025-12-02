@@ -10,6 +10,7 @@ public class TimeStopOverlay : MonoBehaviour
     private float fadeDuration = 1f;
 
     private Coroutine currentFade = null;
+    private bool isGameOver = false;
 
     void Awake()
     {
@@ -21,7 +22,12 @@ public class TimeStopOverlay : MonoBehaviour
 
     void Update()
     {
-        
+        if (BaseHealthManager.IsGameOver && isGameOver == false)
+        {
+            isGameOver = true;
+            colorAdjustments.saturation.value = 0f;
+        }
+
         if (ProjectileManager.IsFrozen)
         {
             if (currentFade != null)

@@ -9,7 +9,7 @@ public class NormalProjectile : MonoBehaviour
     public float initialYVel = 0f;
     private float initialZVel = -1f;
     private float gravityMultiplier = 0.7f;
-    private int splitCount = 3;
+    private int splitCount = 2;
     public float spreadAngle = 30f;
     private float destroyAfter = 3f;
     private float lifetime = 0f;
@@ -75,10 +75,10 @@ public class NormalProjectile : MonoBehaviour
             switch (this.type)
             {
                 case ProjectileType.PrimaryNormal:
-                    ballSpawner.SpawnHomingRock(ProjectileType.PrimaryHoming, transform.position, transform.rotation);
+                    ballSpawner.SpawnHomingRock(ProjectileType.PrimaryHoming, transform.position, transform.rotation, true);
                     break;
                 case ProjectileType.SecondaryNormal:
-                    ballSpawner.SpawnHomingRock(ProjectileType.SecondaryHoming, transform.position, transform.rotation);
+                    ballSpawner.SpawnHomingRock(ProjectileType.SecondaryHoming, transform.position, transform.rotation, true);
                     break;
             }
         }

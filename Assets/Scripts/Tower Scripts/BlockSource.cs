@@ -29,8 +29,7 @@ public class BlockSource : MonoBehaviour
         }
 
         // Get a spawn position under the cursor (XZ plane)
-        Camera cam = Camera.main;
-        Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+        Ray ray = CameraSwitch.CurrentCamera.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
         Vector3 spawnPos = transform.position; // fallback position
@@ -52,7 +51,7 @@ public class BlockSource : MonoBehaviour
             if (draggable != null)
             {
                 // Start dragging immediately
-                draggable.BeginDrag(moneyManagerScript);
+                draggable.BeginDrag();
             }
             else
             {

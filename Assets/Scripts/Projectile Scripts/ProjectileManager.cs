@@ -55,6 +55,33 @@ public class ProjectileManager : MonoBehaviour
         TimeStop.timeStop -= HandleToggle;
     }
 
+    public List<GameObject> GetNormalProjectileList(float minHeight)
+    {
+        List<GameObject> normalProjectiles = new List<GameObject>();
+        
+        foreach (var proj in activeProjectiles)
+        {
+            if (proj.gameObject.CompareTag("Tower Projectile") && proj.transform.position.y > minHeight)
+            {
+                normalProjectiles.Add(proj.gameObject);
+            }
+        }
+
+        return normalProjectiles;
+    }
+
+    public GameObject GetRandomNormalProjectile()
+    {
+        List<GameObject> normalProjectiles = GetNormalProjectileList(13f);
+
+        if (normalProjectiles.Count == 0)
+        {
+            return null;
+        }
+
+        return normalProjectiles[Random.Range(0, normalProjectiles.Count)];
+    }
+
     // Freezes or unfreezes based on event state
     void HandleToggle(bool state)
     {

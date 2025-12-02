@@ -4,37 +4,39 @@ using UnityEngine;
 public class Clickable : MonoBehaviour
 {
     private Outline outline;
-    private Camera mainCamera;
+    private OutlineFlash outlineFlashScript;
     [SerializeField] private float outlineWidth;
 
-    private bool isHovered = false;
+    private Color baseColor = Color.white;
 
+    private bool isHovered = false;
     private static LayerMask clickableLayers;
 
-    private void Awake()
+    void Awake()
     {
         outline = gameObject.AddComponent<Outline>();
+        outlineFlashScript = GetComponent<OutlineFlash>();
+
         outline.OutlineMode = Outline.Mode.OutlineAll;
-        outline.OutlineColor = Color.white;
         outline.OutlineWidth = outlineWidth;
         outline.enabled = false;
 
         if (clickableLayers == 0)
         {
-            clickableLayers = LayerMask.GetMask("Tower", "Normal Projectile");
+            clickableLayers = LayerMask.GetMask("Tower", "Normal Projectile", "Upgradable", "Ignore Time Stop");
         }
     }
 
-    private void Start()
-    {
-        mainCamera = Camera.main;
-    }
-
-    private void Update()
+    void Update()
     {
         // Raycast to detect hovering
-        Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+        Ray ray = CameraSwitch.CurrentCamera.ScreenPointToRay(Input.mousePosition);
         bool hoveringThisFrame = false;
+
+        if (outline.OutlineColor != baseColor && outlineFlashScript.enabled == false)
+        {
+            outline.OutlineColor = baseColor;
+        }
 
         if (gameObject.layer == LayerMask.NameToLayer("Normal Projectile"))
         {
@@ -53,6 +55,12 @@ public class Clickable : MonoBehaviour
             {
                 if (hit.collider.gameObject == gameObject)
                 {
+                    if (outlineFlashScript != null)
+                    {
+                        outlineFlashScript.StopFlashing();
+                        outlineFlashScript.enabled = false;
+                    }
+
                     hoveringThisFrame = true;
                 }
             }
@@ -86,5 +94,20 @@ public class Clickable : MonoBehaviour
         {
             outline.enabled = false;
         }
+    }
+
+    public void SetOutlineWidth(float width)
+    {
+        outline.OutlineWidth = width; 
+    }
+
+    private void OnEnable()
+    {
+        isHovered = false;
+    }
+
+    private void OnDisable()
+    {
+        DisableOutline();
     }
 }

@@ -12,24 +12,24 @@ public class LevelInstance : MonoBehaviour
 
 
     bool s_enabled = false;
-    private float spawnInterval;
+    private float spawnInterval = 3f;
     private float elapsed = 0f;
     private float lowStarting = 3f;
-    private float highStarting = 5f;
+    private float highStarting = 4.8f;
     private float ramping = 0.04f;
     GameObject ePrefab;
-    public static LevelInstance instance;
+    public static LevelInstance Instance { get; private set; }
 
     EnemySpawnHandler sptest;
     public void Awake()
     {
-        instance = this;
-        Debug.Log("levelInst started");
+        Instance = this;
+        ePrefab = (GameObject)Resources.Load("Normal Bandit");
         if (SceneManager.GetActiveScene().name.Equals("Gameplay and Mechanics") || SceneManager.GetActiveScene().name.Equals("Level 1")) s_enabled = true;
         if (!s_enabled) return;
 
         Debug.Log("levelInst enabled");
-        ePrefab = (GameObject)Resources.Load("Normal Bandit");
+
         //this would be ideally loaded from a data structure or from file before the scene begin
         LoadWaypointPrefabs();
         
@@ -44,7 +44,7 @@ public class LevelInstance : MonoBehaviour
 
         if (pathObj == null)
         {
-            Debug.LogError("No object tagged WaypointRoot found!");
+            Debug.LogError("No object tagged Path found!");
             return;
         }
 
@@ -74,7 +74,7 @@ public class LevelInstance : MonoBehaviour
             SpawnEnemyTest();
             spawnInterval = Random.Range(lowStarting, highStarting);
             elapsed = 0;
-            if (lowStarting > 0)
+            if (lowStarting > 0.6f)
             {
                 lowStarting -= ramping;
                 highStarting -= ramping;
@@ -152,8 +152,30 @@ public class LevelInstance : MonoBehaviour
         return firstEnemy;
     }
 
-    public static LevelInstance GetLevelInstance()
+    public BaseEnemy GetSecondEnemy()
     {
-        return instance;
+        float currentWaypointDist = -1;
+        float furthestWaypoint = -1;
+        BaseEnemy firstEnemy = GetFirstEnemy();
+        BaseEnemy secondEnemy = null;
+
+        foreach(var enemy in enemies)
+        {
+            if (enemy == firstEnemy)
+            {
+                continue;
+            }
+            
+            float cw = enemy.GetCurrentWaypoint();
+            float cd = enemy.GetCurDistTraveled();
+            if (cw > furthestWaypoint || (cw == furthestWaypoint && cd > currentWaypointDist))
+            {
+                secondEnemy = enemy;
+                furthestWaypoint = cw;
+                currentWaypointDist = cd;
+            }
+        }
+        
+        return secondEnemy;
     }
 }

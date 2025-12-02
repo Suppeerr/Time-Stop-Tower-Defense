@@ -20,22 +20,8 @@ public class CoinSpawner : MonoBehaviour
         Instance = this;
     }
 
-    void Update()
-    {
-        // if (Time.timeSinceLevelLoad >= timer)
-        // {
-        //     timer += spawnInterval;
-        //     SpawnCoin();
-        // }
-    }
-
     public void SpawnCoin(bool isCoinLauncher, Vector3? enemyPos = null, Vector3? launcherPos = null)
     {
-        // GameObject clone = Instantiate(
-        //     coinPrefab,
-        //     new Vector3(Random.Range(-10, 10), 0, Random.Range(-10, 10)),
-        //     Quaternion.Euler(0, 0, 90)
-        // );
         Vector3 spawnPos = Vector3.zero;
 
         if (enemyPos.HasValue)
