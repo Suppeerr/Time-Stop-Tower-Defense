@@ -1,10 +1,13 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using TMPro;
 
 public class BaseHealthManager : MonoBehaviour
 {
     public static BaseHealthManager Instance;
     [SerializeField] private TMP_Text baseHpText;
+    [SerializeField] private TMP_Text levelRestartText;
     public static bool IsGameOver { get; private set; }
     private int startingBaseHp;
     private int currentBaseHp;
@@ -22,10 +25,12 @@ public class BaseHealthManager : MonoBehaviour
             Destroy(gameObject);
         }
 
-        startingBaseHp = 500;
+        IsGameOver = false;
+        startingBaseHp = 50;
         currentBaseHp = startingBaseHp;
         UpdateUI();
         baseHpText.enabled = false;
+        levelRestartText.enabled = false;
     }
 
     void Update()
@@ -39,6 +44,11 @@ public class BaseHealthManager : MonoBehaviour
         {
             ToggleGameOver();
         }
+        if (IsGameOver && Keyboard.current.enterKey.wasPressedThisFrame)
+        {
+            SceneManager.LoadScene("UI and Main Menu", LoadSceneMode.Single);
+            Time.timeScale = 1f;
+        }
     }
 
     // Calls whenever base hp changes
@@ -47,6 +57,7 @@ public class BaseHealthManager : MonoBehaviour
         if (baseHpText != null)
         {
             baseHpText.text = currentBaseHp + " HP";
+
             if (currentBaseHp <= 0)
             {
                 baseHpText.text = "Game Over!";
@@ -74,6 +85,7 @@ public class BaseHealthManager : MonoBehaviour
             return;
         }
         IsGameOver = true;
+        levelRestartText.enabled = true;
         ProjectileManager.Instance.DestroyAllProjectiles();
 
         // Freezes time
