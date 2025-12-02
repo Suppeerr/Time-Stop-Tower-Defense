@@ -1,0 +1,7 @@
+Level Data:,(hp and stuff goes here to read),,,,
+,,,,,
+Enemy Spawn Data,,,,,
+EnemyID,count,inital_spawn_delay,spawn_interval,spawn_wave,scale
+Ignore,45,5,4,0,1
+Ignore,30,15,3,0,1
+Ignore,30,27,3.5,0,1
