@@ -26,7 +26,7 @@ public class BaseHealthManager : MonoBehaviour
         }
 
         IsGameOver = false;
-        startingBaseHp = 50;
+        startingBaseHp = 500;
         currentBaseHp = startingBaseHp;
         UpdateUI();
         baseHpText.enabled = false;
@@ -46,7 +46,7 @@ public class BaseHealthManager : MonoBehaviour
         }
         if (IsGameOver && Keyboard.current.enterKey.wasPressedThisFrame)
         {
-            SceneManager.LoadScene("UI and Main Menu", LoadSceneMode.Single);
+            SceneManager.LoadScene("Level 1", LoadSceneMode.Single);
             Time.timeScale = 1f;
         }
     }

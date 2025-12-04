@@ -16261,6 +16261,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3469061838330095474, guid: e84fa3d83bdf1144fa1600798639e08f, type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: 24300002, guid: 2b6874786b09ce64b9f0be183bb576b4, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -19752,7 +19756,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7280360863749626202, guid: 68fdb8c0b18ae194eb06e97259e474a0, type: 3}
       propertyPath: m_text
-      value: Press <Enter> to return to level selector
+      value: Press <Enter> to restart level
       objectReference: {fileID: 0}
     - target: {fileID: 7674659332647548880, guid: 68fdb8c0b18ae194eb06e97259e474a0, type: 3}
       propertyPath: m_LocalPosition.x

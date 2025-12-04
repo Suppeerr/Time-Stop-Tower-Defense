@@ -284,7 +284,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98de27c380a15b94db7fb0aa6b321504, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  baseHpText: {fileID: 2247368466106039172, guid: da6d56b1eeade1f43a736be6dcd108fa, type: 3}
+  baseHpText: {fileID: 8335442978605386118}
+  levelRestartText: {fileID: 7280360863749626202}
 --- !u!1 &3372660008242584034
 GameObject:
   m_ObjectHideFlags: 0

@@ -9,7 +9,7 @@ public class StoredTimeManager : MonoBehaviour
 
     void Awake()
     {
-        seconds = 25;
+        seconds = 0;
         UpdateUI();
     }
 

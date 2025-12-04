@@ -4,12 +4,6 @@ public class PlacementZone : MonoBehaviour
 {
     [SerializeField] private GameObject zoneVisual;
 
-    void Awake()
-    {
-        OnEnable();
-        HideZone();
-    }
-
     private void OnEnable()
     {
         Draggable.OnDragStart += ShowZone;
@@ -24,11 +18,17 @@ public class PlacementZone : MonoBehaviour
 
     private void ShowZone()
     {
-        zoneVisual.SetActive(true);
+        if (zoneVisual != null)
+        {
+            zoneVisual.SetActive(true);
+        }
     }
 
     private void HideZone()
     {
-        zoneVisual.SetActive(false);
+        if (zoneVisual != null)
+        {
+            zoneVisual.SetActive(false);
+        }    
     }
 }
