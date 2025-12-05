@@ -37376,6 +37376,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6121376561574379198, guid: ea79bc01eadbd644d9e285d4a70c3bd2, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6121376561574379198, guid: ea79bc01eadbd644d9e285d4a70c3bd2, type: 3}
       propertyPath: m_FocalLength
       value: 16.516582
       objectReference: {fileID: 0}
@@ -37406,6 +37410,10 @@ PrefabInstance:
     - target: {fileID: 8301265458820210141, guid: ea79bc01eadbd644d9e285d4a70c3bd2, type: 3}
       propertyPath: m_EventMask.m_Bits
       value: 32
+      objectReference: {fileID: 0}
+    - target: {fileID: 9061620875705950059, guid: ea79bc01eadbd644d9e285d4a70c3bd2, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
