@@ -6,6 +6,7 @@ public class ProjectileManager : MonoBehaviour
     public static ProjectileManager Instance;
     public AudioSource parrySFX;
     public AudioSource explosionSFX;
+    public AudioSource normalHitSFX;
 
     public static bool IsFrozen { get; private set; } = false;
     public List<Rigidbody> activeProjectiles = new List<Rigidbody>();
@@ -46,13 +47,13 @@ public class ProjectileManager : MonoBehaviour
     // Receives timestop event
     private void OnEnable()
     {
-        TimeStop.timeStop += HandleToggle;
+        TimeStop.TimeStopEvent += HandleToggle;
     }
 
     // Ends timestop event
     private void OnDisable()
     {
-        TimeStop.timeStop -= HandleToggle;
+        TimeStop.TimeStopEvent -= HandleToggle;
     }
 
     public List<GameObject> GetNormalProjectileList(float minHeight)
@@ -126,6 +127,12 @@ public class ProjectileManager : MonoBehaviour
     public void PlayExplosionSound()
     {
         explosionSFX.Play();
+    }
+
+    // Plays normal hit sound 
+    public void PlayNormalHitSound()
+    {
+        normalHitSFX.Play();
     }
 
     // Clears all projectiles on game over

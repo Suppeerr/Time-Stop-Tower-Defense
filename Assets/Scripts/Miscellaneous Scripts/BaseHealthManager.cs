@@ -8,6 +8,7 @@ public class BaseHealthManager : MonoBehaviour
     public static BaseHealthManager Instance;
     [SerializeField] private TMP_Text baseHpText;
     [SerializeField] private TMP_Text levelRestartText;
+    [SerializeField] private TMP_Text levelWinText;
     public static bool IsGameOver { get; private set; }
     private int startingBaseHp;
     private int currentBaseHp;
@@ -29,8 +30,10 @@ public class BaseHealthManager : MonoBehaviour
         startingBaseHp = 500;
         currentBaseHp = startingBaseHp;
         UpdateUI();
+
         baseHpText.enabled = false;
         levelRestartText.enabled = false;
+        levelWinText.enabled = false;
     }
 
     void Update()
@@ -76,6 +79,20 @@ public class BaseHealthManager : MonoBehaviour
     public int GetBaseHp()
     {
         return currentBaseHp;
+    }
+
+    public void ToggleWin()
+    {
+        if (IsGameOver)
+        {
+            return;
+        }
+        IsGameOver = true;
+        levelWinText.enabled = true;
+        ProjectileManager.Instance.DestroyAllProjectiles();
+
+        // Freezes time
+        Time.timeScale = 0f;
     }
 
     public void ToggleGameOver()

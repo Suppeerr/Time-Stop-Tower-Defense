@@ -113,11 +113,10 @@ public class Upgrader : MonoBehaviour
         }
 
         RequestFocus();
-        upgradeIndicator.enabled = true;
 
         currentMoney = moneyManagerScript.GetMoney();
         currentSeconds = storedTimeManagerScript.GetSeconds();
-        
+
         if (isAutoCannon)
         {
             if (TowerManager.Instance.GetTowerCount() >= 3)
@@ -141,7 +140,6 @@ public class Upgrader : MonoBehaviour
     // Auto Cannon Upgrade
     private void AutoCannonUpgrade()
     {
-        RequestFocus();
         upgradeIndicator.enabled = true;
         UpgradeChecker(6, 0, currentMoney >= 6, "Ignore Raycast");
     }
@@ -149,7 +147,6 @@ public class Upgrader : MonoBehaviour
     // Time Stop Upgrades
     private void TimeStopUpgrade()
     {
-        RequestFocus();
         upgradeIndicator.enabled = true;
         if (timeStopUpgrades == 0)
         {
@@ -206,7 +203,6 @@ public class Upgrader : MonoBehaviour
         else if (numberOfClicks > 1)
         {
             StartCoroutine(FlashRed(0.4f));
-            return;
         }
 
         if (disappearRoutine != null)
@@ -279,7 +275,6 @@ public class Upgrader : MonoBehaviour
         rt.sizeDelta = new Vector2(12, rt.sizeDelta.y);
         baseText = "Multi-Charge   8 Coins, 15s";
         upgradeIndicator.text = baseText;
-
         upgradeIndicator.enabled = false;
         isUnlockingNewUpgrade = false;
     }
