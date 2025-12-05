@@ -798,6 +798,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7122941740453219297}
   - component: {fileID: 6121376561574379198}
+  - component: {fileID: 8301265458820210141}
   - component: {fileID: 5571481244657217956}
   - component: {fileID: 237398468430301567}
   - component: {fileID: 8616613090068599540}
@@ -874,6 +875,22 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+--- !u!114 &8301265458820210141
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9061620875705950059}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c49b4cc203aa6414fae5c798d1d0e7d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.EventSystems.PhysicsRaycaster
+  m_EventMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_MaxRayIntersections: 0
 --- !u!81 &5571481244657217956
 AudioListener:
   m_ObjectHideFlags: 0
