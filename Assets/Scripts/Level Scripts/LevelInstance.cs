@@ -60,7 +60,7 @@ public class LevelInstance : MonoBehaviour
     public void Update()
     {
         if (!s_enabled) return;
-        if (ProjectileManager.IsFrozen)
+        if (ProjectileManager.IsFrozen || !LevelStarter.HasLevelStarted)
         {
             return;
         }
@@ -116,10 +116,10 @@ public class LevelInstance : MonoBehaviour
     public void SpawnEnemyTest()
     {
         return;
-        Debug.Log("levelInst spawned enemy");
-        BaseEnemy enemy = new BaseEnemy();
-        enemy.Init(ePrefab, this, epath, EnemyType.NormalBandit);
-        enemies.Add(enemy);
+        // Debug.Log("levelInst spawned enemy");
+        // BaseEnemy enemy = new BaseEnemy();
+        // enemy.Init(ePrefab, this, epath, EnemyType.NormalBandit);
+        // enemies.Add(enemy);
     }
 
     public void SpawnEnemy(string enemy_type, float scale)

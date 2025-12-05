@@ -6,9 +6,10 @@ using TMPro;
 
 public class TimeStop : MonoBehaviour
 {
-    public static event Action<bool> timeStop;
+    public static event Action<bool> TimeStopEvent;
     public AudioSource timeStopStartSFX;
     public AudioSource timeStopEndSFX;
+    public AudioSource cooldownEndSFX;
     public TMP_Text durationText;
     public TMP_Text cooldownText;
     private Color activeColor = new Color(.8f, .8f, 0.1f);
@@ -48,6 +49,7 @@ public class TimeStop : MonoBehaviour
             cooldown -= Time.deltaTime;
             if (cooldown < 0 )
             {
+                cooldownEndSFX.Play();
                 cooldown = 0;
             }
         }
@@ -74,7 +76,7 @@ public class TimeStop : MonoBehaviour
         yield return new WaitForSecondsRealtime(delayAfterSFX);
 
         active = true;
-        timeStop?.Invoke(true);
+        TimeStopEvent?.Invoke(true);
         beamSpawner.SetActive(true);
 
         UpdateParticles();
@@ -100,7 +102,7 @@ public class TimeStop : MonoBehaviour
     {
         StopAllCoroutines();
         active = false;
-        timeStop?.Invoke(false);
+        TimeStopEvent?.Invoke(false);
         isCoroutineRunning = false;
         timeStopEndSFX?.Play();
         cooldown = cd;

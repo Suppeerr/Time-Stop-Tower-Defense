@@ -6,6 +6,7 @@ public class EnemyCounter : MonoBehaviour
     [SerializeField] private TMP_Text enemiesDefeatedText;
     private int enemiesDefeatedCounter = 0;
     private bool textEnabled = false;
+    private bool hasWon = false;
 
     void Start()
     {
@@ -16,8 +17,14 @@ public class EnemyCounter : MonoBehaviour
     {
         if (LevelStarter.HasLevelStarted && textEnabled == false)
         {
-            enabled = true;
+            textEnabled = true;
             enemiesDefeatedText.enabled = true;
+        }
+
+        if (enemiesDefeatedCounter == 90 && !hasWon)
+        {
+            hasWon = true;
+            BaseHealthManager.Instance.ToggleWin();
         }
     }
 
