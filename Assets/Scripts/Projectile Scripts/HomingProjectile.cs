@@ -302,6 +302,10 @@ public class HomingProjectile : MonoBehaviour
         {
             ProjectileManager.Instance.PlayExplosionSound();
         }
+        else if (type == ProjectileType.SecondaryHoming)
+        {   
+            ProjectileManager.Instance.PlayNormalHitSound();
+        }
         
         if (normalExplosionPrefab != null)
         {
