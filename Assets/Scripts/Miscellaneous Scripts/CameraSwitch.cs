@@ -3,6 +3,7 @@ using UnityEngine.InputSystem;
 
 public class CameraSwitch : MonoBehaviour
 {
+    public static CameraSwitch Instance;
     public Camera mainCam1;
     public Camera mainCam2;
     public Camera mainCam3;
@@ -16,9 +17,23 @@ public class CameraSwitch : MonoBehaviour
 
     public static bool IsTutorialActive { get; private set; }
 
+    // Avoids duplicates of this object
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        IsTutorialActive = false;
         ActiveCam = 1;
         SetActiveCamera(ActiveCam);
         SyncOverlayCamera();
@@ -90,5 +105,9 @@ public class CameraSwitch : MonoBehaviour
     public void ToggleTutorial(bool active)
     {
         IsTutorialActive = active;
+        ActiveCam = 1;
+
+        SetActiveCamera(ActiveCam);
+        SyncOverlayCamera();
     }
 }
