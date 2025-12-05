@@ -21,7 +21,7 @@ public class BlockSource : MonoBehaviour
         costIndicator.color = baseColor;
     }
 
-    private void OnMouseDown()
+    public void OnMouseDown()
     {
         if (ProjectileManager.IsFrozen || BaseHealthManager.IsGameOver)
         {

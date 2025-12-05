@@ -4,6 +4,10 @@ using UnityEngine.EventSystems;
 public class ClickOff : MonoBehaviour
 {
 
+[SerializeField] private GameObject TPUI;
+[SerializeField] private GameObject WSGameObject;
+/*
+
     void Update()
  {
         //Check for mouse click 
@@ -32,5 +36,31 @@ public void CurrentClickedGameObject(GameObject gameObject)
     }
 }
 
+*//*
+    void Awake()
+    {
+        //Debug.Log("TEST\n");
+        EventSystem.current.SetSelectedGameObject(this.gameObject);
+    }
 
+    public void OnDeselect(BaseEventData eventData)
+    {
+        Debug.Log("Clicked Outside UI");
+    }
+    */
+
+    private void HideIfClickedOutside(GameObject panel) {
+        if (Input.GetMouseButton(0) && panel.activeSelf && 
+            !RectTransformUtility.RectangleContainsScreenPoint(
+                panel.GetComponent<RectTransform>(), 
+                Input.mousePosition, 
+                Camera.main)) {
+            Debug.Log("Hiding UI");
+            panel.SetActive(false);
+        }
+    }
+
+    void Update(){
+        HideIfClickedOutside(TPUI);
+    }
 }
