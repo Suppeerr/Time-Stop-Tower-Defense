@@ -105,5 +105,9 @@ public class CameraSwitch : MonoBehaviour
     public void ToggleTutorial(bool active)
     {
         IsTutorialActive = active;
+        ActiveCam = 1;
+
+        SetActiveCamera(ActiveCam);
+        SyncOverlayCamera();
     }
 }

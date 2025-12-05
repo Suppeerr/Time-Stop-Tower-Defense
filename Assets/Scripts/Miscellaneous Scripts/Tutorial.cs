@@ -42,7 +42,7 @@ public class Tutorial : MonoBehaviour
         }
     }
 
-    private void EndTutorial()
+    public void EndTutorial()
     {
         levelStartIndicator.enabled = true;
         moneyIndicator.enabled = true;
