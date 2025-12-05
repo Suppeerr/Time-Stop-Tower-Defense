@@ -15404,6 +15404,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5665647457353229215, guid: 7d9296947ac236d4f92be796b3170749, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 5665647457353229215, guid: 7d9296947ac236d4f92be796b3170749, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 5665647457353229215, guid: 7d9296947ac236d4f92be796b3170749, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 90
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -19520,6 +19532,10 @@ PrefabInstance:
     - target: {fileID: 3372660008242584034, guid: 68fdb8c0b18ae194eb06e97259e474a0, type: 3}
       propertyPath: m_Name
       value: Base Health Indicator
+      objectReference: {fileID: 0}
+    - target: {fileID: 3580366288478543902, guid: 68fdb8c0b18ae194eb06e97259e474a0, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3906503082476275410, guid: 68fdb8c0b18ae194eb06e97259e474a0, type: 3}
       propertyPath: m_LocalRotation.w
