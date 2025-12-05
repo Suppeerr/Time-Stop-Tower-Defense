@@ -1,7 +1,6 @@
 using System;
 using System.IO;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 
 //it is not necessary to split this into 2 files. EnemySpawnContainer is only used as a data storage and should not be acessed outside the handler.
