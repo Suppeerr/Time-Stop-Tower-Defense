@@ -124,9 +124,16 @@ public class LevelInstance : MonoBehaviour
 
     public void SpawnEnemy(string enemy_type, float scale)
     {
-        Debug.Log("levelInst spawned enemy");
+        Debug.Log("levelInst spawned enemy: " + enemy_type);
         BaseEnemy enemy = new BaseEnemy();
-        enemy.Init(ePrefab, this, epath, EnemyType.NormalBandit);
+        if (enemy_type.Equals("speedy"))
+        {
+            enemy.Init(ePrefab, this, epath, EnemyType.SpeedyBandit);
+        }
+        else
+        {
+            enemy.Init(ePrefab, this, epath, EnemyType.NormalBandit);
+        }
         enemies.Add(enemy);
         return;
     }

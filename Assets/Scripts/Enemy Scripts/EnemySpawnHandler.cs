@@ -135,7 +135,7 @@ public class EnemySpawnHandler
                 container.cooldown = container.spawn_interval;
 
                 //workaround placeholder - will be changed
-                level_reference.SpawnEnemy("", 0);
+                level_reference.SpawnEnemy(container.EnemyID, 0);
                 //...LevelInstance.SpawnEnemy(type,scale,forcewave_change: true);
 
                 container.count_compl++;
