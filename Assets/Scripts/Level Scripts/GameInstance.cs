@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
+using UnityEditor;
 
 public static class GameInstance
 {
@@ -33,4 +34,9 @@ public static class GameInstance
         }
     }
 
+    static void loadscene()
+    {
+        //check if scene name is a valid level
+        //if scene name is valid, load new gameInstance.
+    }
 }
