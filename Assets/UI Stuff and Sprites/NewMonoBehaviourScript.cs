@@ -22,6 +22,11 @@ public class NewMonoBehaviourScript : MonoBehaviour, IDeselectHandler
     }
 
     void OnMouseDown(){
+        if (ProjectileManager.IsFrozen)
+        {
+            return;
+        }
+
         Debug.Log("Click Registered");
         if (thing.activeSelf){
             //EventSystem.current.SetSelectedGameObject(thing);

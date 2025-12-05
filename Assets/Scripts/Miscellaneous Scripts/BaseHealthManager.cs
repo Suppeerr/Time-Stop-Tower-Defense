@@ -90,6 +90,7 @@ public class BaseHealthManager : MonoBehaviour
         IsGameOver = true;
         levelWinText.enabled = true;
         ProjectileManager.Instance.DestroyAllProjectiles();
+        baseHpText.enabled = false;
 
         // Freezes time
         Time.timeScale = 0f;
