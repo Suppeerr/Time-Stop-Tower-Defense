@@ -54,7 +54,7 @@ public class BeamZap : MonoBehaviour
         Ray ray = CameraSwitch.CurrentCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
         RaycastHit hit;
         float radius = 0.8f;
-        int projectileLayers = LayerMask.GetMask("Normal Projectile");
+        int projectileLayers = LayerMask.GetMask("Normal Projectile", "Homing Projectile");
 
         if (Upgrader.MultiChargeBought)
         {

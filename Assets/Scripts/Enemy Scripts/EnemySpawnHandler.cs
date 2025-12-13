@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Linq;
 using UnityEngine;
+using System.Text;
 
 //it is not necessary to split this into 2 files. EnemySpawnContainer is only used as a data storage and should not be acessed outside the handler.
 public class EnemySpawnHandler
@@ -20,7 +21,11 @@ public class EnemySpawnHandler
         StreamReader ef_reader;
         try
         {
-            ef_reader = new StreamReader(f_path);
+            var fdat = Resources.Load<TextAsset>("TSTD Data - Level 1.csv");
+
+            var x = new MemoryStream(Encoding.UTF8.GetBytes(fdat.text));
+
+            ef_reader = new StreamReader(x);
             Debug.Log("Enemy spawn data loaded.");
 
             string line = ef_reader.ReadLine();

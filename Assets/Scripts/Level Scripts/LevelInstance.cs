@@ -37,9 +37,8 @@ public class LevelInstance : MonoBehaviour
         
         spawnInterval = Random.Range(1f, 3f);
 
-        sptest = new EnemySpawnHandler(this, Application.dataPath + "/Data/Levels/TSTD Data - "+ SceneManager.GetActiveScene().name +".csv");
+        sptest = new EnemySpawnHandler(this, "C:/Users/monpo/OneDrive/Documents/GitHub/Time-Stop-Tower-Defense/Assets/Data/Levels/TSTD Data - Level 1.csv");
     }
-
     public void LoadWaypointPrefabs()
     {
         GameObject pathObj = GameObject.FindWithTag("Path");
