@@ -47,7 +47,7 @@ public class TimeStop : MonoBehaviour
         if (cooldown > 0)
         {
             cooldown -= Time.deltaTime;
-            if (cooldown < 0 )
+            if (cooldown < 0 && !active)
             {
                 cooldownEndSFX.Play();
                 cooldown = 0;
@@ -56,16 +56,27 @@ public class TimeStop : MonoBehaviour
 
         UpdateUI();
 
+        if (cooldown > 0f)
+        {
+            return;
+        }
+
         // Trigger key input
-        if (!active && !isCoroutineRunning && Keyboard.current.tKey.wasPressedThisFrame && cooldown == 0f)
+        if (Keyboard.current.tKey.wasPressedThisFrame)
         {
-            StopAllCoroutines();
-            StartCoroutine(StartTimeStopAfterDelay());
-        }
-        if (active && isCoroutineRunning && Keyboard.current.tKey.wasPressedThisFrame)
-        {
-            EndTimestop(3f);
-        }
+            if (active)
+            {
+                EndTimestop(3f);
+                return;
+            }
+
+            if (!isCoroutineRunning)
+            {
+                StopAllCoroutines();
+                StartCoroutine(StartTimeStopAfterDelay());
+                return;
+            }
+        } 
     }
 
     private IEnumerator StartTimeStopAfterDelay()
@@ -76,6 +87,7 @@ public class TimeStop : MonoBehaviour
         yield return new WaitForSecondsRealtime(delayAfterSFX);
 
         active = true;
+        cooldown = 2f;
         TimeStopEvent?.Invoke(true);
         beamSpawner.SetActive(true);
 
@@ -94,6 +106,7 @@ public class TimeStop : MonoBehaviour
             duration -= Time.deltaTime;
             yield return null;
         }
+
         EndTimestop(3f);
     }
 
