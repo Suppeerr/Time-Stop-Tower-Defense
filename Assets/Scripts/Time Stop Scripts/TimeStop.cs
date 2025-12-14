@@ -146,13 +146,20 @@ public class TimeStop : MonoBehaviour
                 continue;
             }
 
-            if (active == true)
+            if (active)
             {
-                ps.Pause(true);
+                if (ps.isPlaying)
+                {
+                    ps.Pause(true);
+                }
             }
             else
             {
-                ps.Play(true);
+                if (ps.isPaused)
+                {
+                    ps.Play(true);
+                }
+
             }
             
         }
