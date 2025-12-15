@@ -6,6 +6,8 @@ public class TowerManager : MonoBehaviour
     public static TowerManager Instance;
 
     private List<GameObject> activeTowers = new List<GameObject>();
+    private List<int> splitterCosts = new List<int> {5, 5, 6, 8, 8, 10};
+    private int activeSplitterCount = 0;
 
     // Avoids duplicates of this object
     private void Awake()
@@ -26,6 +28,7 @@ public class TowerManager : MonoBehaviour
         if (!activeTowers.Contains(tower))
         {
             activeTowers.Add(tower);
+            activeSplitterCount++;
         }
     }
 
@@ -33,11 +36,33 @@ public class TowerManager : MonoBehaviour
     public void UnregisterTower(GameObject tower)
     {
         activeTowers.Remove(tower);
+        activeSplitterCount--;
     }
 
     public int GetTowerCount()
     {
-        return activeTowers.Count;
+        return activeSplitterCount;
+    }
+
+    public int GetSplitterCost()
+    {
+        int currentCost = 0;
+        if (activeSplitterCount == 0)
+        {
+            currentCost = 5;
+        }
+        else if (activeSplitterCount >= splitterCosts.Count)
+        {
+            currentCost = 10;
+        }
+        else 
+        {
+            currentCost = splitterCosts[activeSplitterCount];
+        }
+        
+        Debug.Log("Current Tower Cost: " + currentCost);
+        Debug.Log("Current Tower Count: " + activeSplitterCount);
+        return currentCost;
     }
 
 }

@@ -41,6 +41,11 @@ public class Upgrader : MonoBehaviour
 
     void Start()
     {
+        AutoCannonBought = false;
+        PreChargeBought = false;
+        TowerBoostBought = false;
+        MultiChargeBought = false;
+
         storedTimeManagerScript = GameObject.Find("Stored Time Manager")?.GetComponent<StoredTimeManager>();
         moneyManagerScript = GameObject.Find("Money Manager")?.GetComponent<MoneyManager>();
         clickableScript = this.GetComponent<Clickable>();

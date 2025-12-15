@@ -7391,6 +7391,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Timestopper Canvas
       objectReference: {fileID: 0}
+    - target: {fileID: 7073124040463814612, guid: 35a781fe512483f4994878d20165ae49, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7360106349920623504, guid: 35a781fe512483f4994878d20165ae49, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8970828905529858322, guid: 35a781fe512483f4994878d20165ae49, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -7509,7 +7517,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 2249345665233388335}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 

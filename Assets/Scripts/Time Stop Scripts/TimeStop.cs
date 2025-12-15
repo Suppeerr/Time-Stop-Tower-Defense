@@ -26,6 +26,11 @@ public class TimeStop : MonoBehaviour
     private float secondsElapsed = 0f;
     public StoredTimeManager storedTimeManager;
 
+    void Start()
+    {
+        beamSpawner.SetActive(false);
+    }
+
     // Once timestop is triggered, all animated objects freeze for the duration
     void Update()
     {

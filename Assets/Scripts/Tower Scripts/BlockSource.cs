@@ -1,23 +1,27 @@
 using UnityEngine;
 using TMPro;
 using System.Collections;
+using System.Collections.Generic;
+
 
 public class BlockSource : MonoBehaviour
 {
-    public GameObject draggablePrefab; // assign draggable prefab in inspector
-    public GameObject moneyManager;
+    // Draggable tower prefab and money manager script
+    [SerializeField] private GameObject draggablePrefab;
     private MoneyManager moneyManagerScript;
-    private int splitterCost = 5;
+
+    // Cost indicator text and parameters
     [SerializeField] private TMP_Text costIndicator;
-    [SerializeField] private Color baseGlowColor;
     private Color baseColor = Color.white;
-    [SerializeField] private Color invalidGlowColor;
     private Color invalidColor = Color.red;
+    [SerializeField] private Color baseGlowColor;
+    [SerializeField] private Color invalidGlowColor;
 
     void Start()
     {
-        moneyManagerScript = moneyManager.GetComponent<MoneyManager>();
-        costIndicator.text = splitterCost + " Coins";
+        // Initializes script and text variables
+        moneyManagerScript = GameObject.Find("Money Manager")?.GetComponent<MoneyManager>();
+        UpdateUI();
         costIndicator.color = baseColor;
     }
 
@@ -41,27 +45,29 @@ public class BlockSource : MonoBehaviour
 
         // Check if money manager has enough money
         int money = moneyManagerScript.GetMoney();
-        if (money > 4)
-        {
-            // Spawn the block
-            GameObject newBlock = Instantiate(draggablePrefab, spawnPos, Quaternion.identity);
 
-            // Tell it to start dragging right away
-            Draggable draggable = newBlock.GetComponent<Draggable>();
+        // If there is enough money, start dragging the tower
+        if (money >= TowerManager.Instance.GetSplitterCost())
+        {
+            // Spawn the draggable tower
+            GameObject newTower = Instantiate(draggablePrefab, spawnPos, Quaternion.identity);
+
+            // Begin dragging
+            Draggable draggable = newTower.GetComponent<Draggable>();
             if (draggable != null)
             {
-                // Start dragging immediately
                 draggable.BeginDrag();
-            }
-            else
-            {
-                Debug.LogError("Spawned prefab is missing Draggable script!");
             }
         }
         else
         {
             StartCoroutine(FlashRed(0.4f));
         }
+    }
+
+    public void UpdateUI()
+    {
+        costIndicator.text = TowerManager.Instance.GetSplitterCost() + " Coins";
     }
     
     private IEnumerator FlashRed(float duration)

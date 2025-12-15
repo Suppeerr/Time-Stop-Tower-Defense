@@ -21,6 +21,7 @@ public class LevelStarter : MonoBehaviour
         if (Keyboard.current.enterKey.wasPressedThisFrame)
         {
             HasLevelStarted = true;
+            
             gameObject.SetActive(false);
         }
     }

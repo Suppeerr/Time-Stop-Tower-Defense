@@ -3,27 +3,30 @@ using System.Collections;
 
 public class BarrelAim : MonoBehaviour
 {
-    public Transform shootPoint;            // Shoot location
-    private Vector3 targetDirection;        // Direction of target
+    // Shoot location
+    [SerializeField] private Transform shootPoint;
+    // Target direction
+    private Vector3 targetDirection;        
 
-    // Aims at target whenever called
+    // Aims at given target whenever called
     public void AimAtTarget(Transform target)
     {
         if (target == null)
         {
             return;
         }
+
         // Calculates desired rotation
         Vector3 direction = (target.position + Vector3.up * 5f) - shootPoint.position;
 
+        // If direction is very similar, skip the update
         if (direction.sqrMagnitude < 0.01f)
         {
             return;
         }
 
-        Quaternion targetRot = Quaternion.LookRotation(direction);
-
         // Rotate to right angle
+        Quaternion targetRot = Quaternion.LookRotation(direction);
         transform.rotation = targetRot;
     }
 }
