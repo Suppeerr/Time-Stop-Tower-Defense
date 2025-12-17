@@ -306,9 +306,9 @@ GameObject:
   - component: {fileID: 8269333626850901375}
   - component: {fileID: 8413069871172802104}
   - component: {fileID: 6014533096484749032}
-  - component: {fileID: 6674996941244546528}
   - component: {fileID: 6622273747540886921}
   - component: {fileID: 2840604526727032139}
+  - component: {fileID: 3284442277657737775}
   m_Layer: 12
   m_Name: Auto Cannon Window
   m_TagString: Untagged
@@ -408,21 +408,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.0000002, y: 1, z: 0.99999994}
   m_Center: {x: -0.0000076293945, y: 0, z: -0.0000009536743}
---- !u!114 &6674996941244546528
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2262393249099396663}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 31a05b614a9add641b7abd44cb891217, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Upgrader
-  upgradeIndicator: {fileID: 338622857392001818}
-  invalidGlowColor: {r: 4.5412064, g: 0, b: 0, a: 1}
-  isAutoCannon: 1
 --- !u!114 &6622273747540886921
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -448,6 +433,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25148858d9680a44ca95b4aaec09fa0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OutlineFlash
+--- !u!114 &3284442277657737775
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2262393249099396663}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f1c1f6e671292649bb6eb4e675b1bb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Upgrader
+  upgradeIndicator: {fileID: 338622857392001818}
+  invalidGlowColor: {r: 4.2370954, g: 0, b: 0, a: 1}
+  dataContainer: {fileID: 11400000, guid: e1fef4be5e7ff9045ab64ee63acbdd0d, type: 2}
+  upgraderType: 0
 --- !u!1 &2272064898267369001
 GameObject:
   m_ObjectHideFlags: 0
@@ -1553,12 +1554,20 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6239621620845242330, guid: 7b879d2c0fa1078489ab8db8285de4bd, type: 3}
+      propertyPath: m_text
+      value: Enable Auto Cannon 6 Coins
+      objectReference: {fileID: 0}
+    - target: {fileID: 6239621620845242330, guid: 7b879d2c0fa1078489ab8db8285de4bd, type: 3}
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7827607781707180262, guid: 7b879d2c0fa1078489ab8db8285de4bd, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8751689840862174516, guid: 7b879d2c0fa1078489ab8db8285de4bd, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

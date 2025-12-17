@@ -4,8 +4,6 @@ public class OutlineManager : MonoBehaviour
 {
     public static OutlineManager Instance { get; private set; }
 
-    private Clickable currentOutlined;
-
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -16,44 +14,38 @@ public class OutlineManager : MonoBehaviour
         Instance = this;
     }
 
-    // Set outline on a Clickable object, disabling previous one if necessary
-    public void SetOutline(Clickable clickable)
+    // Set outline on a Clickable object
+    public void SetOutlineVisibility(Clickable clickable, bool visible)
     {
-        if (currentOutlined == clickable || BaseHealthManager.IsGameOver)
+        if (BaseHealthManager.IsGameOver)
         {
             return;
         }
-        
-        if (currentOutlined != null)
+
+        OutlineFlash outlineFlash = clickable.GetComponent<OutlineFlash>();
+
+        if (outlineFlash != null && outlineFlash.IsFlashing)
         {
-            currentOutlined.DisableOutline();
+            outlineFlash.SetVisualOverride(visible);
         }
 
-        currentOutlined = clickable;
-
-        if (currentOutlined != null)
+        if (visible)
         {
-            currentOutlined.EnableOutline();
+            clickable.Outline.OutlineColor = new Color(Color.white.r, Color.white.g, Color.white.b, 1f);
         }
-    }
-
-    // Remove outline from object if it's currently outlined
-    public void RemoveOutline(Clickable clickable)
-    {
-        if (currentOutlined == clickable)
+        else
         {
-            currentOutlined.DisableOutline();
-            currentOutlined = null;
+            clickable.Outline.OutlineColor = new Color(Color.white.r, Color.white.g, Color.white.b, 0f);
         }
     }
 
-    // Force remove any outline
-    public void RemoveOutline()
+    public void SetOutlineActive(Clickable clickable, bool active)
     {
-        if (currentOutlined != null)
+        if (BaseHealthManager.IsGameOver)
         {
-            currentOutlined.DisableOutline();
-            currentOutlined = null;
+            return;
         }
+
+        clickable.Outline.enabled = active;
     }
 }

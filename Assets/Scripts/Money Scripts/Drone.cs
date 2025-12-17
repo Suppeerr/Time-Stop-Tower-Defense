@@ -5,7 +5,7 @@ using Vector3 = UnityEngine.Vector3;
 
 public class Drone : MonoBehaviour
 {
-    public float speed = 8.0f;
+    [SerializeField] private float speed;
     private GameObject Coin;
     private bool isCollecting = false;
     private float checkInterval = 1f;

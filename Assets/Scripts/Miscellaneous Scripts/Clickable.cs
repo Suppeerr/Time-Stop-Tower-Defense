@@ -1,42 +1,51 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Collider))]
 public class Clickable : MonoBehaviour
 {
-    private Outline outline;
+    public Outline Outline { get; private set; }
     private OutlineFlash outlineFlashScript;
     [SerializeField] private float outlineWidth;
 
     private Color baseColor = Color.white;
 
     private bool isHovered = false;
+    public bool ClickableEnabled { get; private set; }
     private static LayerMask clickableLayers;
 
     void Awake()
     {
-        outline = gameObject.AddComponent<Outline>();
+        Outline = gameObject.AddComponent<Outline>();
         outlineFlashScript = GetComponent<OutlineFlash>();
+        SetOutlineWidth(outlineWidth);
+    }
 
-        outline.OutlineMode = Outline.Mode.OutlineAll;
-        outline.OutlineWidth = outlineWidth;
-        outline.enabled = false;
+    void Start()
+    {
+        Outline.OutlineMode = Outline.Mode.OutlineAll;
+        OutlineManager.Instance.SetOutlineActive(this, true);
+        OutlineManager.Instance.SetOutlineVisibility(this, false);
+
+        ClickableEnabled = true;
 
         if (clickableLayers == 0)
         {
             clickableLayers = LayerMask.GetMask("Tower", "Normal Projectile", "Upgradable", "Ignore Time Stop");
-        }
+        } 
     }
-
+        
     void Update()
     {
+        if (!ClickableEnabled)
+        {
+            return;
+        }
+
         // Raycast to detect hovering
         Ray ray = CameraSwitch.CurrentCamera.ScreenPointToRay(Input.mousePosition);
         bool hoveringThisFrame = false;
-
-        if (outline.OutlineColor != baseColor && outlineFlashScript.enabled == false)
-        {
-            outline.OutlineColor = baseColor;
-        }
+        bool clickedThisFrame = false;
 
         if (gameObject.layer == LayerMask.NameToLayer("Normal Projectile"))
         {
@@ -45,6 +54,11 @@ public class Clickable : MonoBehaviour
             {
                 if (hit.collider.gameObject == gameObject)
                 {
+                    if (Mouse.current.leftButton.wasPressedThisFrame)
+                    {
+                        clickedThisFrame = true;
+                    }
+
                     hoveringThisFrame = true;
                 }
             }
@@ -55,10 +69,9 @@ public class Clickable : MonoBehaviour
             {
                 if (hit.collider.gameObject == gameObject)
                 {
-                    if (outlineFlashScript != null)
+                    if (Mouse.current.leftButton.wasPressedThisFrame)
                     {
-                        outlineFlashScript.StopFlashing();
-                        outlineFlashScript.enabled = false;
+                        clickedThisFrame = true;
                     }
 
                     hoveringThisFrame = true;
@@ -70,44 +83,34 @@ public class Clickable : MonoBehaviour
         if (hoveringThisFrame && !isHovered)
         {
             isHovered = true;
-            OutlineManager.Instance.SetOutline(this);
+            OutlineManager.Instance.SetOutlineVisibility(this, true);
         }
         else if (!hoveringThisFrame && isHovered)
         {
             isHovered = false;
-            OutlineManager.Instance.RemoveOutline(this);
+            OutlineManager.Instance.SetOutlineVisibility(this, false);
         }
-    }
 
-    // Called by OutlineManager
-    public void EnableOutline()
-    {
-        if (outline != null)
+        if (clickedThisFrame && outlineFlashScript != null)
         {
-            outline.enabled = true;
-        }
-    }
-
-    public void DisableOutline()
-    {
-        if (outline != null)
-        {
-            outline.enabled = false;
+            outlineFlashScript.StopFlashing(true);
         }
     }
 
     public void SetOutlineWidth(float width)
     {
-        outline.OutlineWidth = width; 
+        if (!Outline.enabled)
+        {
+            return;
+        }
+
+        Outline.OutlineWidth = width; 
     }
 
-    private void OnEnable()
+    public void UpdateClickable(bool isVisible, bool isActive)
     {
-        isHovered = false;
-    }
-
-    private void OnDisable()
-    {
-        DisableOutline();
+        ClickableEnabled = isActive;
+        OutlineManager.Instance.SetOutlineVisibility(this, isVisible);
+        OutlineManager.Instance.SetOutlineActive(this, isActive);
     }
 }

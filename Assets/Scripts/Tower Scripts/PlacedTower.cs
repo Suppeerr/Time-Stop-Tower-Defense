@@ -101,6 +101,7 @@ public class PlacedTower : MonoBehaviour
                 {
                     moneyManagerScript.UpdateMoney(4);
                     TowerManager.Instance.UnregisterTower(this.gameObject);
+                    towerSchematic.UpdateUI();
                     Destroy(this.gameObject);
                 }
             }

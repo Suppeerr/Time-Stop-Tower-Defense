@@ -25,11 +25,8 @@ public class TowerManager : MonoBehaviour
     // Registers new towers in a list of towers
     public void RegisterTower(GameObject tower)
     {
-        if (!activeTowers.Contains(tower))
-        {
-            activeTowers.Add(tower);
-            activeSplitterCount++;
-        }
+        activeTowers.Add(tower);
+        activeSplitterCount++;
     }
 
     // Unregisters sold towers
@@ -60,8 +57,6 @@ public class TowerManager : MonoBehaviour
             currentCost = splitterCosts[activeSplitterCount];
         }
         
-        Debug.Log("Current Tower Cost: " + currentCost);
-        Debug.Log("Current Tower Count: " + activeSplitterCount);
         return currentCost;
     }
 

@@ -4,12 +4,12 @@ using TMPro;
 public class StoredTimeManager : MonoBehaviour
 {
     private int seconds;
-    private int maxSeconds = 25;
+    private int maxSeconds = 0;
     [SerializeField] private TMP_Text storedTimeText;
 
     void Awake()
     {
-        seconds = 0;
+        seconds = 25;
         UpdateUI();
     }
 

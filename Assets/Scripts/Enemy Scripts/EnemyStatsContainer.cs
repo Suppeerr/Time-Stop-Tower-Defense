@@ -1,5 +1,12 @@
 using UnityEngine;
 
+public enum EnemyType
+{
+    NormalBandit,
+    SpeedyBandit,
+    WaveBandit
+}
+
 [System.Serializable]
 public class EnemyStats
 {

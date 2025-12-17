@@ -93,6 +93,7 @@ public class TimeStop : MonoBehaviour
 
         active = true;
         cooldown = 2f;
+        ProjectileManager.Instance.BlinkNormalProjectiles();
         TimeStopEvent?.Invoke(true);
         beamSpawner.SetActive(true);
 
@@ -120,6 +121,7 @@ public class TimeStop : MonoBehaviour
     {
         StopAllCoroutines();
         active = false;
+        ProjectileManager.Instance.UnblinkNormalProjectiles();
         TimeStopEvent?.Invoke(false);
         isCoroutineRunning = false;
         timeStopEndSFX?.Play();

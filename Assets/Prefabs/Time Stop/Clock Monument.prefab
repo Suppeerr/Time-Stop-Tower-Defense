@@ -5864,8 +5864,8 @@ GameObject:
   - component: {fileID: 5510007281245922723}
   - component: {fileID: 4067269693926902520}
   - component: {fileID: 5719107223784810107}
-  - component: {fileID: 285802457400354181}
   - component: {fileID: 4274225686177162340}
+  - component: {fileID: 7507026296304186683}
   m_Layer: 9
   m_Name: Clock Monument
   m_TagString: Untagged
@@ -5939,21 +5939,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Clickable
   outlineWidth: 6
---- !u!114 &285802457400354181
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5133165422522859289}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 31a05b614a9add641b7abd44cb891217, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Upgrader
-  upgradeIndicator: {fileID: 9016082355031510267}
-  invalidGlowColor: {r: 4.5412064, g: 0, b: 0, a: 1}
-  isAutoCannon: 0
 --- !u!114 &4274225686177162340
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5966,6 +5951,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25148858d9680a44ca95b4aaec09fa0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OutlineFlash
+--- !u!114 &7507026296304186683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5133165422522859289}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f1c1f6e671292649bb6eb4e675b1bb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Upgrader
+  upgradeIndicator: {fileID: 9016082355031510267}
+  invalidGlowColor: {r: 4.2370954, g: 0, b: 0, a: 1}
+  dataContainer: {fileID: 11400000, guid: e1fef4be5e7ff9045ab64ee63acbdd0d, type: 2}
+  upgraderType: 1
 --- !u!1 &5358631363266960293
 GameObject:
   m_ObjectHideFlags: 0
@@ -6731,7 +6732,7 @@ MonoBehaviour:
   maxDur: 5
   rechargeRate: 1
   beamSpawner: {fileID: 6113056683632870968}
-  storedTimeManager: {fileID: 7245046123412355460, guid: b7bdf2e5e228a3544ab374fbd597190c, type: 3}
+  storedTimeManager: {fileID: 0}
 --- !u!82 &2398438723132002101
 AudioSource:
   m_ObjectHideFlags: 0
@@ -7387,6 +7388,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1800215690998085659}
     m_Modifications:
+    - target: {fileID: 2645259143040059935, guid: 35a781fe512483f4994878d20165ae49, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2.8
+      objectReference: {fileID: 0}
     - target: {fileID: 3125174738120134277, guid: 35a781fe512483f4994878d20165ae49, type: 3}
       propertyPath: m_Name
       value: Timestopper Canvas
@@ -7394,6 +7399,14 @@ PrefabInstance:
     - target: {fileID: 7073124040463814612, guid: 35a781fe512483f4994878d20165ae49, type: 3}
       propertyPath: m_Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7073124040463814612, guid: 35a781fe512483f4994878d20165ae49, type: 3}
+      propertyPath: m_fontSize
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7073124040463814612, guid: 35a781fe512483f4994878d20165ae49, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 7360106349920623504, guid: 35a781fe512483f4994878d20165ae49, type: 3}
       propertyPath: m_IsActive
