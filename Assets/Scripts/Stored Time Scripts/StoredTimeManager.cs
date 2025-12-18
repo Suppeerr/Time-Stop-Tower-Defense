@@ -4,12 +4,12 @@ using TMPro;
 public class StoredTimeManager : MonoBehaviour
 {
     private int seconds;
-    private int maxSeconds = 0;
+    private int maxSeconds = 25;
     [SerializeField] private TMP_Text storedTimeText;
 
     void Awake()
     {
-        seconds = 25;
+        seconds = 0;
         UpdateUI();
     }
 
@@ -26,11 +26,11 @@ public class StoredTimeManager : MonoBehaviour
 
         if (CameraSwitch.ActiveCam == 2)
         {
-            storedTimeText.rectTransform.anchoredPosition = new Vector3(-292, 140, 0);
+            storedTimeText.rectTransform.anchoredPosition = new Vector3(-270, 132, 0);
         }
         else
         {
-            storedTimeText.rectTransform.anchoredPosition = new Vector3(296, 140, 0);
+            storedTimeText.rectTransform.anchoredPosition = new Vector3(368, 132, 0);
         }
     }
 
@@ -39,7 +39,7 @@ public class StoredTimeManager : MonoBehaviour
     {
         if (storedTimeText != null)
         {
-            storedTimeText.text = seconds + "s Stored";
+            storedTimeText.text = seconds + "s";
         }
     }
 

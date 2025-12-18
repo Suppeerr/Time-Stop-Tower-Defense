@@ -799,9 +799,7 @@ GameObject:
   - component: {fileID: 7122941740453219297}
   - component: {fileID: 6121376561574379198}
   - component: {fileID: 8301265458820210141}
-  - component: {fileID: 5571481244657217956}
   - component: {fileID: 237398468430301567}
-  - component: {fileID: 8616613090068599540}
   m_Layer: 0
   m_Name: Tutorial Camera
   m_TagString: MainCamera
@@ -891,14 +889,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   m_MaxRayIntersections: 0
---- !u!81 &5571481244657217956
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9061620875705950059}
-  m_Enabled: 1
 --- !u!114 &237398468430301567
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -944,16 +934,3 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
---- !u!114 &8616613090068599540
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9061620875705950059}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 17c26a42372479b47b5edef5a82d280e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TimeStopOverlay
-  timeStopVolume: {fileID: 0}

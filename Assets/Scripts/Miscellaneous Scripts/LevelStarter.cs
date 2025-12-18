@@ -1,9 +1,11 @@
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.InputSystem;
 
 public class LevelStarter : MonoBehaviour
 {
     public static LevelStarter Instance;
+    [SerializeField] private Image tutorialImage;
     public static bool HasLevelStarted { get; private set; }
 
     void Awake()
@@ -20,9 +22,14 @@ public class LevelStarter : MonoBehaviour
     {
         if (Keyboard.current.enterKey.wasPressedThisFrame)
         {
-            HasLevelStarted = true;
-            
-            gameObject.SetActive(false);
+            StartLevel();
         }
+    }
+
+    public void StartLevel()
+    {
+        HasLevelStarted = true;
+        gameObject.SetActive(false);
+        tutorialImage.enabled = false;
     }
 }

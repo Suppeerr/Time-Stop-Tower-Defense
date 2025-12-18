@@ -1,85 +1,118 @@
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.InputSystem;
 using System.Collections.Generic;
 using TMPro;
 
 public class Tutorial : MonoBehaviour
 {
+    public static Tutorial Instance;
     [SerializeField] private List<GameObject> tutorialImages;
-    [SerializeField] private TMP_Text levelStartIndicator;
+    [SerializeField] private Image levelStartImage;
+    [SerializeField] private Image tutorialImage;
     [SerializeField] private TMP_Text moneyIndicator;
+    [SerializeField] private Image coinImage;
     [SerializeField] private TMP_Text storedTimeIndicator;
+    [SerializeField] private Image hourglassImage;
     [SerializeField] private GameObject leftArrow;
     [SerializeField] private GameObject rightArrow;
     [SerializeField] private GameObject exitButton;
     private int currentIndex = 0;
+    public static bool IsTutorialActive { get; private set; }
+
+    // Avoids duplicates of this object
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        IsTutorialActive = false;
+        
         UpdateImage();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (CameraSwitch.IsTutorialActive)
+        if (!LevelStarter.HasLevelStarted && Keyboard.current.mKey.wasPressedThisFrame && !IsTutorialActive)
         {
-            StartTutorial();   
+            StartTutorial();
+        }
+
+        if (currentIndex == 0 && leftArrow.GetComponent<Button>().interactable == true)
+        {
+            leftArrow.GetComponent<Button>().interactable = false;
+        }
+        else if (currentIndex != 0 && leftArrow.GetComponent<Button>().interactable == false)
+        {
+            leftArrow.GetComponent<Button>().interactable = true;
+        }
+
+        if (currentIndex == tutorialImages.Count - 1 && rightArrow.GetComponent<Button>().interactable == true)
+        {
+            rightArrow.GetComponent<Button>().interactable = false;
+        }
+        else if (currentIndex != tutorialImages.Count - 1 && rightArrow.GetComponent<Button>().interactable == false)
+        {
+            rightArrow.GetComponent<Button>().interactable = true;
         }
     }
 
-    private void StartTutorial()
+    public void StartTutorial()
     {
-        if (levelStartIndicator.enabled == true)
-        {
-            levelStartIndicator.enabled = false;
-            moneyIndicator.enabled = false;
-            storedTimeIndicator.enabled = false;
+        IsTutorialActive = true;
 
-            leftArrow.SetActive(true);
-            rightArrow.SetActive(true);
-            exitButton.SetActive(true);
-        }
+        CameraSwitch.Instance.ToggleTutorial(true);
     }
 
     public void EndTutorial()
     {
-        levelStartIndicator.enabled = true;
-        moneyIndicator.enabled = true;
-        storedTimeIndicator.enabled = true;
-
-        leftArrow.SetActive(false);
-        rightArrow.SetActive(false);
-        exitButton.SetActive(false);
+        IsTutorialActive = false;
+        currentIndex = 0;
 
         CameraSwitch.Instance.ToggleTutorial(false);
     }
 
+    public void UpdateScreenUI(bool enabled)
+    {
+        levelStartImage.enabled = enabled;
+        tutorialImage.enabled = enabled;
+        moneyIndicator.enabled = enabled;
+        coinImage.enabled = enabled;
+        storedTimeIndicator.enabled = enabled;
+        hourglassImage.enabled = enabled;
+    }
+
+    public void UpdateTutorialUI(bool enabled)
+    {
+        leftArrow.SetActive(enabled);
+        rightArrow.SetActive(enabled);
+        exitButton.SetActive(enabled);
+    }
+
     public void NextImage()
     {
-        Debug.Log("Right Arrow Clicked!");
-        if (currentIndex == tutorialImages.Count - 1)
-        {
-            return;
-        }
-
         currentIndex++;
         UpdateImage();
     }
 
     public void PreviousImage()
     {
-        Debug.Log("Left Arrow Clicked!");
-        if (currentIndex == 0)
-        {
-            return;
-        }
-
         currentIndex--;
         UpdateImage();
     }
 
-    private void UpdateImage()
+    public void UpdateImage()
     {
         for (int i = 0; i < tutorialImages.Count; i++)
         {

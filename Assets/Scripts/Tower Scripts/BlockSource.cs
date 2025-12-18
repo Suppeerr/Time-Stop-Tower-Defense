@@ -9,6 +9,7 @@ public class BlockSource : MonoBehaviour
     // Draggable tower prefab and money manager script
     [SerializeField] private GameObject draggablePrefab;
     private MoneyManager moneyManagerScript;
+    private Coroutine flashRedRoutine = null;
 
     // Cost indicator text and parameters
     [SerializeField] private TMP_Text costIndicator;
@@ -16,6 +17,8 @@ public class BlockSource : MonoBehaviour
     private Color invalidColor = Color.red;
     [SerializeField] private Color baseGlowColor;
     [SerializeField] private Color invalidGlowColor;
+    private int currentMoney;
+    private float elapsed = 0f;
 
     void Start()
     {
@@ -23,6 +26,33 @@ public class BlockSource : MonoBehaviour
         moneyManagerScript = GameObject.Find("Money Manager")?.GetComponent<MoneyManager>();
         UpdateUI();
         costIndicator.color = baseColor;
+    }
+
+    void Update()
+    {
+        if (elapsed < 0.05f)
+        {
+            elapsed += Time.deltaTime;
+        }
+        else
+        {
+            elapsed = 0f;
+            currentMoney = moneyManagerScript.GetMoney();
+
+            if (flashRedRoutine != null)
+            {
+                return;
+            }
+
+            if (currentMoney >= TowerManager.Instance.GetSplitterCost())
+            {
+                costIndicator.fontMaterial.SetFloat("_GlowPower", 0.3f);
+            }
+            else
+            {
+                costIndicator.fontMaterial.SetFloat("_GlowPower", 0f);
+            }
+        }
     }
 
     public void OnMouseDown()
@@ -44,10 +74,10 @@ public class BlockSource : MonoBehaviour
         }
 
         // Check if money manager has enough money
-        int money = moneyManagerScript.GetMoney();
+        currentMoney = moneyManagerScript.GetMoney();
 
         // If there is enough money, start dragging the tower
-        if (money >= TowerManager.Instance.GetSplitterCost())
+        if (currentMoney >= TowerManager.Instance.GetSplitterCost())
         {
             // Spawn the draggable tower
             GameObject newTower = Instantiate(draggablePrefab, spawnPos, Quaternion.identity);
@@ -61,7 +91,7 @@ public class BlockSource : MonoBehaviour
         }
         else
         {
-            StartCoroutine(FlashRed(0.4f));
+            flashRedRoutine = StartCoroutine(FlashRed(0.4f));
         }
     }
 
@@ -78,6 +108,7 @@ public class BlockSource : MonoBehaviour
         // Set color and glow to red 
         costIndicator.color = invalidColor;
         mat.SetColor("_GlowColor", invalidGlowColor);
+        costIndicator.fontMaterial.SetFloat("_GlowPower", 0.3f);
 
         // Wait for duration
         yield return new WaitForSeconds(duration);
@@ -85,5 +116,7 @@ public class BlockSource : MonoBehaviour
         // Revert back to original color and glow
         costIndicator.color = baseColor;
         mat.SetColor("_GlowColor", baseGlowColor);
+        costIndicator.fontMaterial.SetFloat("_GlowPower", 0f);
+        flashRedRoutine = null;
     }
 }   

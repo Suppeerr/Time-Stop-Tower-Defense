@@ -16,11 +16,11 @@ public class MoneyManager : MonoBehaviour
     {
         if (CameraSwitch.ActiveCam == 2)
         {
-            moneyText.rectTransform.anchoredPosition = new Vector2(-292, 187);
+            moneyText.rectTransform.anchoredPosition = new Vector2(124, 187);
         }
         else
         {
-            moneyText.rectTransform.anchoredPosition = new Vector2(295, 187);
+            moneyText.rectTransform.anchoredPosition = new Vector2(761, 187);
         }
     }
 
@@ -29,7 +29,7 @@ public class MoneyManager : MonoBehaviour
     {
         if (moneyText != null)
         {
-            moneyText.text = money + " Coins";
+            moneyText.text = money.ToString();
         }
     }
 

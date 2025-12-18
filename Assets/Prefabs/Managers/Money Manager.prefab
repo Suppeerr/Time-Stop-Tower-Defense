@@ -40,6 +40,36 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8363794291406343203}
     m_Modifications:
+    - target: {fileID: 3585809447250587719, guid: 84ad166afdd47454b9cff2a1694e9c6e, type: 3}
+      propertyPath: m_text
+      value: '10
+
+'
+      objectReference: {fileID: 0}
+    - target: {fileID: 3585809447250587719, guid: 84ad166afdd47454b9cff2a1694e9c6e, type: 3}
+      propertyPath: m_fontSize
+      value: 33
+      objectReference: {fileID: 0}
+    - target: {fileID: 3585809447250587719, guid: 84ad166afdd47454b9cff2a1694e9c6e, type: 3}
+      propertyPath: m_fontColor.b
+      value: 0.1254902
+      objectReference: {fileID: 0}
+    - target: {fileID: 3585809447250587719, guid: 84ad166afdd47454b9cff2a1694e9c6e, type: 3}
+      propertyPath: m_fontColor.g
+      value: 0.6470588
+      objectReference: {fileID: 0}
+    - target: {fileID: 3585809447250587719, guid: 84ad166afdd47454b9cff2a1694e9c6e, type: 3}
+      propertyPath: m_fontColor.r
+      value: 0.854902
+      objectReference: {fileID: 0}
+    - target: {fileID: 3585809447250587719, guid: 84ad166afdd47454b9cff2a1694e9c6e, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 33
+      objectReference: {fileID: 0}
+    - target: {fileID: 3585809447250587719, guid: 84ad166afdd47454b9cff2a1694e9c6e, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4280329690
+      objectReference: {fileID: 0}
     - target: {fileID: 4148056336495399674, guid: 84ad166afdd47454b9cff2a1694e9c6e, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -124,11 +154,57 @@ PrefabInstance:
       propertyPath: m_Name
       value: Money Indicator Canvas
       objectReference: {fileID: 0}
+    - target: {fileID: 7745757881322681656, guid: 84ad166afdd47454b9cff2a1694e9c6e, type: 3}
+      propertyPath: m_Pivot.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7745757881322681656, guid: 84ad166afdd47454b9cff2a1694e9c6e, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7745757881322681656, guid: 84ad166afdd47454b9cff2a1694e9c6e, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7745757881322681656, guid: 84ad166afdd47454b9cff2a1694e9c6e, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7745757881322681656, guid: 84ad166afdd47454b9cff2a1694e9c6e, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 7745757881322681656, guid: 84ad166afdd47454b9cff2a1694e9c6e, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 761
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8175172882594717799, guid: 84ad166afdd47454b9cff2a1694e9c6e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1706981826901774200}
   m_SourcePrefab: {fileID: 100100000, guid: 84ad166afdd47454b9cff2a1694e9c6e, type: 3}
+--- !u!1 &2208556769461302242 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8175172882594717799, guid: 84ad166afdd47454b9cff2a1694e9c6e, type: 3}
+  m_PrefabInstance: {fileID: 8057593676805739397}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1706981826901774200
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2208556769461302242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.ContentSizeFitter
+  m_HorizontalFit: 2
+  m_VerticalFit: 0
 --- !u!224 &6215681621516697983 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4148056336495399674, guid: 84ad166afdd47454b9cff2a1694e9c6e, type: 3}

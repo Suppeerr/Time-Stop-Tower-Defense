@@ -14,6 +14,11 @@ public class TimeStopOverlay : MonoBehaviour
 
     void Awake()
     {
+        if (timeStopVolume == null)
+        {
+            return;
+        }
+        
         if (timeStopVolume.profile.TryGet<ColorAdjustments>(out var ca))
         {
             colorAdjustments = ca;
