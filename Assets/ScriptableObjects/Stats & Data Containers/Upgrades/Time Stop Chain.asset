@@ -10,24 +10,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6309618410f15eb43922aa17a6cc27e7, type: 3}
-  m_Name: UpgradeDataContainer
-  m_EditorClassIdentifier: Assembly-CSharp::UpgradeDataContainer
-  data:
-  - upgradeType: 0
-    upgraderType: 0
-    upgradeNumber: 1
-    text: Enable Auto Cannon   6 Coins
-    moneyCost: 6
-    secondsCost: 0
+  m_Name: Time Stop Chain
+  m_EditorClassIdentifier: Assembly-CSharp::UpgradeChain
+  upgrades:
   - upgradeType: 1
-    upgraderType: 0
-    upgradeNumber: 1
-    text: Pre-Charge   5 Coins, 10s
+    upgraderType: 1
+    featureUnlocked: 0
+    text: Time Stop<br>5 Coins
+    moneyCost: 5
+    secondsCost: 0
+  - upgradeType: 2
+    upgraderType: 1
+    featureUnlocked: 0
+    text: Pre-Charge<br>5 Coins, 10s
     moneyCost: 5
     secondsCost: 10
-  - upgradeType: 2
-    upgraderType: 0
-    upgradeNumber: 2
-    text: Multi-Charge   8 Coins, 15s
+  - upgradeType: 3
+    upgraderType: 1
+    featureUnlocked: 0
+    text: Multi-Charge<br>8 Coins, 15s
     moneyCost: 8
     secondsCost: 15

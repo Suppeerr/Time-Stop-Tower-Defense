@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4949f27fb1874fb4093304591dc75113, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelStarter
+  tutorialImage: {fileID: 0}
 --- !u!1001 &4003499145715437596
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -53,6 +54,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8039074539648045381}
     m_Modifications:
+    - target: {fileID: 1977173899732387280, guid: a25d6aa095b56d7429147c5eeacd1c48, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: a56c5da3902bdab4db31d529c9e84581, type: 3}
     - target: {fileID: 6055840402169361485, guid: a25d6aa095b56d7429147c5eeacd1c48, type: 3}
       propertyPath: m_IsActive
       value: 0

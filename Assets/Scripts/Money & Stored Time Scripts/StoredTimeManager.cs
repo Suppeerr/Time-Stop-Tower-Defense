@@ -46,7 +46,7 @@ public class StoredTimeManager : MonoBehaviour
     // Public method for updating seconds
     public void UpdateSeconds(int amount = 1)
     {
-        if (seconds < maxSeconds)
+        if (seconds < maxSeconds || amount < 0)
         {
             seconds += amount;
         }

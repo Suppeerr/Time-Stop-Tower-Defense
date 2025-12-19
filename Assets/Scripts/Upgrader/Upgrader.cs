@@ -22,7 +22,7 @@ public class Upgrader : MonoBehaviour
 
     // Upgrade data
     [SerializeField] private UpgradeDataContainer dataContainer;
-    [SerializeField] private UpgraderType upgraderType;
+    private UpgraderType upgraderType;
     private UpgradeType currentUpgrade;
     private int currentMoneyCost;
     private int currentSecondsCost;
@@ -34,6 +34,7 @@ public class Upgrader : MonoBehaviour
     private float elapsed;    
 
     public static bool AutoCannonBought { get; private set; }
+    public static bool TimeStopBought { get; private set; }
     public static bool PreChargeBought { get; private set; }
     public static bool TowerBoostBought { get; private set; }
     public static bool MultiChargeBought { get; private set; }
@@ -64,17 +65,9 @@ public class Upgrader : MonoBehaviour
         upgradeIndicator.color = baseColor;
         Material mat = upgradeIndicator.fontMaterial;
         baseGlowColor = mat.GetColor("_GlowColor");
-        
-        switch(upgraderType)
-        {
-            case UpgraderType.AutoCannon:
-                SetCurrentUpgrade(UpgradeType.AutoCannon);
-                break;
 
-            case UpgraderType.TimeStop:
-                SetCurrentUpgrade(UpgradeType.PreCharge);
-                break;
-        }
+        upgradeNum = 0;
+        SetCurrentUpgrade();
     }
 
     private void SetState(UpgraderState newState)
@@ -123,12 +116,11 @@ public class Upgrader : MonoBehaviour
             case UpgraderState.Confirming:
                 UpdateVisuals(true, true);
                 upgradeIndicator.text = "Confirm?";
-                AdjustFontSize(1.4f, 1.8f);
+                AdjustFontSize(1.4f, 1.5f);
                 timeOutRoutine = StartCoroutine(TimeOut(5f));
                 break;
 
             case UpgraderState.UpgradeBought:
-                rt.sizeDelta = new Vector2(10, rt.sizeDelta.y);
                 UpdateVisuals(false, true, false);
                 StartCoroutine(SuccessfulUpgrade());
                 break;
@@ -154,14 +146,20 @@ public class Upgrader : MonoBehaviour
         }
     }
 
-    private void SetCurrentUpgrade(UpgradeType type)
+    private void SetCurrentUpgrade()
     {
-        UpgradeData data = dataContainer.GetData(type);
-        currentUpgrade = type;
-        upgradeNum = data.upgradeNumber;
-        currentMoneyCost = data.moneyCost;
-        currentSecondsCost = data.secondsCost;
-        baseText = data.text;
+        if (upgradeNum >= dataContainer.upgrades.Length)
+        {
+            SetState(UpgraderState.Finished);
+            return;
+        }
+
+        UpgradeData upgrade = dataContainer.upgrades[upgradeNum];
+        upgraderType = upgrade.upgraderType;
+        currentUpgrade = upgrade.upgradeType;
+        currentMoneyCost = upgrade.moneyCost;
+        currentSecondsCost = upgrade.secondsCost;
+        baseText = upgrade.text;
     }
 
     void OnMouseDown()
@@ -176,7 +174,7 @@ public class Upgrader : MonoBehaviour
             StopCoroutine(timeOutRoutine);
         }
 
-        Debug.Log("Current state: " + currentState);
+        // Debug.Log("Current state: " + currentState);
 
         CheckUpgrade();
     }
@@ -228,29 +226,18 @@ public class Upgrader : MonoBehaviour
     {
         MarkUpgradeBought();
 
-        AdjustFontSize(1f, 1.5f);
-        upgradeIndicator.text = "Upgrade Bought!";
+        AdjustFontSize(1f, 1.4f);
+        upgradeIndicator.text = "Upgrade\nBought!";
         
         moneyManagerScript.DecreaseMoney(currentMoneyCost);
         storedTimeManagerScript.DecreaseSeconds(currentSecondsCost);
 
         yield return new WaitForSeconds(3f); 
 
-        if (upgraderType == UpgraderType.AutoCannon)
+        if (upgradeNum >= dataContainer.upgrades.Length)
         {
-            if (upgradeNum == 1)
-            {
-                SetState(UpgraderState.Finished);
-                yield break;
-            }
-        }
-        else if (upgraderType == UpgraderType.TimeStop)
-        {
-            if (upgradeNum == 2)
-            {
-                SetState(UpgraderState.Finished);
-                yield break;
-            }
+            SetState(UpgraderState.Finished);
+            yield break;
         }
 
         SetState(UpgraderState.UnlockingUpgrade);
@@ -258,15 +245,13 @@ public class Upgrader : MonoBehaviour
 
     private IEnumerator UnlockNewUpgrade()
     {
-        upgradeIndicator.fontSize = 1.3f;
-        upgradeIndicator.text = "New Upgrade Unlocked!";
+        AdjustFontSize(1f, 1.4f);
+        upgradeIndicator.text = "New Upgrade\nUnlocked!";
 
         yield return new WaitForSeconds(3f);
 
-        rt.sizeDelta = new Vector2(12, rt.sizeDelta.y);
-        upgradeIndicator.fontSize = 1f;
-
-        SetCurrentUpgrade(UpgradeType.MultiCharge);
+        upgradeNum++;
+        SetCurrentUpgrade();
         
         SetState(UpgraderState.Hidden);
     }
@@ -277,6 +262,9 @@ public class Upgrader : MonoBehaviour
         {
             case UpgradeType.AutoCannon:
                 AutoCannonBought = true;
+                break;
+            case UpgradeType.TimeStop:
+                TimeStopBought = true;
                 break;
             case UpgradeType.PreCharge:
                 PreChargeBought = true;
@@ -301,6 +289,7 @@ public class Upgrader : MonoBehaviour
 
         // Set color and glow to red 
         upgradeIndicator.color = invalidColor;
+        mat.SetColor("_FaceColor", invalidColor);
         mat.SetColor("_GlowColor", invalidGlowColor);
 
         // Wait for duration
@@ -308,6 +297,7 @@ public class Upgrader : MonoBehaviour
 
         // Revert back to original color and glow
         upgradeIndicator.color = baseColor;
+        mat.SetColor("_FaceColor", baseColor);
         mat.SetColor("_GlowColor", baseGlowColor);
     }
 
@@ -340,21 +330,9 @@ public class Upgrader : MonoBehaviour
             return;
         }
 
-        if (CheckUpgradability())
+        if (CheckUpgradability() && TowerManager.Instance.GetTowerCount() >= 3)
         {
-            switch (upgraderType)
-            {
-                case UpgraderType.AutoCannon:
-                    if (TowerManager.Instance.GetTowerCount() >= 3)
-                    {
-                        SetState(UpgraderState.Blinking);
-                    }
-                    break;
-                    
-                case UpgraderType.TimeStop:
-                    SetState(UpgraderState.Blinking);
-                    break;
-            }   
+            SetState(UpgraderState.Blinking);
         }
         else if (clickableScript.ClickableEnabled && currentState == UpgraderState.Blinking)
         {

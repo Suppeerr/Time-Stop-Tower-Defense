@@ -9,6 +9,7 @@ public enum UpgraderType
 public enum UpgradeType
 {
     AutoCannon,
+    TimeStop,
     PreCharge,
     MultiCharge
 }
@@ -18,7 +19,6 @@ public class UpgradeData
 {
     public UpgradeType upgradeType;
     public UpgraderType upgraderType;
-    public int upgradeNumber;
     public string text;
     public int moneyCost;
     public int secondsCost;
@@ -27,11 +27,11 @@ public class UpgradeData
 [CreateAssetMenu(fileName = "UpgradeDataContainer", menuName = "Upgrades/DataContainer")]
 public class UpgradeDataContainer : ScriptableObject
 {
-    public UpgradeData[] data;
+    public UpgradeData[] upgrades;
 
     public UpgradeData GetData(UpgradeType type)
     {
-        foreach (var d in data)
+        foreach (var d in upgrades)
         {
             if (d.upgradeType == type) 
             {

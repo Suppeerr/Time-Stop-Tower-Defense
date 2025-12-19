@@ -1,22 +1,30 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using System.Collections.Generic;
 using TMPro;
 
 public class BaseHealthManager : MonoBehaviour
 {
     public static BaseHealthManager Instance;
-    [SerializeField] private TMP_Text baseHpText;
+    [SerializeField] private List<HPThreshold> thresholds = new List<HPThreshold>();
+    [SerializeField] private Image currentHpImage;
+
+    [SerializeField] private TMP_Text gameOverText;
     [SerializeField] private TMP_Text levelRestartText;
     [SerializeField] private TMP_Text levelWinText;
+
     public static bool IsGameOver { get; private set; }
     private int startingBaseHp;
     private int currentBaseHp;
-    private bool textEnabled = false;
+    private bool imageEnabled = false;
 
     // Avoids duplicates of this object
     private void Awake()
     {
+        currentHpImage.sprite = thresholds[0].image;
+
         if (Instance == null)
         {
             Instance = this;
@@ -31,17 +39,18 @@ public class BaseHealthManager : MonoBehaviour
         currentBaseHp = startingBaseHp;
         UpdateUI();
 
-        baseHpText.enabled = false;
+        currentHpImage.enabled = false;
+        gameOverText.enabled = false;
         levelRestartText.enabled = false;
         levelWinText.enabled = false;
     }
 
     void Update()
     {
-        if (LevelStarter.HasLevelStarted && textEnabled == false)
+        if (LevelStarter.HasLevelStarted && imageEnabled == false)
         {
-            textEnabled = true;
-            baseHpText.enabled = true;
+            imageEnabled = true;
+            currentHpImage.enabled = true;
         }
         if (currentBaseHp <= 0)
         {
@@ -49,22 +58,16 @@ public class BaseHealthManager : MonoBehaviour
         }
         if (IsGameOver && Keyboard.current.enterKey.wasPressedThisFrame)
         {
-            SceneManager.LoadScene("Level 1", LoadSceneMode.Single);
-            Time.timeScale = 1f;
+            RestartLevel();
         }
     }
 
     // Calls whenever base hp changes
     private void UpdateUI()
     {
-        if (baseHpText != null)
+        if (currentBaseHp <= 0 || IsGameOver)
         {
-            baseHpText.text = currentBaseHp + " HP";
-
-            if (currentBaseHp <= 0)
-            {
-                baseHpText.text = "Game Over!";
-            }
+            gameOverText.enabled = true;
         }
     }
 
@@ -87,10 +90,10 @@ public class BaseHealthManager : MonoBehaviour
         {
             return;
         }
+
         IsGameOver = true;
         levelWinText.enabled = true;
         ProjectileManager.Instance.DestroyAllProjectiles();
-        baseHpText.enabled = false;
 
         // Freezes time
         Time.timeScale = 0f;
@@ -102,11 +105,19 @@ public class BaseHealthManager : MonoBehaviour
         {
             return;
         }
+
         IsGameOver = true;
         levelRestartText.enabled = true;
         ProjectileManager.Instance.DestroyAllProjectiles();
+        UpdateUI();
 
         // Freezes time
         Time.timeScale = 0f;
+    }
+
+    public void RestartLevel()
+    {
+        SceneManager.LoadScene("Level 1", LoadSceneMode.Single);
+        Time.timeScale = 1f;
     }
 }

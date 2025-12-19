@@ -52,7 +52,7 @@ public class OutlineFlash : MonoBehaviour
             // Fade in
             for (float t = 0; t < halfDuration; t += Time.deltaTime)
             {
-                if (visualOverride)
+                if (visualOverride || !IsFlashing)
                 {
                     break;
                 }
@@ -65,7 +65,7 @@ public class OutlineFlash : MonoBehaviour
             // Fade out
             for (float t = 0; t < halfDuration; t += Time.deltaTime)
             {
-                if (visualOverride)
+                if (visualOverride || !IsFlashing)
                 {
                     break;
                 }

@@ -14,6 +14,7 @@ public class EnemyCounter : MonoBehaviour
     {
         enemiesDefeatedText.enabled = false;
         enemiesDefeatedImage.enabled = false;
+        UpdateUI();
     }
 
     void Update()
@@ -33,11 +34,11 @@ public class EnemyCounter : MonoBehaviour
 
         if (CameraSwitch.ActiveCam == 2)
         {
-            enemiesDefeatedText.rectTransform.anchoredPosition = new Vector2(-288, 56);
+            enemiesDefeatedText.rectTransform.anchoredPosition = new Vector2(123, 56);
         }
         else
         {
-            enemiesDefeatedText.rectTransform.anchoredPosition = new Vector2(353, 56);
+            enemiesDefeatedText.rectTransform.anchoredPosition = new Vector2(758, 56);
         }
     }
 

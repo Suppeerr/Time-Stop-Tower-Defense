@@ -5964,9 +5964,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Upgrader
   upgradeIndicator: {fileID: 9016082355031510267}
-  invalidGlowColor: {r: 4.2370954, g: 0, b: 0, a: 1}
-  dataContainer: {fileID: 11400000, guid: e1fef4be5e7ff9045ab64ee63acbdd0d, type: 2}
-  upgraderType: 1
+  invalidGlowColor: {r: 8.474192, g: 0, b: 0, a: 1}
+  dataContainer: {fileID: 11400000, guid: 7b8e875af1802654a9e5a675529c9e41, type: 2}
 --- !u!1 &5358631363266960293
 GameObject:
   m_ObjectHideFlags: 0
@@ -7392,13 +7391,29 @@ PrefabInstance:
       propertyPath: m_LocalScale.y
       value: 2.8
       objectReference: {fileID: 0}
+    - target: {fileID: 2645259143040059935, guid: 35a781fe512483f4994878d20165ae49, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 2.14
+      objectReference: {fileID: 0}
+    - target: {fileID: 2645259143040059935, guid: 35a781fe512483f4994878d20165ae49, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 2.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2645259143040059935, guid: 35a781fe512483f4994878d20165ae49, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 9.87
+      objectReference: {fileID: 0}
     - target: {fileID: 3125174738120134277, guid: 35a781fe512483f4994878d20165ae49, type: 3}
       propertyPath: m_Name
       value: Timestopper Canvas
       objectReference: {fileID: 0}
     - target: {fileID: 7073124040463814612, guid: 35a781fe512483f4994878d20165ae49, type: 3}
+      propertyPath: m_text
+      value: Enable Time Stop<br> 5 Coins
+      objectReference: {fileID: 0}
+    - target: {fileID: 7073124040463814612, guid: 35a781fe512483f4994878d20165ae49, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7073124040463814612, guid: 35a781fe512483f4994878d20165ae49, type: 3}
       propertyPath: m_fontSize
@@ -7530,7 +7545,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 2249345665233388335}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 

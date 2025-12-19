@@ -7,7 +7,7 @@ public class CoinLogic : MonoBehaviour
     private Drone droneScript;
     private Transform launcher;
 
-    private float floatSpeed = 0.25f;
+    private float floatSpeed = 10f;
     private bool isBeingVacuumed = false;
     [SerializeField] private bool isProjectile;
 
@@ -59,7 +59,7 @@ public class CoinLogic : MonoBehaviour
     // Vacuums the coin into the drone
     private void FloatIntoDrone()
     {
-        gameObject.transform.position += Vector3.up * floatSpeed;
+        gameObject.transform.position += Vector3.up * floatSpeed * Time.deltaTime;
     }
 }
 

@@ -19,6 +19,7 @@ public class TimeStop : MonoBehaviour
     public float maxDur = 5f;
     public float rechargeRate = 1f;
     private float cooldown;
+    private bool textEnabled = false;
     private bool active = false;
     private float delayAfterSFX = .3f;
     private bool isCoroutineRunning = false;
@@ -28,15 +29,23 @@ public class TimeStop : MonoBehaviour
 
     void Start()
     {
+        durationText.enabled = false;
+        cooldownText.enabled = false;
         beamSpawner.SetActive(false);
     }
 
     // Once timestop is triggered, all animated objects freeze for the duration
     void Update()
     {
-        if (!LevelStarter.HasLevelStarted || BaseHealthManager.IsGameOver)
+        if (!Upgrader.TimeStopBought || BaseHealthManager.IsGameOver)
         {
             return;
+        }
+        else if (!textEnabled)
+        {
+            textEnabled = true;
+            durationText.enabled = true;
+            cooldownText.enabled = true;
         }
         
         // Recharge duration when inactive

@@ -447,7 +447,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Upgrader
   upgradeIndicator: {fileID: 338622857392001818}
   invalidGlowColor: {r: 4.2370954, g: 0, b: 0, a: 1}
-  dataContainer: {fileID: 11400000, guid: e1fef4be5e7ff9045ab64ee63acbdd0d, type: 2}
+  dataContainer: {fileID: 11400000, guid: 320f875686cf5734c8bf58703e956e66, type: 2}
   upgraderType: 0
 --- !u!1 &2272064898267369001
 GameObject:
