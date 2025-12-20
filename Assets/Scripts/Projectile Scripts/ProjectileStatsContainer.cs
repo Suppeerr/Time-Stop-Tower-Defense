@@ -1,5 +1,15 @@
 using UnityEngine;
 
+public enum ProjectileType
+{
+    CannonBall,
+    PrimaryHoming,
+    PrimaryNormal,
+    SecondaryHoming,
+    SecondaryNormal,
+    Coin
+}
+
 [System.Serializable]
 public class ProjectileStats
 {
@@ -18,8 +28,11 @@ public class ProjectileStatsContainer : ScriptableObject
     {
         foreach (var s in stats)
         {
-            if (s.type == type) return s;
+            if (s.type == type) 
+            {
+                return s;
+            }
         }
-        return null; // or a default
+        return null;
     }
 }

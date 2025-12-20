@@ -4,6 +4,8 @@ using static UnityEngine.Random;
 public class NormalProjectile : MonoBehaviour
 {
     public BallSpawner ballSpawner;
+    private Clickable clickableScript;
+    private OutlineFlash outlineFlashScript;
     public ProjectileType type;
     private float initialXVel = -1f;
     public float initialYVel = 0f;
@@ -22,9 +24,13 @@ public class NormalProjectile : MonoBehaviour
     {
         initialXVel = Random.Range(-0.8f, 0.8f);
         initialZVel = Random.Range(-0.8f, 0.8f);
+
+        clickableScript = this.GetComponent<Clickable>();
+        outlineFlashScript = this.GetComponent<OutlineFlash>();
+        
         rb = GetComponent<Rigidbody>();
         ProjectileManager.Instance.RegisterProjectile(rb);
-        rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
+        rb.collisionDetectionMode =  CollisionDetectionMode.ContinuousDynamic;
         rb.linearVelocity = new Vector3(initialXVel, initialYVel, initialZVel);
     }
 
@@ -89,7 +95,7 @@ public class NormalProjectile : MonoBehaviour
         parryDeath = true;
     }
 
-    void SplitAndDestroy()
+    public void SplitAndDestroy()
     {
         if (this.type == ProjectileType.PrimaryNormal && !parryDeath)
         {
@@ -102,6 +108,18 @@ public class NormalProjectile : MonoBehaviour
         }
 
         Destroy(gameObject);
+    }
+
+    public void UpdateBlinking(bool blinkCon)
+    {
+        if (blinkCon)
+        {
+            outlineFlashScript.StartFlashing();
+        }
+        else
+        {
+            outlineFlashScript.StopFlashing(false);
+        }
     }
 
     void OnDestroy()

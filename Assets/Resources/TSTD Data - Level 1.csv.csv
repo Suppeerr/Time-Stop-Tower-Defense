@@ -2,7 +2,7 @@ Level Data:,(hp and stuff goes here to read),,,,
 ,,,,,
 Enemy Spawn Data,,,,,
 EnemyID,count,inital_spawn_delay,spawn_interval,spawn_wave,scale
-Ignore,1000,3.5,4,0,1
+Ignore,1,3.5,4,0,1
 speedy,1,7.5,4,0,1
 Ignore,15,12.5,5,0,1
 Ignore,30,87.5,4,0,1

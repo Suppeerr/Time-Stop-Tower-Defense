@@ -4,9 +4,6 @@ using System.Collections;
 
 public class PlacedTower : MonoBehaviour
 {
-    // Ball spawner script
-    private BallSpawner ballSpawner;
-
     // Tower placement animation
     private float placementTime = 0.3f;
     private float placementHeight = 3f;
@@ -23,9 +20,16 @@ public class PlacedTower : MonoBehaviour
     // Money manager script
     private MoneyManager moneyManagerScript;
 
+    // Ball spawner script
+    private BallSpawner ballSpawner;
+
+    // Block source script
+    private BlockSource towerSchematic;
+
     void Awake()
     {
         moneyManagerScript = GameObject.Find("Money Manager")?.GetComponent<MoneyManager>();
+        towerSchematic = GameObject.Find("Splitter Schematic")?.GetComponent<BlockSource>();
         ballSpawner = GetComponent<BallSpawner>();
         ballSpawner.enabled = false;
         towerLayer = LayerMask.GetMask("Tower");
@@ -42,7 +46,9 @@ public class PlacedTower : MonoBehaviour
         towerPlaceSFX?.Play();
         float elapsedDelay = 0f;
         Vector3 startPos = endPos + Vector3.up * placementHeight;
-        moneyManagerScript.DecreaseMoney(5);
+        moneyManagerScript.DecreaseMoney(TowerManager.Instance.GetSplitterCost());
+        TowerManager.Instance.RegisterTower(this.gameObject);
+        towerSchematic.UpdateUI();
 
         while (elapsedDelay < placementTime)
         {
@@ -80,7 +86,6 @@ public class PlacedTower : MonoBehaviour
         }
 
         isPlaced = true;
-        TowerManager.Instance.RegisterTower(this.gameObject);
     }
 
     // Sells tower if x pressed while cursor is hovering over
@@ -96,6 +101,7 @@ public class PlacedTower : MonoBehaviour
                 {
                     moneyManagerScript.UpdateMoney(4);
                     TowerManager.Instance.UnregisterTower(this.gameObject);
+                    towerSchematic.UpdateUI();
                     Destroy(this.gameObject);
                 }
             }

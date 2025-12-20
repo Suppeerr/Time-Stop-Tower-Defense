@@ -83,6 +83,26 @@ public class ProjectileManager : MonoBehaviour
         return normalProjectiles[Random.Range(0, normalProjectiles.Count)];
     }
 
+    public void BlinkNormalProjectiles()
+    {
+        List<GameObject> normalProjectiles = GetNormalProjectileList(0f);
+
+        foreach (GameObject normalProj in normalProjectiles)
+        {
+            normalProj.GetComponent<NormalProjectile>().UpdateBlinking(true);
+        }
+    }
+
+    public void UnblinkNormalProjectiles()
+    {
+        List<GameObject> normalProjectiles = GetNormalProjectileList(0f);
+
+        foreach (GameObject normalProj in normalProjectiles)
+        {
+            normalProj.GetComponent<NormalProjectile>().UpdateBlinking(false);
+        }
+    }
+
     // Freezes or unfreezes based on event state
     void HandleToggle(bool state)
     {

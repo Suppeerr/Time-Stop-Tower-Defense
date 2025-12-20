@@ -2,12 +2,15 @@ using UnityEngine;
 
 public class GlowingSphereEmitter : MonoBehaviour
 {
-    public GameObject spherePrefab;     // Glowing sphere prefab
-    public int spheresPerSecond = 20;   // Emission rate
-    public float sphereSpeed = 2f;      // Speed of outward movement
-    public float lifetime = 1f;         // How long each sphere lasts
-    public float spawnRadius = 0.1f;    // Small offset from projectile center
-    private float spawnTimer = 0f;      // Time between sphere spawns
+    // Glowing sphere prefab
+    [SerializeField] private GameObject spherePrefab;     
+
+    // Sphere parameters
+    [SerializeField] private int spheresPerSecond = 20;   
+    [SerializeField] private float sphereSpeed = 2f;      
+    [SerializeField] private float lifetime = 1f;         
+    [SerializeField] private float spawnRadius = 0.1f;    
+    private float spawnTimer = 0f;      
     
     void Awake()
     {
@@ -16,7 +19,7 @@ public class GlowingSphereEmitter : MonoBehaviour
 
     void Update()
     {
-        // Spawns glowing spheres around a projectile
+        // Rapidly spawns glowing spheres around a charged projectile 
         spawnTimer += Time.deltaTime;
         float interval = 1f / spheresPerSecond;
 
@@ -27,9 +30,10 @@ public class GlowingSphereEmitter : MonoBehaviour
         }
     }
 
+    // Initializes and directs movement for each sphere
     void SpawnSphere()
     {
-        // Random direction for each sphere
+        // Randomize direction for each sphere
         Vector3 direction = Random.onUnitSphere;
         Vector3 spawnPos = transform.position + direction * spawnRadius;
 

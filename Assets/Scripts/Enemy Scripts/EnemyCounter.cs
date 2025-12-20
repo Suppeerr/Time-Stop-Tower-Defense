@@ -1,9 +1,11 @@
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 public class EnemyCounter : MonoBehaviour
 {
     [SerializeField] private TMP_Text enemiesDefeatedText;
+    [SerializeField] private Image enemiesDefeatedImage;
     private int enemiesDefeatedCounter = 0;
     private bool textEnabled = false;
     private bool hasWon = false;
@@ -11,6 +13,8 @@ public class EnemyCounter : MonoBehaviour
     void Start()
     {
         enemiesDefeatedText.enabled = false;
+        enemiesDefeatedImage.enabled = false;
+        UpdateUI();
     }
 
     void Update()
@@ -19,12 +23,22 @@ public class EnemyCounter : MonoBehaviour
         {
             textEnabled = true;
             enemiesDefeatedText.enabled = true;
+            enemiesDefeatedImage.enabled = true;
         }
 
         if (enemiesDefeatedCounter == 90 && !hasWon)
         {
             hasWon = true;
             BaseHealthManager.Instance.ToggleWin();
+        }
+
+        if (CameraSwitch.ActiveCam == 2)
+        {
+            enemiesDefeatedText.rectTransform.anchoredPosition = new Vector2(123, 56);
+        }
+        else
+        {
+            enemiesDefeatedText.rectTransform.anchoredPosition = new Vector2(758, 56);
         }
     }
 
@@ -33,7 +47,7 @@ public class EnemyCounter : MonoBehaviour
     {
         if (enemiesDefeatedText != null)
         {
-            enemiesDefeatedText.text = enemiesDefeatedCounter + " Enemies Defeated!";
+            enemiesDefeatedText.text = enemiesDefeatedCounter.ToString();
         }
     }
 
