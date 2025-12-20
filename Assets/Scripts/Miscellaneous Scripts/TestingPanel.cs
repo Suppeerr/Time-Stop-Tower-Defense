@@ -7,7 +7,6 @@ public class TestingPanel : MonoBehaviour
     [SerializeField] private MoneyManager moneyManager;
     [SerializeField] private StoredTimeManager storedTimeManager;
     [SerializeField] private EnemyCounter enemyCounter;
-    [SerializeField] private BaseHealthManager baseHealthManager;
     private RectTransform rt;
     private bool isOnScreen = false;
     private bool isMoving = false;
@@ -73,7 +72,7 @@ public class TestingPanel : MonoBehaviour
 
     public void UpdateSeconds(int seconds)
     {
-        if (seconds < 0 && storedTimeManager.GetSeconds() + seconds < 0)
+        if (!LevelStarter.HasLevelStarted && seconds < 0 && storedTimeManager.GetSeconds() + seconds < 0)
         {
             return;
         }
@@ -81,19 +80,29 @@ public class TestingPanel : MonoBehaviour
         storedTimeManager.UpdateSeconds(seconds);
     }
 
+    public void UpdateHP(int hp)
+    {
+        if (hp < 0 && BaseHealthManager.Instance.GetBaseHp() + hp < 0)
+        {
+            return;
+        }
+
+        BaseHealthManager.Instance.UpdateBaseHP(hp);
+    }
+
     public void ToggleGameOver()
     {
-        baseHealthManager.ToggleGameOver();
+        BaseHealthManager.Instance.ToggleGameOver();
     }
 
     public void ToggleWin()
     {
-        baseHealthManager.ToggleWin();
+        BaseHealthManager.Instance.ToggleWin();
     }
 
     public void RestartLevel()
     {
-        baseHealthManager.RestartLevel();
+        BaseHealthManager.Instance.RestartLevel();
     }
 
     public void DestroyProjectiles()

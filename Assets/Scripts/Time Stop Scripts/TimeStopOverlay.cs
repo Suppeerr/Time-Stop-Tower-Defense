@@ -6,70 +6,48 @@ using System.Collections;
 public class TimeStopOverlay : MonoBehaviour
 {
     public Volume timeStopVolume;
-    private ColorAdjustments colorAdjustments;
-    private float fadeDuration = 1f;
-
+    private float fadeDuration = 1.5f;
     private Coroutine currentFade = null;
-    private bool isGameOver = false;
 
     void Awake()
     {
-        if (timeStopVolume == null)
-        {
-            return;
-        }
-        
-        if (timeStopVolume.profile.TryGet<ColorAdjustments>(out var ca))
-        {
-            colorAdjustments = ca;
-        }
+        timeStopVolume.weight = 0f;
+        timeStopVolume.enabled = true;
     }
 
-    void Update()
+    public void StartTimeStopVFX()
     {
-        if (BaseHealthManager.IsGameOver && isGameOver == false)
+        if (currentFade != null)
         {
-            isGameOver = true;
-            colorAdjustments.saturation.value = 0f;
+            StopCoroutine(currentFade);
         }
 
-        if (ProjectileManager.IsFrozen)
-        {
-            if (currentFade != null)
-            {
-                StopCoroutine(currentFade);
-            }
-            timeStopVolume.enabled = true;
-            currentFade = StartCoroutine(FadeSaturationTo(-100));
-        }
-        else
-        {
-            if (currentFade != null)
-            {
-                StopCoroutine(currentFade);
-            }
-            currentFade = StartCoroutine(FadeSaturationTo(0, disableAfter: true));
-        }
+        currentFade = StartCoroutine(FadeWeightTo(1f));
     }
 
-    private IEnumerator FadeSaturationTo(float target, bool disableAfter = false)
+    public void StopTimeStopVFX()
     {
-        float start = colorAdjustments.saturation.value;
+        if (currentFade != null)
+        {
+            StopCoroutine(currentFade);
+        }
+
+        currentFade = StartCoroutine(FadeWeightTo(0f));
+    }
+
+    private IEnumerator FadeWeightTo(float target)
+    {
+        float start = timeStopVolume.weight;
         float elapsed = 0f;
 
         while (elapsed < fadeDuration)
         {
-            elapsed += Time.deltaTime;
-            colorAdjustments.saturation.value = Mathf.Lerp(start, target, elapsed / fadeDuration);
+            elapsed += Time.unscaledDeltaTime;
+            timeStopVolume.weight = Mathf.Lerp(start, target, elapsed / fadeDuration);
             yield return null;
         }
 
-        colorAdjustments.saturation.value = target;
-
-        if (disableAfter)
-        {
-            timeStopVolume.enabled = false;
-        }
+        timeStopVolume.weight = target;
             
     }
 }

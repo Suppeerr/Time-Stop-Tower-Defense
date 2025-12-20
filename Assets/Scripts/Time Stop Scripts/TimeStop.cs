@@ -21,11 +21,12 @@ public class TimeStop : MonoBehaviour
     private float cooldown;
     private bool textEnabled = false;
     private bool active = false;
-    private float delayAfterSFX = .3f;
-    private bool isCoroutineRunning = false;
+    private bool isTransitioning = false;
     public GameObject beamSpawner;
     private float secondsElapsed = 0f;
-    public StoredTimeManager storedTimeManager;
+    private float timeStopTransitionTime = 1.5f;
+    [SerializeField] private StoredTimeManager storedTimeManager;
+    [SerializeField] private TimeStopOverlay timeStopOverlay;
 
     void Start()
     {
@@ -37,7 +38,7 @@ public class TimeStop : MonoBehaviour
     // Once timestop is triggered, all animated objects freeze for the duration
     void Update()
     {
-        if (!Upgrader.TimeStopBought || BaseHealthManager.IsGameOver)
+        if (!Upgrader.TimeStopBought || BaseHealthManager.IsGameOver || isTransitioning)
         {
             return;
         }
@@ -58,13 +59,17 @@ public class TimeStop : MonoBehaviour
             }
         }
 
-        if (cooldown > 0)
+        if (cooldown > 0f)
         {
             cooldown -= Time.deltaTime;
-            if (cooldown < 0 && !active)
+            if (cooldown < 0f)
             {
-                cooldownEndSFX.Play();
-                cooldown = 0;
+                if (!active)
+                {
+                    cooldownEndSFX.Play();
+                }
+                 
+                cooldown = 0f;
             }
         }
 
@@ -80,30 +85,42 @@ public class TimeStop : MonoBehaviour
         {
             if (active)
             {
-                EndTimestop(3f);
+                StartCoroutine(EndTimestop(3f));
                 return;
             }
-
-            if (!isCoroutineRunning)
+            else
             {
                 StopAllCoroutines();
                 StartCoroutine(StartTimeStopAfterDelay());
-                return;
             }
         } 
     }
 
     private IEnumerator StartTimeStopAfterDelay()
     {
-        isCoroutineRunning = true;
+        isTransitioning = true;
         timeStopStartSFX?.Play();
-
-        yield return new WaitForSecondsRealtime(delayAfterSFX);
-
+        timeStopOverlay.StartTimeStopVFX();
         active = true;
+        
+        float elapsedDelay = 0f;
+
+        while (elapsedDelay < timeStopTransitionTime)
+        {
+            elapsedDelay += Time.unscaledDeltaTime;
+            float t = elapsedDelay / timeStopTransitionTime;
+
+            Time.timeScale = Mathf.Lerp(1, 0, t);
+
+            yield return null;
+        }
+
+        isTransitioning = false;
+        Time.timeScale = 1f;
+
+        TimeStopEvent?.Invoke(true);
         cooldown = 2f;
         ProjectileManager.Instance.BlinkNormalProjectiles();
-        TimeStopEvent?.Invoke(true);
         beamSpawner.SetActive(true);
 
         UpdateParticles();
@@ -122,18 +139,35 @@ public class TimeStop : MonoBehaviour
             yield return null;
         }
 
-        EndTimestop(3f);
+        StartCoroutine(EndTimestop(3f));
     }
 
     // Ends the timestop
-    private void EndTimestop(float cd)
+    private IEnumerator EndTimestop(float cd)
     {
-        StopAllCoroutines();
-        active = false;
-        ProjectileManager.Instance.UnblinkNormalProjectiles();
-        TimeStopEvent?.Invoke(false);
-        isCoroutineRunning = false;
+        float elapsedDelay = 0f;
         timeStopEndSFX?.Play();
+        timeStopOverlay.StopTimeStopVFX();
+        TimeStopEvent?.Invoke(false);
+        active = false;
+        isTransitioning = true;
+        ProjectileManager.Instance.UnblinkNormalProjectiles();
+
+        while (elapsedDelay < timeStopTransitionTime)
+        {
+            elapsedDelay += Time.unscaledDeltaTime;
+            float t = elapsedDelay / timeStopTransitionTime;
+
+            Time.timeScale = Mathf.Lerp(0, 1, t);
+
+            yield return null;
+        }
+
+        Time.timeScale = 1f;
+
+        StopAllCoroutines();
+        isTransitioning = false;
+        
         cooldown = cd;
         beamSpawner.SetActive(false);
 

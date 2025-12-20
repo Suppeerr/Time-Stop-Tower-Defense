@@ -8,7 +8,7 @@ using TMPro;
 public class BaseHealthManager : MonoBehaviour
 {
     public static BaseHealthManager Instance;
-    [SerializeField] private List<HPThreshold> thresholds = new List<HPThreshold>();
+    [SerializeField] private List<HpThreshold> thresholds = new List<HpThreshold>();
     [SerializeField] private Image currentHpImage;
 
     [SerializeField] private TMP_Text gameOverText;
@@ -37,7 +37,7 @@ public class BaseHealthManager : MonoBehaviour
         IsGameOver = false;
         startingBaseHp = 500;
         currentBaseHp = startingBaseHp;
-        UpdateUI();
+        UpdateUI(false);
 
         currentHpImage.enabled = false;
         gameOverText.enabled = false;
@@ -63,19 +63,41 @@ public class BaseHealthManager : MonoBehaviour
     }
 
     // Calls whenever base hp changes
-    private void UpdateUI()
+    private void UpdateUI(bool shouldChange)
     {
         if (currentBaseHp <= 0 || IsGameOver)
         {
             gameOverText.enabled = true;
+            return;
+        }
+
+        if (shouldChange)
+        {
+            HpThreshold match = null;
+            float hpPercent = (float) currentBaseHp / startingBaseHp;
+
+            foreach (HpThreshold threshold in thresholds)
+            {
+                if (hpPercent >= threshold.percent && (match == null || match.percent < threshold.percent))
+                {
+                    match = threshold;
+                }
+            }
+
+            currentHpImage.sprite = match.image;
         }
     }
 
     // Public method for updating base hp
     public void UpdateBaseHP(int amount)
     {
+        if (IsGameOver || (amount > 0 && currentBaseHp >= startingBaseHp))
+        {
+            return;
+        }
+
         currentBaseHp += amount;
-        UpdateUI();
+        UpdateUI(true);
     }
 
     // Returns base hp stored in the manager
@@ -109,7 +131,6 @@ public class BaseHealthManager : MonoBehaviour
         IsGameOver = true;
         levelRestartText.enabled = true;
         ProjectileManager.Instance.DestroyAllProjectiles();
-        UpdateUI();
 
         // Freezes time
         Time.timeScale = 0f;

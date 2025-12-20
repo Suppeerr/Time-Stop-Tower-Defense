@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [System.Serializable]
-public class HPThreshold
+public class HpThreshold
 {
     public Sprite image;
     public float percent;

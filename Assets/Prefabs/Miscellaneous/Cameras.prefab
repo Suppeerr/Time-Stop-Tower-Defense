@@ -57,55 +57,6 @@ MonoBehaviour:
   - {fileID: 3365765562534984708}
   transitionCam: {fileID: 6075365255761998121}
   overlayCam: {fileID: 2796259034780393110}
---- !u!1 &1494643544962334213
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7805585431511963323}
-  - component: {fileID: 8770164771080766465}
-  m_Layer: 0
-  m_Name: Time Stop VFX
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &7805585431511963323
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1494643544962334213}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.28900984, y: -2.36, z: -2.7187102}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 4285942300697505469}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8770164771080766465
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1494643544962334213}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.RenderPipelines.Core.Runtime::UnityEngine.Rendering.Volume
-  m_IsGlobal: 1
-  priority: 0
-  blendDistance: 0
-  weight: 1
-  sharedProfile: {fileID: 11400000, guid: db3bae6dd1c0aab499b9c89ec37f99df, type: 2}
 --- !u!1 &2373006031073816465
 GameObject:
   m_ObjectHideFlags: 0
@@ -118,7 +69,6 @@ GameObject:
   - component: {fileID: 6682468956609094973}
   - component: {fileID: 3717760510337839988}
   - component: {fileID: 2963064247270889576}
-  - component: {fileID: 1390632554677626686}
   m_Layer: 0
   m_Name: Main Camera 2
   m_TagString: MainCamera
@@ -138,8 +88,7 @@ Transform:
   m_LocalPosition: {x: -5.8, y: 10.94, z: -16.14}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 7805585431511963323}
+  m_Children: []
   m_Father: {fileID: 5581863425412119521}
   m_LocalEulerAnglesHint: {x: 28, y: -25, z: 0}
 --- !u!20 &6682468956609094973
@@ -246,19 +195,6 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
---- !u!114 &1390632554677626686
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2373006031073816465}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 17c26a42372479b47b5edef5a82d280e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TimeStopOverlay
-  timeStopVolume: {fileID: 8770164771080766465}
 --- !u!1 &4058684558306666270
 GameObject:
   m_ObjectHideFlags: 0
@@ -270,6 +206,7 @@ GameObject:
   - component: {fileID: 5487051246651000267}
   - component: {fileID: 2796259034780393110}
   - component: {fileID: 515982918267895689}
+  - component: {fileID: 848744032906781281}
   m_Layer: 0
   m_Name: Overlay Camera
   m_TagString: Untagged
@@ -289,7 +226,8 @@ Transform:
   m_LocalPosition: {x: -34.91885, y: 12.303769, z: 25.88731}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 8543866702312865411}
   m_Father: {fileID: 5581863425412119521}
   m_LocalEulerAnglesHint: {x: 29.251, y: 116.422, z: 0}
 --- !u!20 &2796259034780393110
@@ -387,6 +325,19 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
+--- !u!114 &848744032906781281
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4058684558306666270}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17c26a42372479b47b5edef5a82d280e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TimeStopOverlay
+  timeStopVolume: {fileID: 3675653740927212590}
 --- !u!1 &4128104047206686729
 GameObject:
   m_ObjectHideFlags: 0
@@ -399,7 +350,6 @@ GameObject:
   - component: {fileID: 6075365255761998121}
   - component: {fileID: 624536747395852343}
   - component: {fileID: 3852047296114868197}
-  - component: {fileID: 611598705472090208}
   m_Layer: 0
   m_Name: Transition Camera
   m_TagString: MainCamera
@@ -419,8 +369,7 @@ Transform:
   m_LocalPosition: {x: -16.3, y: 14.5, z: 41.57}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1578419629601152294}
+  m_Children: []
   m_Father: {fileID: 5581863425412119521}
   m_LocalEulerAnglesHint: {x: 31, y: 155, z: 0}
 --- !u!20 &6075365255761998121
@@ -527,19 +476,6 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
---- !u!114 &611598705472090208
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4128104047206686729}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 17c26a42372479b47b5edef5a82d280e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TimeStopOverlay
-  timeStopVolume: {fileID: 7203230289880675150}
 --- !u!1 &4135338038811489312
 GameObject:
   m_ObjectHideFlags: 0
@@ -565,12 +501,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4135338038811489312}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.28900984, y: -2.36, z: -2.7187102}
+  m_LocalRotation: {x: 0.000000007450581, y: -0.000000059604645, z: 0.000000022351742, w: 1}
+  m_LocalPosition: {x: -0.2889973, y: -2.3600037, z: -2.7187188}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 3654663562177640933}
+  m_Father: {fileID: 5487051246651000267}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3675653740927212590
 MonoBehaviour:
@@ -579,104 +515,6 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4135338038811489312}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.RenderPipelines.Core.Runtime::UnityEngine.Rendering.Volume
-  m_IsGlobal: 1
-  priority: 0
-  blendDistance: 0
-  weight: 1
-  sharedProfile: {fileID: 11400000, guid: db3bae6dd1c0aab499b9c89ec37f99df, type: 2}
---- !u!1 &6433628349874750434
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8030471730836498996}
-  - component: {fileID: 8120965142053359330}
-  m_Layer: 0
-  m_Name: Time Stop VFX
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &8030471730836498996
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6433628349874750434}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.28900984, y: -2.36, z: -2.7187102}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 5106428983761596621}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8120965142053359330
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6433628349874750434}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.RenderPipelines.Core.Runtime::UnityEngine.Rendering.Volume
-  m_IsGlobal: 1
-  priority: 0
-  blendDistance: 0
-  weight: 1
-  sharedProfile: {fileID: 11400000, guid: db3bae6dd1c0aab499b9c89ec37f99df, type: 2}
---- !u!1 &6696264424289465452
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1578419629601152294}
-  - component: {fileID: 7203230289880675150}
-  m_Layer: 0
-  m_Name: Time Stop VFX
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1578419629601152294
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6696264424289465452}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.28900984, y: -2.36, z: -2.7187102}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 6149222628795710445}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7203230289880675150
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6696264424289465452}
   m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
@@ -699,7 +537,6 @@ GameObject:
   - component: {fileID: 3365765562534984708}
   - component: {fileID: 8909577386262094540}
   - component: {fileID: 430377263569378992}
-  - component: {fileID: 1795138371911322117}
   m_Layer: 0
   m_Name: Main Camera 3
   m_TagString: MainCamera
@@ -719,8 +556,7 @@ Transform:
   m_LocalPosition: {x: -16.3, y: 14.5, z: 41.57}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 8030471730836498996}
+  m_Children: []
   m_Father: {fileID: 5581863425412119521}
   m_LocalEulerAnglesHint: {x: 31, y: 155, z: 0}
 --- !u!20 &3365765562534984708
@@ -827,19 +663,6 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
---- !u!114 &1795138371911322117
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7915518787144501416}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 17c26a42372479b47b5edef5a82d280e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TimeStopOverlay
-  timeStopVolume: {fileID: 8120965142053359330}
 --- !u!1 &8034555249495242572
 GameObject:
   m_ObjectHideFlags: 0
@@ -852,7 +675,6 @@ GameObject:
   - component: {fileID: 7570035472586797789}
   - component: {fileID: 2150415209401903923}
   - component: {fileID: 5417871551077913689}
-  - component: {fileID: 6574149716415761650}
   m_Layer: 0
   m_Name: Main Camera 1
   m_TagString: MainCamera
@@ -872,8 +694,7 @@ Transform:
   m_LocalPosition: {x: -34.91886, y: 12.303769, z: 25.887304}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 8543866702312865411}
+  m_Children: []
   m_Father: {fileID: 5581863425412119521}
   m_LocalEulerAnglesHint: {x: 29.251, y: 116.422, z: 0}
 --- !u!20 &7570035472586797789
@@ -980,19 +801,6 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
---- !u!114 &6574149716415761650
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8034555249495242572}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 17c26a42372479b47b5edef5a82d280e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TimeStopOverlay
-  timeStopVolume: {fileID: 3675653740927212590}
 --- !u!1 &9061620875705950059
 GameObject:
   m_ObjectHideFlags: 0
