@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Pine Leaves
+  m_Name: Pine Leaves 1
   m_Shader: {fileID: -6465566751694194690, guid: 38bfd27b5269e734883d83ca5fa5b812, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
