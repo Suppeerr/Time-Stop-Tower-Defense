@@ -3,8 +3,6 @@ using System.Collections;
 
 public class DayAndNightAdjustment : MonoBehaviour
 {
-    public Material daySkybox;
-    public Material nightSkybox;
     [SerializeField] private Light sunDirLight;
     [SerializeField] private Light moonDirLight;
     [SerializeField] private float moonRotation;
@@ -17,6 +15,10 @@ public class DayAndNightAdjustment : MonoBehaviour
 
     private float elapsed = 0f;
     private float time;
+
+    [SerializeField] private Material daySkybox;
+    [SerializeField] private Material nightSkybox;
+    [SerializeField] private Gradient dayTintGradient;
 
     public static bool IsDay { get; private set; }
 
@@ -45,20 +47,32 @@ public class DayAndNightAdjustment : MonoBehaviour
 
     private void RotateSkyBox()
     {
-        RenderSettings.skybox.SetFloat("_Rotation", time * 150f);
+        if (IsDay)
+        {
+            daySkybox.SetFloat("_Rotation", time * 150f);
+        }
+        else
+        {
+            nightSkybox.SetFloat("_Rotation", time * 150f);
+        }
     }
 
     private void UpdateSkyBox()
     {
-        if (time > 0.02f && time < 0.5f && IsDay == false)
+        if (time < 0.55f && IsDay == false)
         {
             IsDay = true;
             RenderSettings.skybox = daySkybox;
         }
-        else if (time < 0.02f || time > 0.5f && IsDay == true)
+        else if (time > 0.55f && IsDay == true)
         {
             IsDay = false;
             RenderSettings.skybox = nightSkybox;
+        }
+
+        if (IsDay)
+        {
+            daySkybox.SetColor("_TintColor", dayTintGradient.Evaluate(time * 2f));
         }
     }
 
@@ -70,19 +84,18 @@ public class DayAndNightAdjustment : MonoBehaviour
 
     private void UpdateRotation()
     {
-        float rotationAngle = Mathf.Lerp(0f, 360f, time);
-        if (time > 0.6f)
+        if (!IsDay && moonDirLight.enabled == false)
         {
             sunDirLight.enabled = false;
             moonDirLight.enabled = true;
         }
-        else if (moonDirLight.enabled == true)
+        else if (IsDay && moonDirLight.enabled == true)
         {
             sunDirLight.enabled = true;
             moonDirLight.enabled = false;
         }
 
-        sunDirLight.transform.rotation = Quaternion.Euler(time * 360f, -15f, 0f);
-        moonDirLight.transform.rotation = Quaternion.Euler(time * moonRotation, -10f, 0f);
+            sunDirLight.transform.rotation = Quaternion.Euler(time * 360f, -15f, 0f);
+            moonDirLight.transform.rotation = Quaternion.Euler(time * moonRotation, -10f, 0f);
     }
 }

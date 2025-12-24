@@ -13,10 +13,14 @@ public class LanternUpdate : MonoBehaviour
 
     // Lantern flickering
     private float minLightIntensity = 10f;
-    private float maxLightIntensity = 30f;
+    private float maxLightIntensity = 25f;
     private float flickerSpeed = 2f;
 
     private bool lastIsNight;
+
+    [SerializeField] private GameObject lanternWindow;
+    [SerializeField] private Material onLanternMat;
+    [SerializeField] private Material offLanternMat;
 
     public enum LanternState
     {
@@ -81,6 +85,7 @@ public class LanternUpdate : MonoBehaviour
 
         if (shouldBeOn)
         {
+            lanternWindow.GetComponent<Renderer>().material = onLanternMat;
             yield return StartCoroutine(FadeLight(0f, minLightIntensity, fadeDuration));
 
             state = LanternState.On;
@@ -91,6 +96,7 @@ public class LanternUpdate : MonoBehaviour
             float lightIntensity = lanternLight.intensity;
             
             yield return StartCoroutine(FadeLight(lightIntensity, 0f, fadeDuration));
+            lanternWindow.GetComponent<Renderer>().material = offLanternMat;
             state = LanternState.Off;
         }
     }
