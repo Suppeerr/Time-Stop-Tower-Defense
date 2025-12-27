@@ -3,27 +3,36 @@ using System.Collections;
 
 public class DayAndNightAdjustment : MonoBehaviour
 {
+    // Directional lights
     [SerializeField] private Light sunDirLight;
     [SerializeField] private Light moonDirLight;
+
+    // Moon rotation adjustment
     [SerializeField] private float moonRotation;
     
+    // Temperature fields
     [SerializeField] private AnimationCurve temperatureCurve;
     private float minTemp = 2600f;
     private float maxTemp = 13000f;
 
-    private float cycleDuration = 400f;
+    // Day/Night duration
+    private float cycleDuration = 300f;
 
+    // Loop/synced time variables
     private float elapsed = 0f;
     private float time;
 
+    // Skybox fields
     [SerializeField] private Material daySkybox;
     [SerializeField] private Material nightSkybox;
     [SerializeField] private Gradient dayTintGradient;
 
+    // Static day checking boolean
     public static bool IsDay { get; private set; }
 
     void Start()
     {
+        // Initialize fields
         IsDay = true;
         moonDirLight.enabled = false;
     }
@@ -35,8 +44,8 @@ public class DayAndNightAdjustment : MonoBehaviour
             return;
         }
         
+        // Updates time of day field 
         elapsed += Time.deltaTime;
-
         time = Mathf.Repeat((elapsed / cycleDuration) + 0.1f, 1f);
 
         UpdateTemperature();
@@ -45,6 +54,7 @@ public class DayAndNightAdjustment : MonoBehaviour
         RotateSkyBox();
     }
 
+    // Rotates the active skybox with time
     private void RotateSkyBox()
     {
         if (IsDay)
@@ -57,6 +67,7 @@ public class DayAndNightAdjustment : MonoBehaviour
         }
     }
 
+    // Switches and tints the skybox according to time
     private void UpdateSkyBox()
     {
         if (time < 0.55f && IsDay == false)
@@ -76,12 +87,14 @@ public class DayAndNightAdjustment : MonoBehaviour
         }
     }
 
+    // Updates the light's temperature according to the animation curve
     private void UpdateTemperature()
     {
         float t = temperatureCurve.Evaluate(time);
         sunDirLight.colorTemperature = Mathf.Lerp(minTemp, maxTemp, t);
     }
 
+    // Rotates the active light according to time
     private void UpdateRotation()
     {
         if (!IsDay && moonDirLight.enabled == false)

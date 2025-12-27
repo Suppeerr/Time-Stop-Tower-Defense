@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -22,11 +23,14 @@ public class LevelInstance : MonoBehaviour
     public static LevelInstance Instance { get; private set; }
 
     EnemySpawnHandler sptest;
-    public void Awake()
+    public async Task Awake()
     {
         Instance = this;
-        normalEPrefab = (GameObject)Resources.Load("Normal Bandit");
-        speedyEPrefab = (GameObject)Resources.Load("Speedy Bandit");
+        string normalAddress = "Enemies/Normal Bandit";
+        normalEPrefab = await AddressableLoader.GetAsset<GameObject>(normalAddress);
+        string speedyAddress = "Enemies/Speedy Bandit";
+        speedyEPrefab = await AddressableLoader.GetAsset<GameObject>(speedyAddress);
+
         if (SceneManager.GetActiveScene().name.Equals("Gameplay and Mechanics") || SceneManager.GetActiveScene().name.Equals("Level 1")) s_enabled = true;
         if (!s_enabled) return;
 
@@ -58,7 +62,7 @@ public class LevelInstance : MonoBehaviour
         }
     }
 
-    public void Update()
+    public async Task Update()
     {
         if (!s_enabled) return;
         if (ProjectileManager.IsFrozen || !LevelStarter.HasLevelStarted)
@@ -81,7 +85,7 @@ public class LevelInstance : MonoBehaviour
                 highStarting -= ramping;
             }
         }
-        sptest.update();
+        await sptest.Update();
 
         // Temporary list to hold enemies to remove
         List<BaseEnemy> toRemove = new List<BaseEnemy>();
@@ -123,17 +127,17 @@ public class LevelInstance : MonoBehaviour
         // enemies.Add(enemy);
     }
 
-    public void SpawnEnemy(string enemy_type, float scale)
+    public async Task SpawnEnemy(string enemy_type, float scale)
     {
         Debug.Log("levelInst spawned enemy: " + enemy_type);
         BaseEnemy enemy = new BaseEnemy();
         if (enemy_type.Equals("speedy"))
         {
-            enemy.Init(speedyEPrefab, this, epath, EnemyType.SpeedyBandit);
+            await enemy.Init(speedyEPrefab, this, epath, EnemyType.SpeedyBandit);
         }
         else
         {
-            enemy.Init(normalEPrefab, this, epath, EnemyType.NormalBandit);
+            await enemy.Init(normalEPrefab, this, epath, EnemyType.NormalBandit);
         }
         enemies.Add(enemy);
         return;

@@ -3,11 +3,14 @@ using System.Collections;
 
 public class LanternUpdate : MonoBehaviour
 {
+    // Light and flicker routine fields
     private Light lanternLight;
     private Coroutine flickerRoutine = null;
 
+    // Initialize state to off
     private LanternState state = LanternState.Off;
 
+    // Lantern fading/initial fade delay
     private float startDelay;
     private float fadeDuration = 1.5f;
 
@@ -16,12 +19,15 @@ public class LanternUpdate : MonoBehaviour
     private float maxLightIntensity = 25f;
     private float flickerSpeed = 2f;
 
+    // Stored value to prevent unnecessary updates every frame
     private bool lastIsNight;
 
+    // Lantern window fields
     [SerializeField] private GameObject lanternWindow;
     [SerializeField] private Material onLanternMat;
     [SerializeField] private Material offLanternMat;
 
+    // Defines the lantern's states
     public enum LanternState
     {
         Off,
@@ -32,17 +38,19 @@ public class LanternUpdate : MonoBehaviour
 
     void Awake()
     {
+        // Initializes fields
         lanternLight = GetComponent<Light>();
         lanternLight.intensity = 0f;
         lanternLight.enabled = true;
         startDelay = Random.Range(0f, 0.5f);
     }
 
-    // Update is called once per frame
     void Update()
     {
+        // Updates boolean to match time of day
         bool isNight = !DayAndNightAdjustment.IsDay;
 
+        // Checks whether lantern should be on or off
         if (isNight != lastIsNight)
         {
             if (isNight)
@@ -58,6 +66,7 @@ public class LanternUpdate : MonoBehaviour
         lastIsNight = isNight;
     }
 
+    // Switches lantern state to turning on or turning off
     private void SwitchState(LanternState newState)
     {
         state = newState;
@@ -73,6 +82,7 @@ public class LanternUpdate : MonoBehaviour
         }
     }
     
+    // Animates light turning on or off
     private IEnumerator SwitchLight(bool shouldBeOn)
     {
         if (!shouldBeOn && flickerRoutine != null)
@@ -85,6 +95,7 @@ public class LanternUpdate : MonoBehaviour
 
         if (shouldBeOn)
         {
+            // Turning on
             lanternWindow.GetComponent<Renderer>().material = onLanternMat;
             yield return StartCoroutine(FadeLight(0f, minLightIntensity, fadeDuration));
 
@@ -93,6 +104,7 @@ public class LanternUpdate : MonoBehaviour
         }
         else 
         {
+            // Turning off
             float lightIntensity = lanternLight.intensity;
             
             yield return StartCoroutine(FadeLight(lightIntensity, 0f, fadeDuration));
@@ -101,6 +113,7 @@ public class LanternUpdate : MonoBehaviour
         }
     }
 
+    // Flickers the lantern's intensity when on
     private IEnumerator Flicker()
     {
         while (state == LanternState.On)
@@ -110,6 +123,7 @@ public class LanternUpdate : MonoBehaviour
         }
     }
 
+    // Animates changes to lantern intensity
     private IEnumerator FadeLight(float start, float end, float duration)
     {
         float elapsedDelay = 0f;

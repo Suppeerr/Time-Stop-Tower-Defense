@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class enemyObject : MonoBehaviour
+public class EnemyObject : MonoBehaviour
 {
     BaseEnemy s_edatastructure;
 

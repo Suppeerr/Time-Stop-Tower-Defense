@@ -22,6 +22,6 @@ MonoBehaviour:
     spd: 6
     def: 0
   - type: 2
-    hp: 1000
+    hp: 1800
     spd: 3
     def: 0

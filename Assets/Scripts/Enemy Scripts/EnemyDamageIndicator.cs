@@ -5,87 +5,84 @@ using System.Collections;
 
 public class EnemyDamageIndicator : MonoBehaviour
 {
-    [SerializeField] private GameObject damageIndicator;
-    [SerializeField] private GameObject enemy;
+    // Enemy position
+    private Transform enemy;
+
+    // Damage indicator fields
     private float fadeDelay = 1f;
     private float fadeDuration = 0.5f;
     private float floatDistance = 3f;
     private float floatSpeed = 2f;
 
-    // Spawns the damage indicator visual, makes it float up, and then fades it out 
-    public void ShowDamage(float dmg)
+    // Spawns the damage indicator visual
+    public void ShowDamage(float dmg, Transform e)
     {
-        GameObject dmgObj = Instantiate(damageIndicator, enemy.transform);
-        dmgObj.transform.localScale = Vector3.one;
-        TMP_Text dmgText = dmgObj.GetComponentInChildren<TMP_Text>();
+        enemy = e;
+
+        TMP_Text dmgText = GetComponentInChildren<TMP_Text>();
 
         if (dmg >= 1000)
         {
-            dmgText.fontSize = 8f;
+            dmgText.fontSize = 7f;
         }
 
         dmgText.text = dmg.ToString();
         SetAlpha(1f, dmgText);
 
-        StartCoroutine(FadeAndFloat(dmgObj, dmgText));
+        StartCoroutine(FadeAndFloat(dmgText));
     }
 
-    // Hides the damage indicator after a few seconds
-    private IEnumerator FadeAndFloat(GameObject dmgObj, TMP_Text dmgText)
+    // Floats and fades the indicator gradually
+    private IEnumerator FadeAndFloat(TMP_Text dmgText)
     {
+        // Floats indicator up
         float elapsedDelay = 0f;
-        float xOffset = Random.Range(-2f, 2f);
-        float heightOffset = Random.Range(-2f, 2f);
-        Vector3 startPos = new Vector3(xOffset, 7, 0);;
-        Vector3 endPos = startPos + new Vector3(0, floatDistance + heightOffset, 0);
+
+        float xOffset = Random.Range(-1f, 1f);
+        float heightOffset = Random.Range(-1f, 1f);
+
+        Vector3 startPos = enemy.position;
+        startPos += Vector3.up * 2.5f + new Vector3(xOffset, 0f, 0f);
+        Vector3 endPos = startPos + new Vector3(0f, floatDistance + heightOffset, 0f);
 
         while (elapsedDelay < fadeDelay)
         {
-            while (ProjectileManager.IsFrozen)
+            if (!ProjectileManager.IsFrozen)
             {
-                yield return null;
+                elapsedDelay += Time.deltaTime;
+
+                float t = (elapsedDelay / fadeDelay) * floatSpeed;
+
+                transform.position = Vector3.Lerp(startPos, endPos, t);
             }
-
-            // CheckEnemyDeath(dmgObj);
-            elapsedDelay += Time.deltaTime;
-            float t = elapsedDelay / fadeDelay;
-            dmgObj.transform.localPosition = Vector3.Lerp(startPos, endPos, t * floatSpeed);
-
+        
             yield return null;
         }
 
+        // Fades damage indicator
         float elapsed = 0f;
         Color dmgColor = dmgText.color;
         float startAlpha = dmgColor.a;
 
         while (elapsed < fadeDuration)
         {
-            while (ProjectileManager.IsFrozen)
+            if (!ProjectileManager.IsFrozen)
             {
-                yield return null;
+                elapsed += Time.deltaTime;
+                float percentElapsed = elapsed / fadeDuration;
+
+                float alpha = Mathf.Lerp(startAlpha, 0f, percentElapsed);
+                SetAlpha(alpha, dmgText);
             }
 
-            // CheckEnemyDeath(dmgObj);
-            elapsed += Time.deltaTime;
-            float percentElapsed = elapsed / fadeDuration;
-            float alpha = Mathf.Lerp(startAlpha, 0f, percentElapsed);
-            SetAlpha(alpha, dmgText);
             yield return null;
         }
+
         SetAlpha(0f, dmgText);
-        Destroy(dmgObj);
+        Destroy(this.gameObject);
     }
 
-    // Checks if enemy has died
-    private void CheckEnemyDeath(GameObject dmgObj)
-    {
-        if (enemy == null)
-        {
-            dmgObj.transform.parent = null;
-        }
-    }
-
-    // Sets damage indicator visibility
+    // Sets damage indicator transparency
     private void SetAlpha(float alpha, TMP_Text dmgText)
     {
         Color dmgColor = dmgText.color;
