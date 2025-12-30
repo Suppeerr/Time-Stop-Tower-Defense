@@ -2369,7 +2369,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 573946693896151775}
         m_TargetAssemblyTypeName: TestingPanel, Assembly-CSharp
-        m_MethodName: StartMoving
+        m_MethodName: MoveOnAndOffScreen
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

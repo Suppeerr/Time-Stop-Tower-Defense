@@ -31,14 +31,12 @@ public class CameraSwitch : MonoBehaviour
         SetActiveCamera(ActiveCam);
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         IsCameraMoving = false; 
         SyncOverlayCamera();
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (Keyboard.current.cKey.wasPressedThisFrame && !IsCameraMoving)

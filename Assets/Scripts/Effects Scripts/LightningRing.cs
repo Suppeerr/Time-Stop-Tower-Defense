@@ -53,9 +53,9 @@ public class LightningRing : MonoBehaviour
         // Creates a random jittering effect
         for (int i = 0; i < points; i++)
         {
-            float noiseX = Mathf.PerlinNoise(Time.time * jitterSpeed, i * 1.3f) - 0.5f;
-            float noiseY = Mathf.PerlinNoise(Time.time * jitterSpeed + 100, i * 2.1f) - 0.5f;
-            float noiseZ = Mathf.PerlinNoise(Time.time * jitterSpeed + 200, i * 3.7f) - 0.5f;
+            float noiseX = Mathf.PerlinNoise(Time.unscaledTime * jitterSpeed, i * 1.3f) - 0.5f;
+            float noiseY = Mathf.PerlinNoise(Time.unscaledTime * jitterSpeed + 100, i * 2.1f) - 0.5f;
+            float noiseZ = Mathf.PerlinNoise(Time.unscaledTime * jitterSpeed + 200, i * 3.7f) - 0.5f;
 
             // Jitter in all directions
             Vector3 offset = new Vector3(noiseX, noiseY, noiseZ) * 2f * jitterAmount;

@@ -17,47 +17,40 @@ public class TestingPanel : MonoBehaviour
         rt = GetComponent<RectTransform>();
     }
 
-    public void StartMoving()
-    {
-        StartCoroutine(MoveOnAndOffScreen());
-    }
-
-    public IEnumerator MoveOnAndOffScreen()
+    public void MoveOnAndOffScreen()
     {
         if (isMoving)
         {
-            yield break;
+            return;
         }
 
         isMoving = true;
-        float elapsedDelay = 0f;
+
         if (!isOnScreen)
         {
-            while (elapsedDelay < moveTime)
-            {
-            elapsedDelay += Time.deltaTime;
-            float t = elapsedDelay / moveTime;
-            rt.anchoredPosition = Vector3.Lerp(new Vector2(-2244f, -1163f), new Vector2(-1256f, -1163f), t);
-
-            yield return null;
-            }
+            StartCoroutine(MoveUI(new Vector2(-2244f, -1163f), new Vector2(-1256f, -1163f)));
             isOnScreen = true;
         }
         else
         {
-            while (elapsedDelay < moveTime)
-            {
-            elapsedDelay += Time.deltaTime;
-            float t = elapsedDelay / moveTime;
-            rt.anchoredPosition = Vector3.Lerp(new Vector2(-1256f, -1163f), new Vector2(-2244f, -1163f), t);
-
-            yield return null;
-            }
+            StartCoroutine(MoveUI(new Vector2(-1256f, -1163f), new Vector2(-2244f, -1163f)));
             isOnScreen = false;
         }
         isMoving = false;
+    }
 
-        yield return null;
+    private IEnumerator MoveUI(Vector2 from, Vector2 to)
+    {
+        float elapsedDelay = 0f;
+
+        while (elapsedDelay < moveTime)
+        {
+            elapsedDelay += Time.deltaTime;
+            float t = elapsedDelay / moveTime;
+            rt.anchoredPosition = Vector3.Lerp(from, to, t);
+
+            yield return null;
+        }
     }
 
     public void UpdateCoins(int coins)

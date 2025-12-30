@@ -5,6 +5,9 @@ using System.Collections;
 
 public class EnemyDamageIndicator : MonoBehaviour
 {
+    // Damage indicator
+    [SerializeField] private TMP_Text dmgText;
+
     // Enemy position
     private Transform enemy;
 
@@ -19,21 +22,19 @@ public class EnemyDamageIndicator : MonoBehaviour
     {
         enemy = e;
 
-        TMP_Text dmgText = GetComponentInChildren<TMP_Text>();
-
-        if (dmg >= 1000)
+        if (dmg >= 1000 && dmgText.fontSize != 0f)
         {
-            dmgText.fontSize = 7f;
+            dmgText.fontSize += 2f;
         }
 
         dmgText.text = dmg.ToString();
-        SetAlpha(1f, dmgText);
+        SetAlpha(1f);
 
-        StartCoroutine(FadeAndFloat(dmgText));
+        StartCoroutine(FadeAndFloat());
     }
 
     // Floats and fades the indicator gradually
-    private IEnumerator FadeAndFloat(TMP_Text dmgText)
+    private IEnumerator FadeAndFloat()
     {
         // Floats indicator up
         float elapsedDelay = 0f;
@@ -72,21 +73,27 @@ public class EnemyDamageIndicator : MonoBehaviour
                 float percentElapsed = elapsed / fadeDuration;
 
                 float alpha = Mathf.Lerp(startAlpha, 0f, percentElapsed);
-                SetAlpha(alpha, dmgText);
+                SetAlpha(alpha);
             }
 
             yield return null;
         }
 
-        SetAlpha(0f, dmgText);
+        SetAlpha(0f);
         Destroy(this.gameObject);
     }
 
     // Sets damage indicator transparency
-    private void SetAlpha(float alpha, TMP_Text dmgText)
+    private void SetAlpha(float alpha)
     {
         Color dmgColor = dmgText.color;
         dmgColor.a = alpha;
         dmgText.color = dmgColor;
     } 
+
+    // Updates damage indicator font size 
+    public void UpdateIndicatorSize(float newSize)
+    {
+        dmgText.fontSize = newSize;
+    }
 }

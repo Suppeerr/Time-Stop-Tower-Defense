@@ -15,7 +15,7 @@ public class DayAndNightAdjustment : MonoBehaviour
     private float minTemp = 2600f;
     private float maxTemp = 13000f;
 
-    // Day/Night duration
+    // Day/night duration
     private float cycleDuration = 300f;
 
     // Loop/synced time variables
@@ -26,6 +26,9 @@ public class DayAndNightAdjustment : MonoBehaviour
     [SerializeField] private Material daySkybox;
     [SerializeField] private Material nightSkybox;
     [SerializeField] private Gradient dayTintGradient;
+
+    // Determines whether the cycle is on or off
+    private bool isCycleOn = true;
 
     // Static day checking boolean
     public static bool IsDay { get; private set; }
@@ -39,13 +42,23 @@ public class DayAndNightAdjustment : MonoBehaviour
 
     void Update()
     {
+        // Freezes the cycle under certain conditions
         if (ProjectileManager.IsFrozen)
         {
             return;
         }
-        
+
+        UpdateCycle();
+    }
+
+    private void UpdateCycle()
+    {
         // Updates time of day field 
-        elapsed += Time.deltaTime;
+        if (isCycleOn)
+        {
+            elapsed += Time.deltaTime;
+        }
+        
         time = Mathf.Repeat((elapsed / cycleDuration) + 0.1f, 1f);
 
         UpdateTemperature();
@@ -110,5 +123,16 @@ public class DayAndNightAdjustment : MonoBehaviour
 
             sunDirLight.transform.rotation = Quaternion.Euler(time * 360f, -15f, 0f);
             moonDirLight.transform.rotation = Quaternion.Euler(time * moonRotation, -10f, 0f);
+    }
+
+    public void ToggleCycle(bool freezeToggle)
+    {
+        isCycleOn = !freezeToggle;
+    }
+
+    public void ResetCycle()
+    {
+        elapsed = 0f;
+        UpdateCycle();
     }
 }

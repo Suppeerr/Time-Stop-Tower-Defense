@@ -15,18 +15,11 @@ public class BeamZap : MonoBehaviour
     public AudioSource zapSFX;
     private bool wasFrozen = false;
 
-    void Start()
-    {
-        gameObject.SetActive(false);
-    }
-
     void Update()
     {
         bool isFrozen = ProjectileManager.IsFrozen;
         if (Upgrader.PreChargeBought && isFrozen != wasFrozen)
         {
-            Debug.Log($"isFrozen:{isFrozen}, wasFrozen:{wasFrozen}");
-
             if (isFrozen)
             {
                 PreChargeProjectiles();
@@ -92,7 +85,7 @@ public class BeamZap : MonoBehaviour
         }
 
         // Disable beam
-        yield return new WaitForSeconds(zapDuration);
+        yield return new WaitForSecondsRealtime(zapDuration);
         beam.enabled = false;
     }
 

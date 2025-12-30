@@ -17,7 +17,7 @@ public class Draggable : MonoBehaviour
     private bool canPlace = true;
     private bool isPlaced = false;
     
-    // Renderers and ballSpawner script
+    // Renderers and ballspawner script
     private Renderer[] rends;
     private Color[][] originalColors;
     public GameObject placedTowerPrefab;

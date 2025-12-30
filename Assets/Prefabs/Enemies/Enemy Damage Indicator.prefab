@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f4aa9a42e25c2e42ab64f4257550357, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyDamageIndicator
+  dmgText: {fileID: 8417102057475675205}
 --- !u!1001 &5340436141860597655
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -55,7 +56,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5452609403515710501, guid: d0329e086f52c804c90ba877304d200d, type: 3}
       propertyPath: m_Name
-      value: NB Damage Indicator Canvas
+      value: Damage Indicator Canvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 5860757541807102339, guid: d0329e086f52c804c90ba877304d200d, type: 3}
+      propertyPath: m_Name
+      value: Damage Text
       objectReference: {fileID: 0}
     - target: {fileID: 6673591797699706959, guid: d0329e086f52c804c90ba877304d200d, type: 3}
       propertyPath: m_Pivot.x
@@ -159,3 +164,14 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 6673591797699706959, guid: d0329e086f52c804c90ba877304d200d, type: 3}
   m_PrefabInstance: {fileID: 5340436141860597655}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8417102057475675205 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4526829945620413394, guid: d0329e086f52c804c90ba877304d200d, type: 3}
+  m_PrefabInstance: {fileID: 5340436141860597655}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI

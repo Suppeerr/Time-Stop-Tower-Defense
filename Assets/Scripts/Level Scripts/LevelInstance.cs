@@ -25,6 +25,7 @@ public class LevelInstance : MonoBehaviour
     EnemySpawnHandler sptest;
     public async Task Awake()
     {
+        Time.timeScale = 1f;
         Instance = this;
         string normalAddress = "Enemies/Normal Bandit";
         normalEPrefab = await AddressableLoader.GetAsset<GameObject>(normalAddress);

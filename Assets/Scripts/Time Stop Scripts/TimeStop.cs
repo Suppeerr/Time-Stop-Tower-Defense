@@ -59,9 +59,22 @@ public class TimeStop : MonoBehaviour
             }
         }
 
-        if (cooldown > 0f)
+        if (cooldown > 0f && !ProjectileManager.IsFrozen)
         {
             cooldown -= Time.deltaTime;
+            if (cooldown < 0f)
+            {
+                if (!active)
+                {
+                    cooldownEndSFX.Play();
+                }
+                 
+                cooldown = 0f;
+            }
+        }
+        else
+        {
+            cooldown -= Time.unscaledDeltaTime;
             if (cooldown < 0f)
             {
                 if (!active)
@@ -116,18 +129,17 @@ public class TimeStop : MonoBehaviour
         }
 
         isTransitioning = false;
-        Time.timeScale = 1f;
 
         TimeStopEvent?.Invoke(true);
         cooldown = 2f;
-        ProjectileManager.Instance.BlinkNormalProjectiles();
+        ProjectileManager.Instance.ToggleNormalBlink(true);
         beamSpawner.SetActive(true);
 
         UpdateParticles();
 
         while (duration > 0f)
         {
-            secondsElapsed += Time.deltaTime;
+            secondsElapsed += Time.unscaledDeltaTime;
 
             if (secondsElapsed >= 1f)
             {
@@ -135,7 +147,7 @@ public class TimeStop : MonoBehaviour
                 secondsElapsed = 0f;
             }
 
-            duration -= Time.deltaTime;
+            duration -= Time.unscaledDeltaTime;
             yield return null;
         }
 
@@ -151,7 +163,7 @@ public class TimeStop : MonoBehaviour
         TimeStopEvent?.Invoke(false);
         active = false;
         isTransitioning = true;
-        ProjectileManager.Instance.UnblinkNormalProjectiles();
+        ProjectileManager.Instance.ToggleNormalBlink(false);
 
         while (elapsedDelay < timeStopTransitionTime)
         {
@@ -222,7 +234,6 @@ public class TimeStop : MonoBehaviour
                 {
                     ps.Play(true);
                 }
-
             }
             
         }
