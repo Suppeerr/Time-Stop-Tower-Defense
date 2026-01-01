@@ -10,7 +10,7 @@ public class BeamZap : MonoBehaviour
     public LineRenderer beam;
     public float maxDistance = 50f;
     public LayerMask hitLayers;
-    private float zapDuration = 0.1f; // how long it stays visible
+    private float zapDuration = 0.1f;
     public BallSpawner ballSpawner;
     public AudioSource zapSFX;
     private bool wasFrozen = false;

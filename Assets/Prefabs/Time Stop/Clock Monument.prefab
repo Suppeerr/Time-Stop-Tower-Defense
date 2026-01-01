@@ -5964,7 +5964,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Upgrader
   upgradeIndicator: {fileID: 9016082355031510267}
-  invalidGlowColor: {r: 8.474192, g: 0, b: 0, a: 1}
+  invalidGlowColor: {r: 4.2370963, g: 0, b: 0, a: 1}
   dataContainer: {fileID: 11400000, guid: 7b8e875af1802654a9e5a675529c9e41, type: 2}
 --- !u!1 &5358631363266960293
 GameObject:
@@ -6722,14 +6722,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4bf4f2b2bf48b9543932d8579f69f924, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  timeStopStartSFX: {fileID: 2398438723132002101}
-  timeStopEndSFX: {fileID: 3250563157802718777}
-  cooldownEndSFX: {fileID: 3506978250642618987}
   durationText: {fileID: 5725932956553062482}
   cooldownText: {fileID: 3317038292976811523}
   duration: 5
   maxDur: 5
   rechargeRate: 1
+  timeStopStartSFX: {fileID: 2398438723132002101}
+  timeStopEndSFX: {fileID: 3250563157802718777}
+  cooldownEndSFX: {fileID: 3506978250642618987}
   beamSpawner: {fileID: 6113056683632870968}
   storedTimeManager: {fileID: 0}
   timeStopOverlay: {fileID: 0}

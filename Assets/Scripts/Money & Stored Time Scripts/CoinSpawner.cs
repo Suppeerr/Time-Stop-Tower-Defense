@@ -5,10 +5,7 @@ public class CoinSpawner : MonoBehaviour
     public static CoinSpawner Instance { get; private set; }
     [SerializeField] private GameObject coinPrefab;
     [SerializeField] private GameObject homingCoinPrefab;
-    // [SerializeField] private float spawnInterval = 5f;
     [SerializeField] private Drone droneScript;
-
-    // private float timer = 0f;
 
     private void Awake()
     {

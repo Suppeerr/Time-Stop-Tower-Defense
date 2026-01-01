@@ -34,72 +34,15 @@ public class SettingsManager : MonoBehaviour
     {
         musicSource.pitch = 1f;
         AdjustVolume();
-        AdjustVolume("Sound");
-        AdjustVolume("Music");
     }
 
-    public void AdjustMaster()
+    public void AdjustVolume()
     {
-        AdjustVolume();
-    }
+        SetVolume();
 
-    public void AdjustSound()
-    {
-        AdjustVolume("Sound");
-    }
-
-    public void AdjustMusic()
-    {
-        AdjustVolume("Music");
-    }
-
-    private void AdjustVolume(string parameter = null)
-    {
         if (OpenSettingsMenu.IsMenuOpen)
         {
             LimitVolume(-5f);
-
-            if (soundSlider.value > -39.5f || musicSlider.value > -39.5f || masterSlider.value > -39.5f)
-            {
-                return;
-            }
-        }
-
-        if (parameter == "Sound")
-        {
-            if (soundSlider.value <= -39.5f)
-            {
-                masterMixer.SetFloat("SfxVolume", -80f);
-                return;
-            }
-
-            masterMixer.SetFloat("SfxVolume", soundSlider.value);
-        }
-        else if (parameter == "Music")
-        {
-            if (musicSlider.value <= -39.5f)
-            {
-                musicSource.mute = true;
-            }
-            else
-            {
-                musicSource.mute = false;
-            }
-
-            masterMixer.SetFloat("MusicVolume", musicSlider.value);
-        }
-        else
-        {
-            if (masterSlider.value <= -39.5f)
-            {
-                musicSource.mute = true;
-            }
-            else
-            {
-                musicSource.mute = false;
-            }
-
-            masterMixer.SetFloat("MasterVolume", masterSlider.value);
         }
     }
 
@@ -110,21 +53,24 @@ public class SettingsManager : MonoBehaviour
         masterMixer.SetFloat("MusicVolume", Mathf.Min(maxVolume, musicSlider.value));
     }
 
-    private void SetMinimumVolume()
+    private void SetVolume()
     {
-        if (masterSlider.value == -40f)
-        {
-            masterMixer.SetFloat("MasterVolume", -80f);
-        }
+        masterMixer.SetFloat("SfxVolume", soundSlider.value);
+        masterMixer.SetFloat("MusicVolume", musicSlider.value);
+        masterMixer.SetFloat("MasterVolume", masterSlider.value);
 
-        if (soundSlider.value == -40f)
+        if (soundSlider.value <= -39.5f || masterSlider.value <= -39.5f)
         {
             masterMixer.SetFloat("SfxVolume", -80f);
         }
 
-        if (musicSlider.value == -40f)
+        if (musicSlider.value <= -39.5f || masterSlider.value <= -39.5f)
         {
-            masterMixer.SetFloat("MusicVolume", -80f);
+            musicSource.mute = true;
+        }
+        else
+        {
+            musicSource.mute = false;
         }
     }
 

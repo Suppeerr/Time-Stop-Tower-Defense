@@ -25,12 +25,14 @@ public class OutlineFlash : MonoBehaviour
     public void StopFlashing(bool clicked)
     {
         IsFlashing = false;
+        visualOverride = false;
         StopAllCoroutines();
+
+        outline.OutlineColor = new Color(baseOutlineColor.r, baseOutlineColor.g, baseOutlineColor.b, 0f);
 
         if (!clicked)
         {
             visualOverride = true;
-            outline.OutlineColor = new Color(baseOutlineColor.r, baseOutlineColor.g, baseOutlineColor.b, 0f);
         }
     }
 

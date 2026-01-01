@@ -27,7 +27,7 @@ public class Upgrader : MonoBehaviour
     private int currentMoneyCost;
     private int currentSecondsCost;
     private string baseText;
-    private int upgradeNum;
+    private int upgradeNum = 0;
 
     private int currentMoney;
     private int currentSeconds;
@@ -66,7 +66,6 @@ public class Upgrader : MonoBehaviour
         Material mat = upgradeIndicator.fontMaterial;
         baseGlowColor = mat.GetColor("_GlowColor");
 
-        upgradeNum = 0;
         SetCurrentUpgrade();
     }
 
@@ -76,6 +75,8 @@ public class Upgrader : MonoBehaviour
         {
             return;
         }
+
+        // Debug.Log("Current state: " + currentState);
 
         ExitState(currentState);
         currentState = newState;
@@ -96,6 +97,7 @@ public class Upgrader : MonoBehaviour
                 break;
 
             case UpgraderState.Hidden:
+                outlineFlashScript.StopFlashing(false);
                 UpdateVisuals(false, false);
                 break;
 
@@ -173,8 +175,6 @@ public class Upgrader : MonoBehaviour
         {
             StopCoroutine(timeOutRoutine);
         }
-
-        // Debug.Log("Current state: " + currentState);
 
         CheckUpgrade();
     }
@@ -336,7 +336,6 @@ public class Upgrader : MonoBehaviour
         }
         else if (clickableScript.ClickableEnabled && currentState == UpgraderState.Blinking)
         {
-            outlineFlashScript.StopFlashing(false);
             SetState(UpgraderState.Hidden);   
         }
     }

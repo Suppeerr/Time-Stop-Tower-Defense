@@ -642,9 +642,9 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 5252208098084291312, guid: 055b6fb2e3166234c8b10519ffe9a8c0, type: 3}
         m_TargetAssemblyTypeName: SettingsManager, Assembly-CSharp
-        m_MethodName: AdjustMusic
+        m_MethodName: AdjustVolume
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4009,9 +4009,9 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 5252208098084291312, guid: 055b6fb2e3166234c8b10519ffe9a8c0, type: 3}
         m_TargetAssemblyTypeName: SettingsManager, Assembly-CSharp
-        m_MethodName: AdjustSound
+        m_MethodName: AdjustVolume
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4111,9 +4111,9 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 5252208098084291312, guid: 055b6fb2e3166234c8b10519ffe9a8c0, type: 3}
         m_TargetAssemblyTypeName: SettingsManager, Assembly-CSharp
-        m_MethodName: AdjustMaster
+        m_MethodName: AdjustVolume
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
