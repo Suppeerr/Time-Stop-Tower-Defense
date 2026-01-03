@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 
 public class TimeStop : MonoBehaviour
@@ -33,7 +34,15 @@ public class TimeStop : MonoBehaviour
     public AudioSource timeStopEndSFX;
     public AudioSource cooldownEndSFX;
 
+    // Rune animation fields
+    [SerializeField] private Color baseRuneColor;
+    [SerializeField] private Color glowRuneColor;
+    private float baseRuneIntensity = 1f;
+    private float glowRuneIntensity = 2.5f;
+    private float runeTransitionTime = 1.5f;
+
     // Scripts and gameobjects
+    [SerializeField] private List<TimeStopObject> timeStopObjects = new List<TimeStopObject>();
     [SerializeField] GameObject beamSpawner;
     [SerializeField] private StoredTimeManager storedTimeManager;
     [SerializeField] private TimeStopOverlay timeStopOverlay;
@@ -58,6 +67,8 @@ public class TimeStop : MonoBehaviour
             textEnabled = true;
             durationText.enabled = true;
             cooldownText.enabled = true;
+
+            duration = 0f;
         }
         
         // Recharge duration when inactive
@@ -68,6 +79,8 @@ public class TimeStop : MonoBehaviour
             {
                 duration = maxDur;
             }
+
+            UpdateRunes(true);
         }
 
         if (cooldown > 0f && !ProjectileManager.IsFrozen)
@@ -101,6 +114,7 @@ public class TimeStop : MonoBehaviour
         {
             if (active)
             {
+                StopAllCoroutines();
                 StartCoroutine(EndTimestop(3f));
                 return;
             }
@@ -136,6 +150,7 @@ public class TimeStop : MonoBehaviour
     // Ends time stop after a short transition
     private IEnumerator EndTimestop(float cd)
     {
+        Debug.Log("Time stop ended");
         timeStopEndSFX?.Play();
         timeStopOverlay.StopTimeStopVFX();
         TimeStopEvent?.Invoke(false);
@@ -187,8 +202,64 @@ public class TimeStop : MonoBehaviour
                 secondsElapsed = 0f;
             }
 
+            UpdateRunes(false);
             duration -= Time.unscaledDeltaTime;
             yield return null;
+        }
+    }
+
+    // Syncs rune glow with time stop duration
+    private void UpdateRunes(bool isRecharging)
+    {
+        float tsPercent = duration / maxDur;
+
+        for (int i = 0; i < timeStopObjects.Count; i++)
+        {
+            float runePercent = timeStopObjects[i].percent;
+            bool runeActive = timeStopObjects[i].active;
+
+            if (isRecharging)
+            {
+                if (tsPercent >= runePercent && !runeActive)
+                {
+                    timeStopObjects[i].SetObjectActive(true);
+                    StartCoroutine(AnimateRunes(baseRuneIntensity, glowRuneIntensity, baseRuneColor, glowRuneColor, i));
+                }
+            }
+            else
+            {
+                if (tsPercent <= runePercent && runeActive)
+                {
+                    timeStopObjects[i].SetObjectActive(false);
+                    StartCoroutine(AnimateRunes(glowRuneIntensity, baseRuneIntensity, glowRuneColor, baseRuneColor, i));
+                }
+            }
+        }
+    }
+
+    // Animates rune groups to glow or dim over time
+    private IEnumerator AnimateRunes(float from, float to, Color fromColor, Color toColor, int num)
+    { 
+        float elapsed = 0f;
+        List<GameObject> runes = timeStopObjects[num].runeObjects;
+
+        while (elapsed < runeTransitionTime)
+        {
+            float intensity = Mathf.Lerp(from, to, elapsed / runeTransitionTime); 
+            Color curColor = Color.Lerp(fromColor, toColor, elapsed / runeTransitionTime);
+
+            for (int i = 0; i < runes.Count; i++)
+            {
+                runes[i].GetComponent<Renderer>().material.SetColor("_Emission_Color", curColor * intensity);
+            }
+
+            elapsed += Time.unscaledDeltaTime;
+            yield return null;
+        }
+
+        for (int i = 0; i < runes.Count; i++)
+        {
+            runes[i].GetComponent<Renderer>().material.SetColor("_Emission_Color", toColor * to);
         }
     }
 

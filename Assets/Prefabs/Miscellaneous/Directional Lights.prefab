@@ -142,6 +142,7 @@ MonoBehaviour:
     m_ColorSpace: -1
     m_NumColorKeys: 6
     m_NumAlphaKeys: 2
+  fireflies: {fileID: 8816195183592823052, guid: d14b95f9f55d27a40b8ac15ce359cce6, type: 3}
 --- !u!1 &5602522850510497943
 GameObject:
   m_ObjectHideFlags: 0

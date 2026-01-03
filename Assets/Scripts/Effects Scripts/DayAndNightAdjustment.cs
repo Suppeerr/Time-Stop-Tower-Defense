@@ -30,6 +30,9 @@ public class DayAndNightAdjustment : MonoBehaviour
     // Determines whether the cycle is on or off
     private bool isCycleOn = true;
 
+    // Firefly VFX
+    [SerializeField] private GameObject fireflies;
+
     // Static day checking boolean
     public static bool IsDay { get; private set; }
 
@@ -83,14 +86,16 @@ public class DayAndNightAdjustment : MonoBehaviour
     // Switches and tints the skybox according to time
     private void UpdateSkyBox()
     {
-        if (time < 0.55f && IsDay == false)
+        if (time < 0.52f && IsDay == false)
         {
             IsDay = true;
+            fireflies.SetActive(false);
             RenderSettings.skybox = daySkybox;
         }
-        else if (time > 0.55f && IsDay == true)
+        else if (time > 0.52f && IsDay == true)
         {
             IsDay = false;
+            fireflies.SetActive(true);
             RenderSettings.skybox = nightSkybox;
         }
 
