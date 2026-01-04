@@ -7,20 +7,24 @@ using UnityEngine.SceneManagement;
 
 public class LevelInstance : MonoBehaviour
 {
+    // Level instance instance
+    public static LevelInstance Instance { get; private set; }
+
+    // Enemy path and lists
     public EnemyWaypointPath epath = new EnemyWaypointPath(); //could be array if we want multiple paths
     List<BaseEnemy> enemies = new List<BaseEnemy>();
     public List<BaseEnemy> queueRemove = new List<BaseEnemy>();
 
-
     bool s_enabled = false;
-    private float spawnInterval = 3f;
-    private float elapsed = 0f;
-    private float lowStarting = 3f;
-    private float highStarting = 4.8f;
-    private float ramping = 0.04f;
+    
     private GameObject normalEPrefab;
     private GameObject speedyEPrefab;
-    public static LevelInstance Instance { get; private set; }
+
+    // private float elapsed = 0f;
+    // private float lowStarting = 3f;
+    // private float highStarting = 4.8f;
+    // private float ramping = 0.04f;
+    // private float spawnInterval = 3f;
 
     EnemySpawnHandler sptest;
     public async Task Awake()
@@ -40,10 +44,12 @@ public class LevelInstance : MonoBehaviour
         //this would be ideally loaded from a data structure or from file before the scene begin
         LoadWaypointPrefabs();
         
-        spawnInterval = Random.Range(1f, 3f);
+        // spawnInterval = Random.Range(1f, 3f);
 
         sptest = new EnemySpawnHandler(this, "C:/Users/monpo/OneDrive/Documents/GitHub/Time-Stop-Tower-Defense/Assets/Data/Levels/TSTD Data - Level 1.csv");
     }
+
+    // Loads the waypoints of each path in order 
     public void LoadWaypointPrefabs()
     {
         GameObject pathObj = GameObject.FindWithTag("Path");
@@ -65,27 +71,27 @@ public class LevelInstance : MonoBehaviour
 
     public async Task Update()
     {
-        if (!s_enabled) return;
-        if (ProjectileManager.IsFrozen || !LevelStarter.HasLevelStarted)
+        if (!s_enabled || ProjectileManager.IsFrozen || !LevelStarter.HasLevelStarted)
         {
             return;
         }
         
-        if (elapsed < spawnInterval)
-        {
-            elapsed += Time.deltaTime;
-        }
-        else
-        {
-            SpawnEnemyTest();
-            spawnInterval = Random.Range(lowStarting, highStarting);
-            elapsed = 0;
-            if (lowStarting > 0.6f)
-            {
-                lowStarting -= ramping;
-                highStarting -= ramping;
-            }
-        }
+        // if (elapsed < spawnInterval)
+        // {
+        //     elapsed += Time.deltaTime;
+        // }
+        // else
+        // {
+        //     SpawnEnemyTest();
+        //     spawnInterval = Random.Range(lowStarting, highStarting);
+        //     elapsed = 0;
+        //     if (lowStarting > 0.6f)
+        //     {
+        //         lowStarting -= ramping;
+        //         highStarting -= ramping;
+        //     }
+        // }
+
         await sptest.Update();
 
         // Temporary list to hold enemies to remove
@@ -119,14 +125,13 @@ public class LevelInstance : MonoBehaviour
         queueRemove.Clear();
     }
 
-    public void SpawnEnemyTest()
-    {
-        return;
-        // Debug.Log("levelInst spawned enemy");
-        // BaseEnemy enemy = new BaseEnemy();
-        // enemy.Init(ePrefab, this, epath, EnemyType.NormalBandit);
-        // enemies.Add(enemy);
-    }
+    // public void SpawnEnemyTest()
+    // {
+    //     Debug.Log("levelInst spawned enemy");
+    //     BaseEnemy enemy = new BaseEnemy();
+    //     enemy.Init(ePrefab, this, epath, EnemyType.NormalBandit);
+    //     enemies.Add(enemy);
+    // }
 
     public async Task SpawnEnemy(string enemy_type, float scale)
     {

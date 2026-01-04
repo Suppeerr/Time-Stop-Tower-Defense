@@ -109,7 +109,7 @@ public class TimeStop : MonoBehaviour
 
         UpdateUI();
 
-        // Trigger key input
+        // Starts or stops time stop when t key pressed
         if (Keyboard.current.tKey.wasPressedThisFrame && cooldown == 0f)
         {
             if (active)

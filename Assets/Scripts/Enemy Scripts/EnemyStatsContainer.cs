@@ -1,5 +1,6 @@
 using UnityEngine;
 
+// Defines enemy types
 public enum EnemyType
 {
     NormalBandit,
@@ -7,6 +8,7 @@ public enum EnemyType
     WaveBandit
 }
 
+// Defines the stats for each enemy type
 [System.Serializable]
 public class EnemyStats
 {
@@ -16,6 +18,7 @@ public class EnemyStats
     public int def;       
 }
 
+// Defines the enemy stats container 
 [CreateAssetMenu(fileName = "EnemyStatsContainer", menuName = "Enemies/StatsContainer")]
 public class EnemyStatsContainer : ScriptableObject
 {

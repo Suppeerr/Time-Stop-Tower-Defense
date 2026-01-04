@@ -2,16 +2,9 @@ using UnityEngine;
 
 public class UIFaceCamera : MonoBehaviour
 {
-    private Camera mainCamera;
-
-    // Initiates camera to the main camera
-    void Start()
-    {
-    }
-    
-    // Updates to make UI face camera
     void Update()
     {
+        // Makes UI face the current active camera
         if (CameraSwitch.CurrentCamera == null) 
         {
             return;

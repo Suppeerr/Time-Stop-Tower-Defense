@@ -246,7 +246,7 @@ public class Upgrader : MonoBehaviour
     private IEnumerator UnlockNewUpgrade()
     {
         AdjustFontSize(1f, 1.4f);
-        upgradeIndicator.text = "New Upgrade\nUnlocked!";
+        upgradeIndicator.text = "New\nUpgrade\nUnlocked!";
 
         yield return new WaitForSeconds(3f);
 

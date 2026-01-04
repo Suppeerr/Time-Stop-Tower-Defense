@@ -3,23 +3,40 @@ using System.Collections;
 
 public class MusicManager : MonoBehaviour
 {
-    public AudioSource valleyTrack;
-    private Coroutine fadeRoutine;
+    // Main valley track
+    [SerializeField] private AudioSource valleyTrack;
+    
+    // Volume and pitch fields
     private float originalVolume;
-    private float fadeDuration = 1.6f;
     private float normalPitch = 1.0f;
     private float frozenPitch = 0.6f;
+
+    // Time stop transition volume/pitch fade duration
+    private float fadeDuration = 1.6f;
+
+    // Update gate and coroutine fields
     private bool lastFrozenState = false;
+    private Coroutine fadeRoutine;
     
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         StartCoroutine(LoopSoundtrack());
     }
 
+    private IEnumerator LoopSoundtrack()
+    {
+        // Waits till the game has started to play the soundtrack
+        yield return new WaitUntil(() => LevelStarter.HasLevelStarted);
+
+        // Loops soundtrack after it ends
+        valleyTrack.loop = true;
+        valleyTrack.Play();
+    }
+
     void Update()
     {
+        // Fades volume and pitch with time stop start or end
         if (ProjectileManager.IsFrozen != lastFrozenState)
         {
             if (ProjectileManager.IsFrozen)
@@ -43,38 +60,9 @@ public class MusicManager : MonoBehaviour
 
             lastFrozenState = ProjectileManager.IsFrozen;
         }
-        
     }
 
-    private IEnumerator LoopSoundtrack()
-    {
-        // Waits till the game has started to play the soundtrack
-        yield return new WaitUntil(() => LevelStarter.HasLevelStarted);
-
-        // Loops soundtrack after it ends
-        valleyTrack.loop = true;
-        valleyTrack.Play();
-    }
-
-    private IEnumerator FadeOut()
-    {
-        float startVolume = valleyTrack.volume;
-        originalVolume = startVolume;
-
-        float elapsed = 0f;
-        while (elapsed < fadeDuration)
-        {
-            elapsed += Time.unscaledDeltaTime;
-            valleyTrack.volume = Mathf.Lerp(startVolume, 0f, elapsed / fadeDuration);
-            valleyTrack.pitch = Mathf.Lerp(normalPitch, frozenPitch, elapsed / fadeDuration);
-            yield return null;
-        }
-
-        valleyTrack.volume = 0f;
-        valleyTrack.pitch = frozenPitch;
-        valleyTrack.Pause();
-    }
-
+    // Fades volume in while raising pitch 
     private IEnumerator FadeIn()
     {
         valleyTrack.volume = 0f;
@@ -92,5 +80,25 @@ public class MusicManager : MonoBehaviour
 
         valleyTrack.pitch = normalPitch;
         valleyTrack.volume = originalVolume;
+    }
+
+    // Fades volume out while lowering pitch 
+    private IEnumerator FadeOut()
+    {
+        float startVolume = valleyTrack.volume;
+        originalVolume = startVolume;
+
+        float elapsed = 0f;
+        while (elapsed < fadeDuration)
+        {
+            elapsed += Time.unscaledDeltaTime;
+            valleyTrack.volume = Mathf.Lerp(startVolume, 0f, elapsed / fadeDuration);
+            valleyTrack.pitch = Mathf.Lerp(normalPitch, frozenPitch, elapsed / fadeDuration);
+            yield return null;
+        }
+
+        valleyTrack.volume = 0f;
+        valleyTrack.pitch = frozenPitch;
+        valleyTrack.Pause();
     }
 }

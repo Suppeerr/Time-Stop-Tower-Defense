@@ -6,23 +6,29 @@ using TMPro;
 
 public class Tutorial : MonoBehaviour
 {
+    // Tutorial instance
     public static Tutorial Instance;
+
+    // Tutorial page images and current page number
     [SerializeField] private List<GameObject> tutorialImages;
-    [SerializeField] private Image levelStartImage;
-    [SerializeField] private Image tutorialImage;
-    [SerializeField] private TMP_Text moneyIndicator;
-    [SerializeField] private Image coinImage;
-    [SerializeField] private TMP_Text storedTimeIndicator;
-    [SerializeField] private Image hourglassImage;
+    private int currentIndex = 0;
+
+    // Screen UI
+    [SerializeField] private List<GameObject> screenUI;
+
+    // Tutorial UI
     [SerializeField] private GameObject leftArrow;
     [SerializeField] private GameObject rightArrow;
     [SerializeField] private GameObject exitButton;
-    private int currentIndex = 0;
+    private Button leftArrowButton;
+    private Button rightArrowButton;
+
+    // Static tutorial active boolean
     public static bool IsTutorialActive { get; private set; }
 
-    // Avoids duplicates of this object
     private void Awake()
     {
+        // Avoids duplicates of this object
         if (Instance == null)
         {
             Instance = this;
@@ -33,41 +39,26 @@ public class Tutorial : MonoBehaviour
         }
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        // Initialize fields and image
         IsTutorialActive = false;
+        leftArrowButton = leftArrow.GetComponent<Button>();
+        rightArrowButton = rightArrow.GetComponent<Button>();
         
         UpdateImage();
     }
 
-    // Update is called once per frame
     void Update()
     {
+        // Starts tutorial if m key pressed and level has not started
         if (!LevelStarter.HasLevelStarted && Keyboard.current.mKey.wasPressedThisFrame && !IsTutorialActive)
         {
             StartTutorial();
-        }
-
-        if (currentIndex == 0 && leftArrow.GetComponent<Button>().interactable == true)
-        {
-            leftArrow.GetComponent<Button>().interactable = false;
-        }
-        else if (currentIndex != 0 && leftArrow.GetComponent<Button>().interactable == false)
-        {
-            leftArrow.GetComponent<Button>().interactable = true;
-        }
-
-        if (currentIndex == tutorialImages.Count - 1 && rightArrow.GetComponent<Button>().interactable == true)
-        {
-            rightArrow.GetComponent<Button>().interactable = false;
-        }
-        else if (currentIndex != tutorialImages.Count - 1 && rightArrow.GetComponent<Button>().interactable == false)
-        {
-            rightArrow.GetComponent<Button>().interactable = true;
-        }
+        }    
     }
 
+    // Starts the tutorial
     public void StartTutorial()
     {
         IsTutorialActive = true;
@@ -75,6 +66,7 @@ public class Tutorial : MonoBehaviour
         CameraSwitch.Instance.ToggleTutorial(true);
     }
 
+    // Ends the tutorial
     public void EndTutorial()
     {
         IsTutorialActive = false;
@@ -83,16 +75,16 @@ public class Tutorial : MonoBehaviour
         CameraSwitch.Instance.ToggleTutorial(false);
     }
 
+    // Enables or disables the screen UI
     public void UpdateScreenUI(bool enabled)
     {
-        levelStartImage.enabled = enabled;
-        tutorialImage.enabled = enabled;
-        moneyIndicator.enabled = enabled;
-        coinImage.enabled = enabled;
-        storedTimeIndicator.enabled = enabled;
-        hourglassImage.enabled = enabled;
+        foreach (GameObject canvas in screenUI)
+        {
+            canvas.SetActive(enabled);
+        }
     }
 
+    // Enables or disables the tutorial UI
     public void UpdateTutorialUI(bool enabled)
     {
         leftArrow.SetActive(enabled);
@@ -100,18 +92,41 @@ public class Tutorial : MonoBehaviour
         exitButton.SetActive(enabled);
     }
 
+    // Displays the next tutorial page
     public void NextImage()
     {
         currentIndex++;
         UpdateImage();
+
+        if (currentIndex == tutorialImages.Count - 1)
+        {
+            rightArrowButton.interactable = false;
+        }
+
+        if (leftArrowButton.interactable == false)
+        {
+            leftArrowButton.interactable = true;
+        }
     }
 
+    // Displays the previous tutorial page
     public void PreviousImage()
     {
         currentIndex--;
         UpdateImage();
-    }
 
+        if (currentIndex == 0)
+        {
+            leftArrowButton.interactable = false;
+        }
+
+        if (rightArrowButton.interactable == false)
+        {
+           rightArrowButton.interactable = true; 
+        }
+    }   
+
+    // Shows the tutorial image corresponding to the current page
     public void UpdateImage()
     {
         for (int i = 0; i < tutorialImages.Count; i++)

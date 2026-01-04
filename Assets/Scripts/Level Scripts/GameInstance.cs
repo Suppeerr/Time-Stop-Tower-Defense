@@ -5,7 +5,6 @@ using UnityEditor;
 
 public static class GameInstance
 {
-
     static LevelInstance currentLevel;
     static GameObject clevel;
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]

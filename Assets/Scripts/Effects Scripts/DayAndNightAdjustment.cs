@@ -62,7 +62,7 @@ public class DayAndNightAdjustment : MonoBehaviour
             elapsed += Time.deltaTime;
         }
         
-        time = Mathf.Repeat((elapsed / cycleDuration) + 0.1f, 1f);
+        time = Mathf.Repeat((elapsed / cycleDuration) + 0.1f, 0.96f);
 
         UpdateTemperature();
         UpdateRotation();

@@ -4,15 +4,25 @@ using UnityEngine.InputSystem;
 
 public class LevelStarter : MonoBehaviour
 {
+    // Level starter instance
     public static LevelStarter Instance;
+
+    // Tutorial image
     [SerializeField] private Image tutorialImage;
+
+    // Static level start boolean
     public static bool HasLevelStarted { get; private set; }
 
     void Awake()
     {
+        // Avoids duplicates of this object
         if (Instance == null)
         {
             Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
         }
 
         HasLevelStarted = false;
@@ -20,12 +30,14 @@ public class LevelStarter : MonoBehaviour
 
     void Update()
     {
+        // Starts level if enter key pressed
         if (Keyboard.current.enterKey.wasPressedThisFrame)
         {
             StartLevel();
         }
     }
 
+    // Starts the level
     public void StartLevel()
     {
         HasLevelStarted = true;

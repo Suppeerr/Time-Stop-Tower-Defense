@@ -6,6 +6,8 @@ public class EnemyObject : MonoBehaviour
 
     //game object specifics go here, such as animations or hitboxes
 }
+
+// Defines enemy traits such as defense, resistance, and damage instances
 public partial class DamageInstance
 {
     public int damage;

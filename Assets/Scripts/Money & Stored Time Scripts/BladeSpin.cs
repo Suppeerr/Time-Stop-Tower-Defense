@@ -2,11 +2,12 @@ using UnityEngine;
 
 public class BladeSpin : MonoBehaviour
 {
+    // Drone blade rotation speed
     [SerializeField] private float rotationSpeed = 1000f;
 
-    // Update is called once per frame
     void Update()
     {
+        // Rotates the drone blades
         if (ProjectileManager.IsFrozen)
         {
             return;

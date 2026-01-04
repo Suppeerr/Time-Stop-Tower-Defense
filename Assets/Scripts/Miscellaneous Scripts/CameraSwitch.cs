@@ -5,19 +5,29 @@ using System.Collections.Generic;
 
 public class CameraSwitch : MonoBehaviour
 {
+    // Camera switch instance
     public static CameraSwitch Instance;
+
+    // List of cameras
     [SerializeField] private List<Camera> cameras;
+
+    // Specific camera fields
     [SerializeField] private Camera transitionCam;
     [SerializeField] private Camera overlayCam;
+
+    // Saves the previously active camera when a camera switches
     private int previousActiveCamNum;
     
+    // Camera moving boolean
     public bool IsCameraMoving { get; private set; }
+
+    // Static camera number and camera fields
     public static int ActiveCam { get; private set; }
     public static Camera CurrentCamera { get; private set; }
 
-    // Avoids duplicates of this object
     private void Awake()
     {
+        // Avoids duplicates of this object
         if (Instance == null)
         {
             Instance = this;
@@ -27,18 +37,21 @@ public class CameraSwitch : MonoBehaviour
             Destroy(gameObject);
         }
 
+        // Sets camera to the default
         ActiveCam = 1;
         SetActiveCamera(ActiveCam);
     }
 
     void Start()
     {
+        // Initializes moving and overlay camera fields
         IsCameraMoving = false; 
         SyncOverlayCamera();
     }
 
     void Update()
     {
+        // Switches camera when c key pressed
         if (Keyboard.current.cKey.wasPressedThisFrame && !IsCameraMoving)
         {
             if (Tutorial.IsTutorialActive)
@@ -50,9 +63,10 @@ public class CameraSwitch : MonoBehaviour
         }
     }
 
+    // Switches the active camera to the next camera in line
     private IEnumerator SwitchActiveCam()
     {
-        int previousCam = ActiveCam;
+        previousActiveCamNum = ActiveCam;
         ActiveCam++;
 
         if (ActiveCam == cameras.Count)
@@ -61,13 +75,14 @@ public class CameraSwitch : MonoBehaviour
         }
 
         Time.timeScale = 0.1f;
-        yield return StartCoroutine(MoveCamera(previousCam, ActiveCam, 2f));
+        yield return StartCoroutine(MoveCamera(cameras[previousActiveCamNum], cameras[ActiveCam], 2f));
         SyncOverlayCamera();
 
         yield return new WaitForSecondsRealtime(1f);
         Time.timeScale = 1f;
     }
 
+    // Sets the active camera to a specified camera via camera number
     private void SetActiveCamera(int camNum)
     {
         for (int i = 0; i < cameras.Count; i++)
@@ -79,6 +94,22 @@ public class CameraSwitch : MonoBehaviour
         CurrentCamera = cameras[camNum];
     }
 
+    // Sets the active camera to a specified camera
+    private void SetActiveCamera(Camera cam)
+    {
+        for (int i = 0; i < cameras.Count; i++)
+        {
+            cameras[i].gameObject.SetActive(cam == cameras[i]);
+
+            if (cam == cameras[i])
+            {
+                ActiveCam = i;
+                CurrentCamera = cam;
+            }
+        }
+    }
+
+    // Syncs the overlay camera with the current active camera
     private void SyncOverlayCamera()
     {
         overlayCam.transform.position = CurrentCamera.transform.position;
@@ -86,26 +117,22 @@ public class CameraSwitch : MonoBehaviour
         overlayCam.fieldOfView = CurrentCamera.fieldOfView;
     }
 
-    private IEnumerator MoveCamera(int fromCam, int toCam, float cameraMoveTime)
+    // Smoothly moves a camera to another camera
+    private IEnumerator MoveCamera(Camera from, Camera to, float cameraMoveTime)
     {
         IsCameraMoving = true;
         overlayCam.enabled = false;
 
-        Camera from = cameras[fromCam];
-        Camera to = cameras[toCam];
+        Vector3 fromPos = from.transform.position;
+        Vector3 toPos = to.transform.position;
 
-        Vector3 fromCamPos = from.transform.position;
-        Vector3 toCamPos = to.transform.position;
-
-        Quaternion fromCamRot = from.transform.rotation;
-        Quaternion toCamRot = to.transform.rotation;
+        Quaternion fromRot = from.transform.rotation;
+        Quaternion toRot = to.transform.rotation;
 
         float fromFOV = from.fieldOfView;
         float toFOV = to.fieldOfView;
 
-        transitionCam.transform.position = fromCamPos;
-        transitionCam.transform.rotation = fromCamRot;
-        transitionCam.fieldOfView = fromFOV;
+        ApplyCameraState(transitionCam, fromPos, fromRot, fromFOV);
         transitionCam.gameObject.SetActive(true);
 
         from.gameObject.SetActive(false);
@@ -116,49 +143,59 @@ public class CameraSwitch : MonoBehaviour
         {
             elapsedDelay += Time.unscaledDeltaTime;
             float t = elapsedDelay / cameraMoveTime;
-            transitionCam.transform.position = Vector3.Lerp(fromCamPos, toCamPos, t);
-            transitionCam.transform.rotation = Quaternion.Slerp(fromCamRot, toCamRot, t);
-            transitionCam.fieldOfView = Mathf.Lerp(fromFOV, toFOV, t);
+
+            ApplyCameraState(
+                transitionCam, 
+                Vector3.Lerp(fromPos, toPos, t), 
+                Quaternion.Slerp(fromRot, toRot, t), 
+                Mathf.Lerp(fromFOV, toFOV, t));
 
             yield return null;
         }
 
-        transitionCam.transform.position = toCamPos;
-        transitionCam.transform.rotation = toCamRot;
-        transitionCam.fieldOfView = toFOV;
+        ApplyCameraState(transitionCam, toPos, toRot, toFOV);
 
-        yield return null;
-
-        SetActiveCamera(toCam);
+        SetActiveCamera(to);
         transitionCam.gameObject.SetActive(false);
 
         IsCameraMoving = false;
         overlayCam.enabled = true;
     }
 
+    // Applies a specified position, rotation, and FOV to a camera
+    private void ApplyCameraState(Camera cam, Vector3 pos, Quaternion rot, float fov)
+    {
+        cam.transform.position = pos;
+        cam.transform.rotation = rot;
+        cam.fieldOfView = fov;
+    }
+
+    // Moves the camera to the tutorial camera
     private IEnumerator MoveToTutorialCamera()
     {
         Tutorial.Instance.UpdateScreenUI(false);
         previousActiveCamNum = ActiveCam;
         
-        yield return StartCoroutine(MoveCamera(ActiveCam, 0, 3f));
+        yield return StartCoroutine(MoveCamera(cameras[ActiveCam], cameras[0], 3f));
 
         SyncOverlayCamera();
         
         Tutorial.Instance.UpdateTutorialUI(true);
     }
 
+    // Moves the camera away from the tutorial camera
     private IEnumerator MoveAwayFromTutorialCamera()
     {
         SyncOverlayCamera();
         Tutorial.Instance.UpdateTutorialUI(false);
 
-        yield return StartCoroutine(MoveCamera(0, previousActiveCamNum, 3f));
+        yield return StartCoroutine(MoveCamera(cameras[0], cameras[previousActiveCamNum], 3f));
 
         Tutorial.Instance.UpdateImage();
         Tutorial.Instance.UpdateScreenUI(true);
     }
 
+    // Switches camera according to whether the tutorial is active
     public void ToggleTutorial(bool active)
     {
         if (active)

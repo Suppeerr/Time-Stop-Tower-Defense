@@ -9,33 +9,41 @@ using UnityEngine.UIElements;
 //reference numbers: enemy hp 100~100000, projectile damage 25~x
 public class BaseEnemy
 {
-    //base stats: (could be stored as a seperate data structure)
+    // Base enemy stats
     private int baseHp;
     private int baseDef;
     private int baseRes;
 
+    // Current enemy stats
     private int hp;
     private int def;
     private int res;
 
-    public Vector3 s_position;
+    // Enemy movement fields
+    private Vector3 s_position;
     private float speed;
+    private Quaternion visObjbaseRot;
+    private EnemyWaypointPath spath;
+    private int currentWaypoint = 1;
+    private float curdist_traveled;
 
-    public EnemyType type;
-    public EnemyWaypointPath spath;
-    public int currentWaypoint = 1;
-    public float curdist_traveled;
+    // Enemy type and stats container
+    private EnemyType type;
+    private EnemyStatsContainer statsContainer;
 
-    public EnemyStatsContainer statsContainer;
+    // Enemy instance
     public GameObject visualObj;
-    public GameObject enemyvObjPrefab;
-    public EnemyHealthBar healthbar;
-    public GameObject damageIndicatorPrefab;
-    public EnemyCounter enemyCounterScript;
-    public LevelInstance level;
+    private GameObject enemyvObjPrefab;
 
-    public Quaternion visObjbaseRot;
+    // Enemy visuals
+    private EnemyHealthBar healthbar;
+    private GameObject damageIndicatorPrefab;
+    private EnemyCounter enemyCounterScript;
 
+    // Level instance
+    private LevelInstance level;
+    
+    // Initializes an enemy with its stats and then spawns it
     public async Task Init(GameObject prefab, LevelInstance level, EnemyWaypointPath spath, EnemyType eType)
     {
         // Assigns stat values to enemies
