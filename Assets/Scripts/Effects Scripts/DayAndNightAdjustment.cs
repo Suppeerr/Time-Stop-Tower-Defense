@@ -46,7 +46,7 @@ public class DayAndNightAdjustment : MonoBehaviour
     void Update()
     {
         // Freezes the cycle under certain conditions
-        if (ProjectileManager.IsFrozen)
+        if (ProjectileManager.Instance.IsFrozen)
         {
             return;
         }

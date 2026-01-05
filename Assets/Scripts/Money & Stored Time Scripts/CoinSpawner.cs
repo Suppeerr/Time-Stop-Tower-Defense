@@ -2,13 +2,19 @@ using UnityEngine;
 
 public class CoinSpawner : MonoBehaviour
 {
+    // Coin spawner instance
     public static CoinSpawner Instance { get; private set; }
+
+    // Coin prefabs
     [SerializeField] private GameObject coinPrefab;
     [SerializeField] private GameObject homingCoinPrefab;
+
+    // Drone script
     [SerializeField] private Drone droneScript;
 
     private void Awake()
     {
+        // Prevents duplicates of this object
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -17,29 +23,15 @@ public class CoinSpawner : MonoBehaviour
         Instance = this;
     }
 
-    public void SpawnCoin(bool isCoinLauncher, Vector3? enemyPos = null, Vector3? launcherPos = null)
+    // Spawns a normal coin when enemies die or a projectile coin from the drone cannon
+    public void SpawnCoin(Vector3? enemyPos = null, Vector3? launcherPos = null)
     {
         Vector3 spawnPos = Vector3.zero;
 
         if (enemyPos.HasValue)
         {
+            // Spawns normal coin
             spawnPos = enemyPos.Value;
-        }
-        else if (launcherPos.HasValue)
-        {
-            spawnPos = launcherPos.Value;
-        }
-
-        if (isCoinLauncher)
-        {
-            GameObject clone = Instantiate(
-            homingCoinPrefab,
-            spawnPos,
-            Quaternion.Euler(0, 0, 90)
-            );
-        }
-        else
-        {
             GameObject droppedCoin = Instantiate(
             coinPrefab,
             spawnPos,
@@ -47,6 +39,16 @@ public class CoinSpawner : MonoBehaviour
             );
 
             droneScript.FindClosestCoin();
-        }  
+        }
+        else if (launcherPos.HasValue)
+        {
+            // Spawns projectile coin
+            spawnPos = launcherPos.Value;
+            GameObject clone = Instantiate(
+            homingCoinPrefab,
+            spawnPos,
+            Quaternion.Euler(0, 0, 90)
+            );
+        } 
     }
 }

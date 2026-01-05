@@ -118,7 +118,7 @@ public class Draggable : MonoBehaviour
             }
 
             // Cancel drag if time stopped or x pressed
-            if (ProjectileManager.IsFrozen || Keyboard.current.xKey.wasPressedThisFrame)
+            if (ProjectileManager.Instance.IsFrozen || Keyboard.current.xKey.wasPressedThisFrame)
             {
                 CancelDrag();
             }

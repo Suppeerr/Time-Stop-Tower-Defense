@@ -58,7 +58,10 @@ public class TimeStop : MonoBehaviour
     // Once timestop is triggered, all animated objects freeze for the duration
     void Update()
     {
-        if (!Upgrader.TimeStopBought || BaseHealthManager.IsGameOver || isTransitioning)
+        if (!UpgradeManager.Instance.IsBought(UpgradeType.TimeStop) || 
+            SettingsManager.Instance.SettingsOpened|| 
+            BaseHealthManager.IsGameOver || 
+            isTransitioning)
         {
             return;
         }
@@ -83,7 +86,7 @@ public class TimeStop : MonoBehaviour
             UpdateRunes(true);
         }
 
-        if (cooldown > 0f && !ProjectileManager.IsFrozen)
+        if (cooldown > 0f && !ProjectileManager.Instance.IsFrozen)
         {
             // Decreases reactivation cooldown with time outside of time stop
             cooldown -= Time.deltaTime;
@@ -150,7 +153,6 @@ public class TimeStop : MonoBehaviour
     // Ends time stop after a short transition
     private IEnumerator EndTimestop(float cd)
     {
-        Debug.Log("Time stop ended");
         timeStopEndSFX?.Play();
         timeStopOverlay.StopTimeStopVFX();
         TimeStopEvent?.Invoke(false);
@@ -194,6 +196,11 @@ public class TimeStop : MonoBehaviour
 
         while (duration > 0f)
         {
+            while (SettingsManager.Instance.SettingsOpened)
+            {
+                yield return null;
+            }
+
             secondsElapsed += Time.unscaledDeltaTime;
 
             if (secondsElapsed >= 1f)
@@ -245,6 +252,11 @@ public class TimeStop : MonoBehaviour
 
         while (elapsed < runeTransitionTime)
         {
+            if (SettingsManager.Instance.SettingsOpened)
+            {
+                yield return null;
+            }
+
             float intensity = Mathf.Lerp(from, to, elapsed / runeTransitionTime); 
             Color curColor = Color.Lerp(fromColor, toColor, elapsed / runeTransitionTime);
 

@@ -53,7 +53,7 @@ public class EnemyHealthBar : MonoBehaviour
 
         while (elapsedFade < fadeDuration)
         {
-            while (ProjectileManager.IsFrozen)
+            while (ProjectileManager.Instance.IsFrozen)
             {
                 yield return null;
             }

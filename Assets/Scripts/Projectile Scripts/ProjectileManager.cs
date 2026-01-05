@@ -8,7 +8,7 @@ public class ProjectileManager : MonoBehaviour
     public AudioSource explosionSFX;
     public AudioSource normalHitSFX;
 
-    public static bool IsFrozen { get; private set; } = false;
+    public bool IsFrozen { get; private set; } = false;
     public List<Rigidbody> activeProjectiles = new List<Rigidbody>();
     Dictionary<Rigidbody, Vector3> savedVelocities = new Dictionary<Rigidbody, Vector3>();
 

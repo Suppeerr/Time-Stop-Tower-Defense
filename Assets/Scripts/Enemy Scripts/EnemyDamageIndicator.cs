@@ -48,7 +48,7 @@ public class EnemyDamageIndicator : MonoBehaviour
 
         while (elapsedDelay < fadeDelay)
         {
-            if (!ProjectileManager.IsFrozen)
+            if (!ProjectileManager.Instance.IsFrozen)
             {
                 elapsedDelay += Time.deltaTime;
 
@@ -67,7 +67,7 @@ public class EnemyDamageIndicator : MonoBehaviour
 
         while (elapsed < fadeDuration)
         {
-            if (!ProjectileManager.IsFrozen)
+            if (!ProjectileManager.Instance.IsFrozen)
             {
                 elapsed += Time.deltaTime;
                 float percentElapsed = elapsed / fadeDuration;

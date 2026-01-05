@@ -22,7 +22,7 @@ public class NewMonoBehaviourScript : MonoBehaviour, IDeselectHandler
     }
 
     void OnMouseDown(){
-        if (ProjectileManager.IsFrozen)
+        if (ProjectileManager.Instance.IsFrozen)
         {
             return;
         }

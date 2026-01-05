@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class SettingsManager : MonoBehaviour
 {
+    public static SettingsManager Instance;
     [SerializeField] AudioMixer masterMixer;
     [SerializeField] Slider masterSlider;
 
@@ -19,6 +20,16 @@ public class SettingsManager : MonoBehaviour
     [SerializeField] Toggle dayNightFreezeToggle;
     [SerializeField] DayAndNightAdjustment dayNightAdjustScript;
 
+    public bool SettingsOpened { get; private set; }
+
+    void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+    }
+
     void Start()
     {
         AdjustVolume();
@@ -26,12 +37,14 @@ public class SettingsManager : MonoBehaviour
 
     public void OpenSettings()
     {
+        SettingsOpened = true;
         musicSource.pitch = 0.9f;
         LimitVolume(-5f);
     }
 
     public void CloseSettings()
     {
+        SettingsOpened = false;
         musicSource.pitch = 1f;
         AdjustVolume();
     }

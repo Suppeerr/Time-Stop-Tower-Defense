@@ -151,7 +151,7 @@ public class BaseEnemy
     // Moves enemy along the track
     private void _s_move()
     {   //... change positioning later - jack (self)
-        if (ProjectileManager.IsFrozen)
+        if (ProjectileManager.Instance.IsFrozen)
         {
             return;
         }
@@ -199,6 +199,6 @@ public class BaseEnemy
     public virtual void OnDestroy() { }
     public virtual void OnDeath()
     {
-        CoinSpawner.Instance.SpawnCoin(false, enemyPos: visualObj.transform.position);
+        CoinSpawner.Instance.SpawnCoin(enemyPos: visualObj.transform.position);
     }
 }

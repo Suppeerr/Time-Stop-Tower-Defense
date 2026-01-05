@@ -71,7 +71,7 @@ public class LevelInstance : MonoBehaviour
 
     public async Task Update()
     {
-        if (!s_enabled || ProjectileManager.IsFrozen || !LevelStarter.HasLevelStarted)
+        if (!s_enabled || ProjectileManager.Instance.IsFrozen || !LevelStarter.HasLevelStarted)
         {
             return;
         }

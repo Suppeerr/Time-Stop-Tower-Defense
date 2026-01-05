@@ -59,6 +59,11 @@ public class OutlineFlash : MonoBehaviour
 
         for (float t = 0; t < halfDuration; t += Time.unscaledDeltaTime)
         {
+            while (SettingsManager.Instance.SettingsOpened)
+            {
+                yield return null;
+            }
+
             if (visualOverride || !IsFlashing)
             {
                 break;

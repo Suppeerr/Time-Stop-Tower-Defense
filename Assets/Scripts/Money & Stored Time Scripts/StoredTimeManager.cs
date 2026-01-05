@@ -3,19 +3,26 @@ using TMPro;
 
 public class StoredTimeManager : MonoBehaviour
 {
+    // Stored seconds
     private int seconds;
+
+    // Stored seconds cap
     private int maxSeconds = 25;
+
+    // Stored seconds UI
     [SerializeField] private TMP_Text storedTimeText;
 
     void Awake()
     {
+        // Initializes seconds amount
         seconds = 0;
         UpdateUI();
     }
 
     void Update()
     {
-        if (ProjectileManager.IsFrozen)
+        // Changes indicator color during time stop
+        if (ProjectileManager.Instance.IsFrozen)
         {
             storedTimeText.color = Color.yellow;
         }
@@ -24,6 +31,7 @@ public class StoredTimeManager : MonoBehaviour
             storedTimeText.color = Color.white;
         }
 
+        // Moves the seconds indicator for specific cameras
         if (CameraSwitch.ActiveCam == 2)
         {
             storedTimeText.rectTransform.anchoredPosition = new Vector3(-270, 132, 0);
@@ -34,7 +42,7 @@ public class StoredTimeManager : MonoBehaviour
         }
     }
 
-    // Calls whenever seconds changes
+    // Changes indicated seconds count to the stored seconds amount
     private void UpdateUI()
     {
         if (storedTimeText != null)
@@ -43,25 +51,25 @@ public class StoredTimeManager : MonoBehaviour
         }
     }
 
-    // Public method for updating seconds
-    public void UpdateSeconds(int amount = 1)
+    // Increments seconds by amount
+    public void UpdateSeconds(int amount = 1, bool isNeg = false)
     {
-        if (seconds < maxSeconds || amount < 0)
+        if (seconds < maxSeconds)
         {
-            seconds += amount;
+            if (isNeg)
+            {
+                seconds -= amount;
+            }
+            else
+            {
+                seconds += amount;
+            }
         }
         
         UpdateUI();
     }
 
-    // Decreases second count by indicated amount
-    public void DecreaseSeconds(int decreaseAmount)
-    {
-        seconds -= decreaseAmount;
-        UpdateUI();
-    }
-
-    // Returns seconds stored in the manager
+    // Returns seconds stored
     public int GetSeconds()
     {
         return seconds;

@@ -33,13 +33,9 @@ public class Upgrader : MonoBehaviour
     private int currentSeconds;
     private float elapsed;    
 
-    public static bool AutoCannonBought { get; private set; }
-    public static bool TimeStopBought { get; private set; }
-    public static bool PreChargeBought { get; private set; }
-    public static bool TowerBoostBought { get; private set; }
-    public static bool MultiChargeBought { get; private set; }
-
     private int lastCam = -1;
+
+    public static bool IsLocked { get; private set; } = false;
 
     public enum UpgraderState
     {
@@ -166,7 +162,7 @@ public class Upgrader : MonoBehaviour
 
     void OnMouseDown()
     {
-        if (ProjectileManager.IsFrozen || !clickableScript.ClickableEnabled || BaseHealthManager.IsGameOver)
+        if (ProjectileManager.Instance.IsFrozen || !clickableScript.ClickableEnabled || BaseHealthManager.IsGameOver)
         {
             return;
         }
@@ -224,16 +220,19 @@ public class Upgrader : MonoBehaviour
 
     private IEnumerator SuccessfulUpgrade()
     {
+        IsLocked = true;
         MarkUpgradeBought();
+        upgradeNum++;
 
-        AdjustFontSize(1f, 1.4f);
+        AdjustFontSize(1.2f, 1.4f);
         upgradeIndicator.text = "Upgrade\nBought!";
         
-        moneyManagerScript.DecreaseMoney(currentMoneyCost);
-        storedTimeManagerScript.DecreaseSeconds(currentSecondsCost);
+        moneyManagerScript.UpdateMoney(currentMoneyCost, true);
+        storedTimeManagerScript.UpdateSeconds(currentSecondsCost, true);
 
         yield return new WaitForSeconds(3f); 
 
+        IsLocked = false;
         if (upgradeNum >= dataContainer.upgrades.Length)
         {
             SetState(UpgraderState.Finished);
@@ -245,34 +244,21 @@ public class Upgrader : MonoBehaviour
 
     private IEnumerator UnlockNewUpgrade()
     {
+        IsLocked = true;
         AdjustFontSize(1f, 1.4f);
         upgradeIndicator.text = "New\nUpgrade\nUnlocked!";
 
         yield return new WaitForSeconds(3f);
 
-        upgradeNum++;
         SetCurrentUpgrade();
+        IsLocked = false;
         
         SetState(UpgraderState.Hidden);
     }
 
     private void MarkUpgradeBought()
     {
-        switch (currentUpgrade)
-        {
-            case UpgradeType.AutoCannon:
-                AutoCannonBought = true;
-                break;
-            case UpgradeType.TimeStop:
-                TimeStopBought = true;
-                break;
-            case UpgradeType.PreCharge:
-                PreChargeBought = true;
-                break;
-            case UpgradeType.MultiCharge:
-                MultiChargeBought = true;
-                break;
-        }
+        UpgradeManager.Instance.BuyUpgrade(currentUpgrade);
     }
 
     private IEnumerator TimeOut(float waitSeconds)
@@ -303,8 +289,20 @@ public class Upgrader : MonoBehaviour
 
     private void RequestFocus()
     {
-        if (activeUpgrader != null && activeUpgrader != this)
+        if (activeUpgrader == this)
         {
+            return;
+        }
+
+        if (activeUpgrader != null)
+        {
+            var state = activeUpgrader.currentState;
+
+            if (IsLocked || state == UpgraderState.Finished)
+            {
+                return;
+            }
+
             activeUpgrader.SetState(UpgraderState.Hidden);
         }
 
@@ -313,11 +311,6 @@ public class Upgrader : MonoBehaviour
 
     void Update()
     {
-        if (clickableScript.ClickableEnabled && (currentState == UpgraderState.Locked || currentState == UpgraderState.Finished))
-        {
-            UpdateVisuals(false, false, false);
-        }
-    
         ManageOutlineFlash();
 
         AdjustUI();
@@ -325,13 +318,21 @@ public class Upgrader : MonoBehaviour
 
     private void ManageOutlineFlash()
     {
+        if (ProjectileManager.Instance.IsFrozen || 
+            (IsLocked && activeUpgrader != this) ||
+            (clickableScript.ClickableEnabled && (currentState == UpgraderState.Locked || currentState == UpgraderState.Finished)))
+        {
+            UpdateVisuals(false, false, false);
+            SetState(UpgraderState.Locked);
+        }
+
         if (currentState != UpgraderState.Locked && currentState != UpgraderState.Hidden && currentState != UpgraderState.Blinking)
         {
             return;
         }
 
         if (CheckUpgradability() && TowerManager.Instance.GetTowerCount() >= 3)
-        {
+        { 
             SetState(UpgraderState.Blinking);
         }
         else if (clickableScript.ClickableEnabled && currentState == UpgraderState.Blinking)
@@ -353,15 +354,15 @@ public class Upgrader : MonoBehaviour
         {
             if (cam == 1)
             {
-                SetVisualParameters(10f, 0f, 0f, 0f);
+                SetVisualParameters(0f, 0f, 0f);
             }
             else if (cam == 2)
             {
-                SetVisualParameters(2f, -0.12f, 0f, -150f);
+                SetVisualParameters(-0.12f, 0f, -150f);
             }
             else
             {
-                SetVisualParameters(10f, 1f, 0f, -4f);
+                SetVisualParameters(1f, 0f, -4f);
             }
 
             lastCam = cam;
@@ -382,9 +383,8 @@ public class Upgrader : MonoBehaviour
         }
     }
 
-    private void SetVisualParameters(float width, float x, float y, float z)
+    private void SetVisualParameters(float x, float y, float z)
     {
-        clickableScript.SetOutlineWidth(width);
         rt.localPosition = new Vector3(x, y, z);
     }
 }

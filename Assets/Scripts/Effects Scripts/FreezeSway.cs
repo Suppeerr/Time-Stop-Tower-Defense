@@ -19,7 +19,7 @@ public class FreezeSway : MonoBehaviour
     void Update()
     {
         // Freezes the swaying animation during time stop
-        bool isFrozen = ProjectileManager.IsFrozen;
+        bool isFrozen = ProjectileManager.Instance.IsFrozen;
         if (isFrozen != wasFrozen)
         {
             if (isFrozen)

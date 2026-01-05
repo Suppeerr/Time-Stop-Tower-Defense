@@ -43,7 +43,7 @@ public class BallSpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (ProjectileManager.IsFrozen || !LevelStarter.HasLevelStarted)
+        if (ProjectileManager.Instance.IsFrozen || !LevelStarter.HasLevelStarted)
         {
             return;
         }

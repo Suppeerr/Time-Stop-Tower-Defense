@@ -37,9 +37,9 @@ public class MusicManager : MonoBehaviour
     void Update()
     {
         // Fades volume and pitch with time stop start or end
-        if (ProjectileManager.IsFrozen != lastFrozenState)
+        if (ProjectileManager.Instance.IsFrozen != lastFrozenState)
         {
-            if (ProjectileManager.IsFrozen)
+            if (ProjectileManager.Instance.IsFrozen)
             {
                 if (fadeRoutine != null)
                 {
@@ -58,7 +58,7 @@ public class MusicManager : MonoBehaviour
                 fadeRoutine = StartCoroutine(FadeIn());
             }
 
-            lastFrozenState = ProjectileManager.IsFrozen;
+            lastFrozenState = ProjectileManager.Instance.IsFrozen;
         }
     }
 

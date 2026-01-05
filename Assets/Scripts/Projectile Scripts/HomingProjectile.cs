@@ -44,7 +44,7 @@ public class HomingProjectile : MonoBehaviour
         level = LevelInstance.Instance;
         myCollider = GetComponent<Collider>();
 
-        if (ProjectileManager.IsFrozen)
+        if (ProjectileManager.Instance.IsFrozen)
         {
             rb.useGravity = false;
         }
@@ -79,7 +79,7 @@ public class HomingProjectile : MonoBehaviour
     // Updates for projectile physics 
     protected virtual void FixedUpdate()
     {        
-        if (ProjectileManager.IsFrozen)
+        if (ProjectileManager.Instance.IsFrozen)
         {
             return;
         }
@@ -265,7 +265,7 @@ public class HomingProjectile : MonoBehaviour
     // Enables normal lightning and sphere emitter effects
     public void EnableNormalEffects()
     {
-        if (!ProjectileManager.IsFrozen)
+        if (!ProjectileManager.Instance.IsFrozen)
         {
             return;
         }
@@ -284,7 +284,7 @@ public class HomingProjectile : MonoBehaviour
     // Enables upgraded lightning effects
     public void EnableUpgradedEffects()
     {
-        if (!ProjectileManager.IsFrozen)
+        if (!ProjectileManager.Instance.IsFrozen)
         {
             return;
         }

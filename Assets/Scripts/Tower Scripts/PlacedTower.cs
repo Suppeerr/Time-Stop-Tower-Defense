@@ -46,13 +46,13 @@ public class PlacedTower : MonoBehaviour
         towerPlaceSFX?.Play();
         float elapsedDelay = 0f;
         Vector3 startPos = endPos + Vector3.up * placementHeight;
-        moneyManagerScript.DecreaseMoney(TowerManager.Instance.GetSplitterCost());
+        moneyManagerScript.UpdateMoney(TowerManager.Instance.GetSplitterCost(), true);
         TowerManager.Instance.RegisterTower(this.gameObject);
         towerSchematic.UpdateUI();
 
         while (elapsedDelay < placementTime)
         {
-            while (ProjectileManager.IsFrozen)
+            while (ProjectileManager.Instance.IsFrozen)
             {
                 yield return null;
             }

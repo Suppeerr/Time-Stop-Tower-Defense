@@ -37,7 +37,7 @@ public class NormalProjectile : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (ProjectileManager.IsFrozen)
+        if (ProjectileManager.Instance.IsFrozen)
         {
             return;
         }

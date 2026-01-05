@@ -3,17 +3,22 @@ using TMPro;
 
 public class MoneyManager : MonoBehaviour
 {
+    // Stored money
     private int money;
+
+    // Money stored UI
     [SerializeField] private TMP_Text moneyText;
 
     void Awake()
     {
+        // Initializes money amount
         money = 10;
         UpdateUI();
     }
 
     void Update()
     {
+        // Moves the money indicator for specific cameras
         if (CameraSwitch.ActiveCam == 2)
         {
             moneyText.rectTransform.anchoredPosition = new Vector2(124, 187);
@@ -24,7 +29,7 @@ public class MoneyManager : MonoBehaviour
         }
     }
 
-    // Calls whenever money changes
+    // Changes indicated money count to the stored money amount
     private void UpdateUI()
     {
         if (moneyText != null)
@@ -34,20 +39,21 @@ public class MoneyManager : MonoBehaviour
     }
 
     // Increments money by amount
-    public void UpdateMoney(int amount = 1)
+    public void UpdateMoney(int amount = 1, bool isNeg = false)
     {
-        money += amount;
+        if (isNeg)
+        {
+            money -= amount;
+        }
+        else
+        {
+            money += amount;
+        }
+        
         UpdateUI();
     }
 
-    // Decreases money count by indicated amount
-    public void DecreaseMoney(int decreaseAmount)
-    {
-        money -= decreaseAmount;
-        UpdateUI();
-    }
-
-    // Returns money stored in the manager
+    // Returns money stored
     public int GetMoney()
     {
         return money;

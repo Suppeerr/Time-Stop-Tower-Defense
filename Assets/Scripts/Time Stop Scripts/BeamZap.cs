@@ -17,8 +17,8 @@ public class BeamZap : MonoBehaviour
 
     void Update()
     {
-        bool isFrozen = ProjectileManager.IsFrozen;
-        if (Upgrader.PreChargeBought && isFrozen != wasFrozen)
+        bool isFrozen = ProjectileManager.Instance.IsFrozen;
+        if (UpgradeManager.Instance.IsBought(UpgradeType.PreCharge) && isFrozen != wasFrozen)
         {
             if (isFrozen)
             {
@@ -28,7 +28,7 @@ public class BeamZap : MonoBehaviour
             wasFrozen = isFrozen;
         }
 
-        if ((Mouse.current.leftButton.wasPressedThisFrame || Keyboard.current.spaceKey.wasPressedThisFrame) && ProjectileManager.IsFrozen)
+        if ((Mouse.current.leftButton.wasPressedThisFrame || Keyboard.current.spaceKey.wasPressedThisFrame) && ProjectileManager.Instance.IsFrozen)
         {
             FireZap();
         }
@@ -49,7 +49,7 @@ public class BeamZap : MonoBehaviour
         float radius = 0.8f;
         int projectileLayers = LayerMask.GetMask("Normal Projectile");
 
-        if (Upgrader.MultiChargeBought)
+        if (UpgradeManager.Instance.IsBought(UpgradeType.MultiCharge))
         {
             projectileLayers |= 1 << LayerMask.NameToLayer("Homing Projectile");
         }
