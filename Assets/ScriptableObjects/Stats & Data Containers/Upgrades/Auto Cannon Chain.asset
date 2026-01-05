@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6309618410f15eb43922aa17a6cc27e7, type: 3}
+  m_Name: Auto Cannon Chain
+  m_EditorClassIdentifier: Assembly-CSharp::UpgradeChain
+  upgrades:
+  - upgradeType: 0
+    upgraderType: 0
+    featureUnlocked: 0
+    text: Enable Auto Cannon<br>6 Coins
+    moneyCost: 6
+    secondsCost: 0

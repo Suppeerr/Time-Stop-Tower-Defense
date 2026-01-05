@@ -90,7 +90,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1ab1715d1fc6c44ee83dc8a8b5d820d7, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 3241353290204463766}
+      addedObject: {fileID: 7568034243989725949}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1ab1715d1fc6c44ee83dc8a8b5d820d7, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4013129684662015688}
@@ -103,14 +103,17 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1ab1715d1fc6c44ee83dc8a8b5d820d7, type: 3}
       insertIndex: -1
       addedObject: {fileID: -7879566757534537379}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1ab1715d1fc6c44ee83dc8a8b5d820d7, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7089036472924863268}
   m_SourcePrefab: {fileID: 100100000, guid: 1ab1715d1fc6c44ee83dc8a8b5d820d7, type: 3}
 --- !u!1 &4926105239026105867 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 1ab1715d1fc6c44ee83dc8a8b5d820d7, type: 3}
   m_PrefabInstance: {fileID: 5232166046883529562}
   m_PrefabAsset: {fileID: 0}
---- !u!64 &3241353290204463766
-MeshCollider:
+--- !u!135 &7568034243989725949
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -127,10 +130,9 @@ MeshCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -2432090755550338912, guid: 1ab1715d1fc6c44ee83dc8a8b5d820d7, type: 3}
+  serializedVersion: 3
+  m_Radius: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &4013129684662015688
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -305,4 +307,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db38cd3e35c64d445a61f3a09ced16a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Clickable
-  outlineWidth: 4
+  outlineWidth: 5
+--- !u!114 &7089036472924863268
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4926105239026105867}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25148858d9680a44ca95b4aaec09fa0b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OutlineFlash

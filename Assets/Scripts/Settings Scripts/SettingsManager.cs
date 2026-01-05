@@ -25,4 +25,12 @@ public class SettingsManager : MonoBehaviour
         Debug.Log("Settings Button Clicked!");
         menuOpen = !menuOpen;
     }
+
+    public void STARTPAUSING(){
+        if (Time.timeScale == 0){
+            Time.timeScale = 1;
+        } else {
+            Time.timeScale = 0;
+        }
+    }
 }

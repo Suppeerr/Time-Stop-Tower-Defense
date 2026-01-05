@@ -29,7 +29,7 @@ public class HomingProjectile : MonoBehaviour
     private int chargeLevel = 0;
 
     // Stats
-    public ProjectileStatsContainer statsContainer;
+    [SerializeField] protected ProjectileStatsContainer statsContainer;
     private int damage;
     private float aoe;
 

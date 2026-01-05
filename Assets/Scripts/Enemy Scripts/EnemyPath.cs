@@ -38,7 +38,7 @@ public class Waypoint
         dist = (position - source).magnitude;
         modif = (position - source).normalized;
         faceDirection = Quaternion.LookRotation((source - position).normalized);
-        Debug.Log($"Created New Waypoint: at {position}, modif {modif} ({dist})");
+        // Debug.Log($"Created New Waypoint: at {position}, modif {modif} ({dist})");
     }
 
     public Waypoint(Vector3 position)

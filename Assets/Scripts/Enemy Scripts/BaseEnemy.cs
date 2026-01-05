@@ -39,7 +39,7 @@ public class BaseEnemy
         //other init also goes here...
         // Assigns stat values to enemies
         type = eType;
-        statsContainer = Resources.Load<EnemyStatsContainer>("EnemyStatsContainer 1");
+        statsContainer = Resources.Load<EnemyStatsContainer>("EnemyStatsContainer");
 
         EnemyStats stats = statsContainer.GetStats(type);
         if (stats == null)

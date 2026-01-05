@@ -19,19 +19,34 @@ public class TimeStop : MonoBehaviour
     public float maxDur = 5f;
     public float rechargeRate = 1f;
     private float cooldown;
+    private bool textEnabled = false;
     private bool active = false;
-    private float delayAfterSFX = .3f;
-    private bool isCoroutineRunning = false;
+    private bool isTransitioning = false;
     public GameObject beamSpawner;
     private float secondsElapsed = 0f;
-    public StoredTimeManager storedTimeManager;
+    private float timeStopTransitionTime = 1.5f;
+    [SerializeField] private StoredTimeManager storedTimeManager;
+    [SerializeField] private TimeStopOverlay timeStopOverlay;
+
+    void Start()
+    {
+        durationText.enabled = false;
+        cooldownText.enabled = false;
+        beamSpawner.SetActive(false);
+    }
 
     // Once timestop is triggered, all animated objects freeze for the duration
     void Update()
     {
-        if (!LevelStarter.HasLevelStarted || BaseHealthManager.IsGameOver)
+        if (!Upgrader.TimeStopBought || BaseHealthManager.IsGameOver || isTransitioning)
         {
             return;
+        }
+        else if (!textEnabled)
+        {
+            textEnabled = true;
+            durationText.enabled = true;
+            cooldownText.enabled = true;
         }
         
         // Recharge duration when inactive
@@ -44,39 +59,68 @@ public class TimeStop : MonoBehaviour
             }
         }
 
-        if (cooldown > 0)
+        if (cooldown > 0f)
         {
             cooldown -= Time.deltaTime;
-            if (cooldown < 0 )
+            if (cooldown < 0f)
             {
-                cooldownEndSFX.Play();
-                cooldown = 0;
+                if (!active)
+                {
+                    cooldownEndSFX.Play();
+                }
+                 
+                cooldown = 0f;
             }
         }
 
         UpdateUI();
 
+        if (cooldown > 0f)
+        {
+            return;
+        }
+
         // Trigger key input
-        if (!active && !isCoroutineRunning && Keyboard.current.tKey.wasPressedThisFrame && cooldown == 0f)
+        if (Keyboard.current.tKey.wasPressedThisFrame)
         {
-            StopAllCoroutines();
-            StartCoroutine(StartTimeStopAfterDelay());
-        }
-        if (active && isCoroutineRunning && Keyboard.current.tKey.wasPressedThisFrame)
-        {
-            EndTimestop(3f);
-        }
+            if (active)
+            {
+                StartCoroutine(EndTimestop(3f));
+                return;
+            }
+            else
+            {
+                StopAllCoroutines();
+                StartCoroutine(StartTimeStopAfterDelay());
+            }
+        } 
     }
 
     private IEnumerator StartTimeStopAfterDelay()
     {
-        isCoroutineRunning = true;
+        isTransitioning = true;
         timeStopStartSFX?.Play();
-
-        yield return new WaitForSecondsRealtime(delayAfterSFX);
-
+        timeStopOverlay.StartTimeStopVFX();
         active = true;
+        
+        float elapsedDelay = 0f;
+
+        while (elapsedDelay < timeStopTransitionTime)
+        {
+            elapsedDelay += Time.unscaledDeltaTime;
+            float t = elapsedDelay / timeStopTransitionTime;
+
+            Time.timeScale = Mathf.Lerp(1, 0, t);
+
+            yield return null;
+        }
+
+        isTransitioning = false;
+        Time.timeScale = 1f;
+
         TimeStopEvent?.Invoke(true);
+        cooldown = 2f;
+        ProjectileManager.Instance.BlinkNormalProjectiles();
         beamSpawner.SetActive(true);
 
         UpdateParticles();
@@ -94,17 +138,36 @@ public class TimeStop : MonoBehaviour
             duration -= Time.deltaTime;
             yield return null;
         }
-        EndTimestop(3f);
+
+        StartCoroutine(EndTimestop(3f));
     }
 
     // Ends the timestop
-    private void EndTimestop(float cd)
+    private IEnumerator EndTimestop(float cd)
     {
-        StopAllCoroutines();
-        active = false;
-        TimeStopEvent?.Invoke(false);
-        isCoroutineRunning = false;
+        float elapsedDelay = 0f;
         timeStopEndSFX?.Play();
+        timeStopOverlay.StopTimeStopVFX();
+        TimeStopEvent?.Invoke(false);
+        active = false;
+        isTransitioning = true;
+        ProjectileManager.Instance.UnblinkNormalProjectiles();
+
+        while (elapsedDelay < timeStopTransitionTime)
+        {
+            elapsedDelay += Time.unscaledDeltaTime;
+            float t = elapsedDelay / timeStopTransitionTime;
+
+            Time.timeScale = Mathf.Lerp(0, 1, t);
+
+            yield return null;
+        }
+
+        Time.timeScale = 1f;
+
+        StopAllCoroutines();
+        isTransitioning = false;
+        
         cooldown = cd;
         beamSpawner.SetActive(false);
 
@@ -146,13 +209,20 @@ public class TimeStop : MonoBehaviour
                 continue;
             }
 
-            if (active == true)
+            if (active)
             {
-                ps.Pause(true);
+                if (ps.isPlaying)
+                {
+                    ps.Pause(true);
+                }
             }
             else
             {
-                ps.Play(true);
+                if (ps.isPaused)
+                {
+                    ps.Play(true);
+                }
+
             }
             
         }

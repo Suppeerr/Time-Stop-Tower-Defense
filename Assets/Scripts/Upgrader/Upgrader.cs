@@ -4,45 +4,60 @@ using System.Collections;
 
 public class Upgrader : MonoBehaviour
 {
+    private UpgraderState currentState = UpgraderState.Locked;
+
     private StoredTimeManager storedTimeManagerScript;
     private MoneyManager moneyManagerScript;
     [SerializeField] private TMP_Text upgradeIndicator;
     private RectTransform rt;
     private Clickable clickableScript;
     private OutlineFlash outlineFlashScript;
-    private Coroutine disappearRoutine;
-    private Coroutine confirmRoutine;
     private static Upgrader activeUpgrader = null;
+    private Coroutine timeOutRoutine = null;
 
     private Color baseGlowColor;
     private Color baseColor = Color.yellow;
     [SerializeField] private Color invalidGlowColor;
     private Color invalidColor = Color.red;
 
-    [SerializeField] private bool isAutoCannon;
-    private int numberOfClicks = 0;
-    private int timeStopUpgrades = 0;
-    private bool upgraderFinished = false;
-    private bool isClickable = false;
-    private bool isConfirming = false;
-    private bool isUnlockingNewUpgrade = false;
+    // Upgrade data
+    [SerializeField] private UpgradeDataContainer dataContainer;
+    private UpgraderType upgraderType;
+    private UpgradeType currentUpgrade;
+    private int currentMoneyCost;
+    private int currentSecondsCost;
     private string baseText;
-    private int lastCam = -1;
+    private int upgradeNum;
 
     private int currentMoney;
     private int currentSeconds;
-    private float elapsed;
+    private float elapsed;    
 
     public static bool AutoCannonBought { get; private set; }
+    public static bool TimeStopBought { get; private set; }
     public static bool PreChargeBought { get; private set; }
     public static bool TowerBoostBought { get; private set; }
     public static bool MultiChargeBought { get; private set; }
 
+    private int lastCam = -1;
+
+    public enum UpgraderState
+    {
+        Locked,
+        Blinking,
+        Hidden,
+        Clicked,
+        Confirming,
+        UpgradeBought,
+        UnlockingUpgrade,
+        Finished
+    }
 
     void Start()
     {
         storedTimeManagerScript = GameObject.Find("Stored Time Manager")?.GetComponent<StoredTimeManager>();
         moneyManagerScript = GameObject.Find("Money Manager")?.GetComponent<MoneyManager>();
+
         clickableScript = this.GetComponent<Clickable>();
         outlineFlashScript = this.GetComponent<OutlineFlash>();
 
@@ -50,281 +65,221 @@ public class Upgrader : MonoBehaviour
         upgradeIndicator.color = baseColor;
         Material mat = upgradeIndicator.fontMaterial;
         baseGlowColor = mat.GetColor("_GlowColor");
-        
-        if (isAutoCannon)
-        {
-            baseText = "Enable Auto Cannon   6 Coins";
-            upgradeIndicator.text = baseText;
-        }
-        else
-        {
-            baseText = "Pre-Charge   5 Coins, 10s";
-            upgradeIndicator.text = baseText;
-        }
-        
-        outlineFlashScript.enabled = false;
-        clickableScript.enabled = false;
-        upgradeIndicator.enabled = false;
+
+        upgradeNum = 0;
+        SetCurrentUpgrade();
     }
 
-    void Update()
+    private void SetState(UpgraderState newState)
     {
-        OutlineFlashManager();
-
-        if (elapsed < 0.5f)
+        if (currentState == newState)
         {
-            elapsed += Time.deltaTime;
-        }
-        else
-        {
-            elapsed = 0f;
-            currentMoney = moneyManagerScript.GetMoney();
-            currentSeconds = storedTimeManagerScript.GetSeconds();
+            return;
         }
 
-        int cam = CameraSwitch.ActiveCam;
-        if (isAutoCannon && cam != lastCam)
-        {
-            if (cam == 1)
-            {
-                clickableScript.SetOutlineWidth(10f);
-                rt.localPosition = new Vector3(0f, 0f, 0f);
-            }
-            else if (cam == 2)
-            {
-                clickableScript.SetOutlineWidth(2f);
-                rt.localPosition = new Vector3(-0.12f, 0f, -150f);
-            }
-            else
-            {
-                clickableScript.SetOutlineWidth(10f);
-                rt.localPosition = new Vector3(1f, 0f, -4f);
-            }
+        ExitState(currentState);
+        currentState = newState;
+        EnterState(currentState);
+    }
 
-            lastCam = cam;
+    private void EnterState(UpgraderState state)
+    {
+        switch (state)
+        {
+            case UpgraderState.Locked:
+                UpdateVisuals(false, false, false);
+                break;
+
+            case UpgraderState.Blinking:
+                outlineFlashScript.StartFlashing();
+                UpdateVisuals(false, false);
+                break;
+
+            case UpgraderState.Hidden:
+                UpdateVisuals(false, false);
+                break;
+
+            case UpgraderState.Clicked:
+                upgradeIndicator.text = baseText;
+                if (currentUpgrade == UpgradeType.MultiCharge)
+                {
+                    AdjustFontSize(1f, 1.3f);
+                }
+                else
+                {
+                    AdjustFontSize(1f, 1.5f);
+                }      
+                UpdateVisuals(true, true);
+                timeOutRoutine = StartCoroutine(TimeOut(5f));
+                break;
+
+            case UpgraderState.Confirming:
+                UpdateVisuals(true, true);
+                upgradeIndicator.text = "Confirm?";
+                AdjustFontSize(1.4f, 1.5f);
+                timeOutRoutine = StartCoroutine(TimeOut(5f));
+                break;
+
+            case UpgraderState.UpgradeBought:
+                UpdateVisuals(false, true, false);
+                StartCoroutine(SuccessfulUpgrade());
+                break;
+
+            case UpgraderState.UnlockingUpgrade:
+                UpdateVisuals(false, true, false);
+                StartCoroutine(UnlockNewUpgrade());
+                break;
+
+            case UpgraderState.Finished:
+                UpdateVisuals(false, false, false);
+                currentMoneyCost = 9999999;
+                currentSecondsCost = 9999999;
+                break;
         }
     }
 
-    private void OnMouseDown()
+    private void ExitState(UpgraderState state)
     {
-        if (ProjectileManager.IsFrozen || upgraderFinished || BaseHealthManager.IsGameOver)
+        if (timeOutRoutine != null)
+        {
+            StopCoroutine(timeOutRoutine);
+        }
+    }
+
+    private void SetCurrentUpgrade()
+    {
+        if (upgradeNum >= dataContainer.upgrades.Length)
+        {
+            SetState(UpgraderState.Finished);
+            return;
+        }
+
+        UpgradeData upgrade = dataContainer.upgrades[upgradeNum];
+        upgraderType = upgrade.upgraderType;
+        currentUpgrade = upgrade.upgradeType;
+        currentMoneyCost = upgrade.moneyCost;
+        currentSecondsCost = upgrade.secondsCost;
+        baseText = upgrade.text;
+    }
+
+    void OnMouseDown()
+    {
+        if (ProjectileManager.IsFrozen || !clickableScript.ClickableEnabled || BaseHealthManager.IsGameOver)
+        {
+            return;
+        }
+
+        if (timeOutRoutine != null)
+        {
+            StopCoroutine(timeOutRoutine);
+        }
+
+        // Debug.Log("Current state: " + currentState);
+
+        CheckUpgrade();
+    }
+
+    private void CheckUpgrade()
+    {
+        if (upgraderType == UpgraderType.AutoCannon && TowerManager.Instance.GetTowerCount() < 3)
         {
             return;
         }
 
         RequestFocus();
 
+        if (currentState == UpgraderState.Blinking || currentState == UpgraderState.Hidden)
+        {
+            SetState(UpgraderState.Clicked);
+            return;
+        }
+
+        if (CheckUpgradability())
+        {
+            switch (currentState)
+            {    
+                case UpgraderState.Clicked:
+                    SetState(UpgraderState.Confirming);
+                    break;
+
+                case UpgraderState.Confirming:
+                    SetState(UpgraderState.UpgradeBought);
+                    break;
+            }
+        }
+        else
+        {
+            StartCoroutine(FlashRed(0.4f));
+            timeOutRoutine = StartCoroutine(TimeOut(5f));
+        }
+    }
+
+    private bool CheckUpgradability()
+    {
         currentMoney = moneyManagerScript.GetMoney();
         currentSeconds = storedTimeManagerScript.GetSeconds();
 
-        if (isAutoCannon)
-        {
-            if (TowerManager.Instance.GetTowerCount() >= 3)
-            {
-                numberOfClicks++;
-                AutoCannonUpgrade();
-            }
-        }
-        else if (timeStopUpgrades == 0)
-        {
-            numberOfClicks++;
-            TimeStopUpgrade();
-        }
-        else if (timeStopUpgrades == 1)
-        {
-            numberOfClicks++;
-            TimeStopUpgrade();
-        }
+        return currentMoney >= currentMoneyCost && currentSeconds >= currentSecondsCost;
     }
 
-    // Auto Cannon Upgrade
-    private void AutoCannonUpgrade()
+    private IEnumerator SuccessfulUpgrade()
     {
-        upgradeIndicator.enabled = true;
-        UpgradeChecker(6, 0, currentMoney >= 6, "Ignore Raycast");
-    }
+        MarkUpgradeBought();
 
-    // Time Stop Upgrades
-    private void TimeStopUpgrade()
-    {
-        upgradeIndicator.enabled = true;
-        if (timeStopUpgrades == 0)
+        AdjustFontSize(1f, 1.4f);
+        upgradeIndicator.text = "Upgrade\nBought!";
+        
+        moneyManagerScript.DecreaseMoney(currentMoneyCost);
+        storedTimeManagerScript.DecreaseSeconds(currentSecondsCost);
+
+        yield return new WaitForSeconds(3f); 
+
+        if (upgradeNum >= dataContainer.upgrades.Length)
         {
-            UpgradeChecker(5, 10, currentMoney >= 5 && currentSeconds >= 10, "Ignore Time Stop");
-        }
-        else
-        {
-            UpgradeChecker(8, 15, currentMoney >= 8 && currentSeconds >= 15, "Ignore Time Stop");
-        }
-
-    }
-
-    private void UpgradeChecker(int money, int seconds, bool condition, string finishedLayerString)
-    {
-        if (condition)
-        {
-            if (numberOfClicks == 2)
-            {
-                confirmRoutine = StartCoroutine(ConfirmUpgrade());
-                return;
-            }
-
-            if (numberOfClicks == 3)
-            {
-                numberOfClicks = 0;
-                if (disappearRoutine != null)
-                {
-                    StopCoroutine(disappearRoutine);
-                    StopCoroutine(confirmRoutine);
-                }
-
-                SuccessfulUpgrade(money, seconds);
-                
-                if (isAutoCannon)
-                {
-                    AutoCannonBought = true;
-                    FinishUpgrader(finishedLayerString);
-                }
-                else if (timeStopUpgrades == 0)
-                {
-                    PreChargeBought = true;
-                    timeStopUpgrades++;
-                    StartCoroutine(UnlockNewUpgrade());
-                }
-                else if (timeStopUpgrades == 1)
-                {
-                    MultiChargeBought = true;
-                    FinishUpgrader(finishedLayerString);
-                }
-                
-                return;
-            }
-        }
-        else if (numberOfClicks > 1)
-        {
-            StartCoroutine(FlashRed(0.4f));
+            SetState(UpgraderState.Finished);
+            yield break;
         }
 
-        if (disappearRoutine != null)
-        {
-            StopCoroutine(disappearRoutine);
-        }
-
-        disappearRoutine = StartCoroutine(WaitAndDisappear(5f));
-    }
-
-    private IEnumerator ConfirmUpgrade()
-    {
-        isConfirming = true;
-
-        if (isAutoCannon)
-        {
-            upgradeIndicator.fontSize = 1.4f;
-        }
-        else
-        {
-            upgradeIndicator.fontSize = 1.6f;
-        }
-
-        upgradeIndicator.text = "Confirm?";
-
-        yield return new WaitForSeconds(5f);
-
-        if (isAutoCannon)
-        {
-            upgradeIndicator.fontSize = 1f;
-        }
-
-        upgradeIndicator.text = baseText;
-        upgradeIndicator.enabled = false;
-        numberOfClicks = 0;
-
-        isConfirming = false;
-    }
-
-    private void SuccessfulUpgrade(int money, int seconds)
-    {
-        rt.sizeDelta = new Vector2(10, rt.sizeDelta.y);
-
-        if (isAutoCannon)
-        {
-            upgradeIndicator.fontSize = 1f;
-        }
-        else
-        {
-            upgradeIndicator.fontSize = 1.5f;
-        }
-
-        upgradeIndicator.text = "Upgrade Brought!";
-        moneyManagerScript.DecreaseMoney(money);
-        storedTimeManagerScript.DecreaseSeconds(seconds);
+        SetState(UpgraderState.UnlockingUpgrade);
     }
 
     private IEnumerator UnlockNewUpgrade()
     {
-        isUnlockingNewUpgrade = true;
-        clickableScript.enabled = false;
-        isClickable = true;
-        yield return new WaitForSeconds(3f); 
-        upgradeIndicator.fontSize = 1.3f;
-        upgradeIndicator.text = "New Upgrade Unlocked!";
+        AdjustFontSize(1f, 1.4f);
+        upgradeIndicator.text = "New Upgrade\nUnlocked!";
 
         yield return new WaitForSeconds(3f);
 
-        isClickable = false;
-        rt.sizeDelta = new Vector2(12, rt.sizeDelta.y);
-        baseText = "Multi-Charge   8 Coins, 15s";
-        upgradeIndicator.text = baseText;
-        upgradeIndicator.enabled = false;
-        isUnlockingNewUpgrade = false;
+        upgradeNum++;
+        SetCurrentUpgrade();
+        
+        SetState(UpgraderState.Hidden);
     }
 
-    private void FinishUpgrader(string finishedLayer)
+    private void MarkUpgradeBought()
     {
-        upgraderFinished = true;
-        gameObject.layer = LayerMask.NameToLayer(finishedLayer);
-        clickableScript.enabled = false;
-        outlineFlashScript.enabled = false;
-        isConfirming = false;
-        isUnlockingNewUpgrade = false;
-        StartCoroutine(WaitAndDisappear(3f));
-    }
-
-    private void OutlineFlashManager()
-    {
-        if (isAutoCannon)
+        switch (currentUpgrade)
         {
-            if (TowerManager.Instance.GetTowerCount() >= 3)
-            {
-                EnableClickableAndFlash();
-            }
-        }
-        else if (timeStopUpgrades == 0 && currentMoney >= 5 && currentSeconds >= 10)
-        {
-            EnableClickableAndFlash();
-        }
-        else if (timeStopUpgrades == 1 && currentMoney >= 8 && currentSeconds >= 15)
-        {
-            EnableClickableAndFlash();
+            case UpgradeType.AutoCannon:
+                AutoCannonBought = true;
+                break;
+            case UpgradeType.TimeStop:
+                TimeStopBought = true;
+                break;
+            case UpgradeType.PreCharge:
+                PreChargeBought = true;
+                break;
+            case UpgradeType.MultiCharge:
+                MultiChargeBought = true;
+                break;
         }
     }
 
-    private void EnableClickableAndFlash()
+    private IEnumerator TimeOut(float waitSeconds)
     {
-        if (isClickable)
-        {
-            return;
-        }
-
-        isClickable = true;
-        if (clickableScript.enabled == false)
-        {
-            clickableScript.enabled = true;
-        }
-        if (outlineFlashScript.enabled == false)
-        {
-            outlineFlashScript.enabled = true;
-        }
+        yield return new WaitForSeconds(waitSeconds);
+        
+        SetState(UpgraderState.Hidden);
     }
 
     private IEnumerator FlashRed(float duration)
@@ -334,6 +289,7 @@ public class Upgrader : MonoBehaviour
 
         // Set color and glow to red 
         upgradeIndicator.color = invalidColor;
+        mat.SetColor("_FaceColor", invalidColor);
         mat.SetColor("_GlowColor", invalidGlowColor);
 
         // Wait for duration
@@ -341,6 +297,7 @@ public class Upgrader : MonoBehaviour
 
         // Revert back to original color and glow
         upgradeIndicator.color = baseColor;
+        mat.SetColor("_FaceColor", baseColor);
         mat.SetColor("_GlowColor", baseGlowColor);
     }
 
@@ -348,47 +305,87 @@ public class Upgrader : MonoBehaviour
     {
         if (activeUpgrader != null && activeUpgrader != this)
         {
-            activeUpgrader.ForceHideIndicator();
+            activeUpgrader.SetState(UpgraderState.Hidden);
         }
 
         activeUpgrader = this;
     }
 
-    private void ForceHideIndicator()
+    void Update()
     {
-        if (disappearRoutine != null)
+        if (clickableScript.ClickableEnabled && (currentState == UpgraderState.Locked || currentState == UpgraderState.Finished))
         {
-            StopCoroutine(disappearRoutine);
+            UpdateVisuals(false, false, false);
         }
-        if (confirmRoutine != null)
+    
+        ManageOutlineFlash();
+
+        AdjustUI();
+    }
+
+    private void ManageOutlineFlash()
+    {
+        if (currentState != UpgraderState.Locked && currentState != UpgraderState.Hidden && currentState != UpgraderState.Blinking)
         {
-            StopCoroutine(confirmRoutine);
+            return;
         }
 
-        numberOfClicks = 0;
-        upgradeIndicator.text = baseText;
-        upgradeIndicator.enabled = false;
-
-        if (isAutoCannon)
+        if (CheckUpgradability() && TowerManager.Instance.GetTowerCount() >= 3)
         {
-            upgradeIndicator.fontSize = 1f;
+            SetState(UpgraderState.Blinking);
         }
-
-        if (activeUpgrader != this)
+        else if (clickableScript.ClickableEnabled && currentState == UpgraderState.Blinking)
         {
-            activeUpgrader = null;
+            outlineFlashScript.StopFlashing(false);
+            SetState(UpgraderState.Hidden);   
         }
     }
 
-    private IEnumerator WaitAndDisappear(float disappearAfter)
+    private void UpdateVisuals(bool visible, bool indicating, bool clickable = true)
     {
-        yield return new WaitForSeconds(disappearAfter);
-
-        if (isUnlockingNewUpgrade || isConfirming)
-        {
-            yield break;
-        }
-
-        ForceHideIndicator();
+        clickableScript.UpdateClickable(visible, clickable);
+        upgradeIndicator.enabled = indicating;
     }
-}   
+
+    private void AdjustUI()
+    {
+        int cam = CameraSwitch.ActiveCam;
+        if (upgraderType == UpgraderType.AutoCannon && cam != lastCam)
+        {
+            if (cam == 1)
+            {
+                SetVisualParameters(10f, 0f, 0f, 0f);
+            }
+            else if (cam == 2)
+            {
+                SetVisualParameters(2f, -0.12f, 0f, -150f);
+            }
+            else
+            {
+                SetVisualParameters(10f, 1f, 0f, -4f);
+            }
+
+            lastCam = cam;
+        }
+    }
+
+    private void AdjustFontSize(float acSize, float tsSize)
+    {
+        switch (upgraderType)
+        {
+            case UpgraderType.AutoCannon:
+                upgradeIndicator.fontSize = acSize;
+                break;
+            
+            case UpgraderType.TimeStop:
+                upgradeIndicator.fontSize = tsSize;
+                break;
+        }
+    }
+
+    private void SetVisualParameters(float width, float x, float y, float z)
+    {
+        clickableScript.SetOutlineWidth(width);
+        rt.localPosition = new Vector3(x, y, z);
+    }
+}

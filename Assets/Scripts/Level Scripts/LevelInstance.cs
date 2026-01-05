@@ -17,14 +17,16 @@ public class LevelInstance : MonoBehaviour
     private float lowStarting = 3f;
     private float highStarting = 4.8f;
     private float ramping = 0.04f;
-    GameObject ePrefab;
+    private GameObject normalEPrefab;
+    private GameObject speedyEPrefab;
     public static LevelInstance Instance { get; private set; }
 
     EnemySpawnHandler sptest;
     public void Awake()
     {
         Instance = this;
-        ePrefab = (GameObject)Resources.Load("Normal Bandit");
+        normalEPrefab = (GameObject)Resources.Load("Normal Bandit");
+        speedyEPrefab = (GameObject)Resources.Load("Speedy Bandit");
         if (SceneManager.GetActiveScene().name.Equals("Gameplay and Mechanics") || SceneManager.GetActiveScene().name.Equals("Level 1")) s_enabled = true;
         if (!s_enabled) return;
 
@@ -35,9 +37,8 @@ public class LevelInstance : MonoBehaviour
         
         spawnInterval = Random.Range(1f, 3f);
 
-        sptest = new EnemySpawnHandler(this, Application.dataPath + "/Data/Levels/TSTD Data - "+ SceneManager.GetActiveScene().name +".csv");
+        sptest = new EnemySpawnHandler(this, "C:/Users/monpo/OneDrive/Documents/GitHub/Time-Stop-Tower-Defense/Assets/Data/Levels/TSTD Data - Level 1.csv");
     }
-
     public void LoadWaypointPrefabs()
     {
         GameObject pathObj = GameObject.FindWithTag("Path");
@@ -128,11 +129,11 @@ public class LevelInstance : MonoBehaviour
         BaseEnemy enemy = new BaseEnemy();
         if (enemy_type.Equals("speedy"))
         {
-            enemy.Init(ePrefab, this, epath, EnemyType.SpeedyBandit);
+            enemy.Init(speedyEPrefab, this, epath, EnemyType.SpeedyBandit);
         }
         else
         {
-            enemy.Init(ePrefab, this, epath, EnemyType.NormalBandit);
+            enemy.Init(normalEPrefab, this, epath, EnemyType.NormalBandit);
         }
         enemies.Add(enemy);
         return;

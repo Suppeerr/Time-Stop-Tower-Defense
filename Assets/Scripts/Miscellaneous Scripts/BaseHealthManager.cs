@@ -1,22 +1,30 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using System.Collections.Generic;
 using TMPro;
 
 public class BaseHealthManager : MonoBehaviour
 {
     public static BaseHealthManager Instance;
-    [SerializeField] private TMP_Text baseHpText;
+    [SerializeField] private List<HpThreshold> thresholds = new List<HpThreshold>();
+    [SerializeField] private Image currentHpImage;
+
+    [SerializeField] private TMP_Text gameOverText;
     [SerializeField] private TMP_Text levelRestartText;
     [SerializeField] private TMP_Text levelWinText;
+
     public static bool IsGameOver { get; private set; }
     private int startingBaseHp;
     private int currentBaseHp;
-    private bool textEnabled = false;
+    private bool imageEnabled = false;
 
     // Avoids duplicates of this object
     private void Awake()
     {
+        currentHpImage.sprite = thresholds[0].image;
+
         if (Instance == null)
         {
             Instance = this;
@@ -29,19 +37,20 @@ public class BaseHealthManager : MonoBehaviour
         IsGameOver = false;
         startingBaseHp = 500;
         currentBaseHp = startingBaseHp;
-        UpdateUI();
+        UpdateUI(false);
 
-        baseHpText.enabled = false;
+        currentHpImage.enabled = false;
+        gameOverText.enabled = false;
         levelRestartText.enabled = false;
         levelWinText.enabled = false;
     }
 
     void Update()
     {
-        if (LevelStarter.HasLevelStarted && textEnabled == false)
+        if (LevelStarter.HasLevelStarted && imageEnabled == false)
         {
-            textEnabled = true;
-            baseHpText.enabled = true;
+            imageEnabled = true;
+            currentHpImage.enabled = true;
         }
         if (currentBaseHp <= 0)
         {
@@ -49,30 +58,46 @@ public class BaseHealthManager : MonoBehaviour
         }
         if (IsGameOver && Keyboard.current.enterKey.wasPressedThisFrame)
         {
-            SceneManager.LoadScene("Level 1", LoadSceneMode.Single);
-            Time.timeScale = 1f;
+            RestartLevel();
         }
     }
 
     // Calls whenever base hp changes
-    private void UpdateUI()
+    private void UpdateUI(bool shouldChange)
     {
-        if (baseHpText != null)
+        if (currentBaseHp <= 0 || IsGameOver)
         {
-            baseHpText.text = currentBaseHp + " HP";
+            gameOverText.enabled = true;
+            return;
+        }
 
-            if (currentBaseHp <= 0)
+        if (shouldChange)
+        {
+            HpThreshold match = null;
+            float hpPercent = (float) currentBaseHp / startingBaseHp;
+
+            foreach (HpThreshold threshold in thresholds)
             {
-                baseHpText.text = "Game Over!";
+                if (hpPercent >= threshold.percent && (match == null || match.percent < threshold.percent))
+                {
+                    match = threshold;
+                }
             }
+
+            currentHpImage.sprite = match.image;
         }
     }
 
     // Public method for updating base hp
     public void UpdateBaseHP(int amount)
     {
+        if (IsGameOver || (amount > 0 && currentBaseHp >= startingBaseHp))
+        {
+            return;
+        }
+
         currentBaseHp += amount;
-        UpdateUI();
+        UpdateUI(true);
     }
 
     // Returns base hp stored in the manager
@@ -87,6 +112,7 @@ public class BaseHealthManager : MonoBehaviour
         {
             return;
         }
+
         IsGameOver = true;
         levelWinText.enabled = true;
         ProjectileManager.Instance.DestroyAllProjectiles();
@@ -101,11 +127,18 @@ public class BaseHealthManager : MonoBehaviour
         {
             return;
         }
+
         IsGameOver = true;
         levelRestartText.enabled = true;
         ProjectileManager.Instance.DestroyAllProjectiles();
 
         // Freezes time
         Time.timeScale = 0f;
+    }
+
+    public void RestartLevel()
+    {
+        SceneManager.LoadScene("Level 1", LoadSceneMode.Single);
+        Time.timeScale = 1f;
     }
 }

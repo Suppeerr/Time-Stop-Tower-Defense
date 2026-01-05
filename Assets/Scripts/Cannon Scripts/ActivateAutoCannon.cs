@@ -3,14 +3,17 @@ using System.Collections;
 
 public class ActivateAutoCannon : MonoBehaviour
 {
+    // Activation fields 
     private Vector3 originalPos;
     private float activationTime = 1.5f;
     private bool isActivated = false;
+
+    // Ball spawner script
     public BallSpawner ballSpawner;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        // Originally sets the cannon's children inactive
         originalPos = transform.position;
         foreach (Transform child in transform) 
         {
@@ -18,9 +21,9 @@ public class ActivateAutoCannon : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
     void Update()
     {
+        // Checks to see if cannon upgrade has been bought
         if (Upgrader.AutoCannonBought && !isActivated)
         {
             foreach (Transform child in transform) 
@@ -32,10 +35,9 @@ public class ActivateAutoCannon : MonoBehaviour
         }
     }
 
+    // Activates the cannon after a short animation
     private IEnumerator ActivateCannon()
     {
-        // towerPlaceSFX?.Play();
-
         foreach (Transform child in transform) 
         {
             child.gameObject.SetActive(true);
