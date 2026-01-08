@@ -1,11 +1,13 @@
 using UnityEngine;
 
-public class enemyObject : MonoBehaviour
+public class EnemyObject : MonoBehaviour
 {
     BaseEnemy s_edatastructure;
 
     //game object specifics go here, such as animations or hitboxes
 }
+
+// Defines enemy traits such as defense, resistance, and damage instances
 public partial class DamageInstance
 {
     public int damage;

@@ -26,7 +26,6 @@ public class EnemyWaypointPath
 
 public class Waypoint
 {
-
     public Vector3 position;
     public Vector3 modif;
     public Quaternion faceDirection;

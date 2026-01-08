@@ -2,20 +2,25 @@ using UnityEngine;
 
 public class OutlineManager : MonoBehaviour
 {
-    public static OutlineManager Instance { get; private set; }
+    // Outline manager instance
+    public static OutlineManager Instance;
 
     private void Awake()
     {
-        if (Instance != null && Instance != this)
+        // Avoids duplicates of this object
+        if (Instance == null)
         {
-            Destroy(gameObject);
-            return;
+            Instance = this;
         }
-        Instance = this;
+        else
+        {
+            Debug.LogWarning("There is a duplicate of the script " + this + "!");
+            Destroy(gameObject);
+        }
     }
 
-    // Set outline on a Clickable object
-    public void SetOutlineVisibility(Clickable clickable, bool visible)
+    // Updates outline visibility on a clickable object
+    public void UpdateOutlineVisibility(Clickable clickable, bool visible)
     {
         if (BaseHealthManager.IsGameOver)
         {
@@ -39,7 +44,8 @@ public class OutlineManager : MonoBehaviour
         }
     }
 
-    public void SetOutlineActive(Clickable clickable, bool active)
+    // Toggles the outline of a clickable object on or off
+    public void ToggleOutlineActive(Clickable clickable, bool active)
     {
         if (BaseHealthManager.IsGameOver)
         {

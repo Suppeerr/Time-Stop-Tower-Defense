@@ -102,7 +102,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98c73760247936d418333d8d4f887cc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BallSpawner
-  projectileManager: {fileID: 0}
   homingPrimaryPrefab: {fileID: 0}
   homingSecondaryPrefab: {fileID: 0}
   normalPrimaryPrefab: {fileID: 0}
@@ -111,8 +110,6 @@ MonoBehaviour:
   spawnPerSecond: 2.5
   isCannon: 1
   isAutoCannon: 0
-  shootPoint: {fileID: 1889997507367471034}
-  barrelAim: {fileID: 648633440711191226}
   muzzleFlash: {fileID: 4375674266797349781}
   cannonBlastSFX: {fileID: 3469061838330095474}
 --- !u!82 &3469061838330095474
@@ -124,7 +121,7 @@ AudioSource:
   m_GameObject: {fileID: 2929499620007693593}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 2508741947034709795, guid: 2b6874786b09ce64b9f0be183bb576b4, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 4881a155874ddf14285ac78120be52be, type: 3}
   m_PlayOnAwake: 0

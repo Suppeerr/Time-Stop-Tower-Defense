@@ -4,12 +4,19 @@ using System.Collections;
 
 public class EnemyHealthBar : MonoBehaviour
 {
+    // Health bar visuals
     [SerializeField] private Image fillImage;
     [SerializeField] private Image backgroundImage;
     [SerializeField] private Gradient healthGradient;
+
+    // Max enemy health
     private float maxHP;
+
+    // Health bar fade fields
     private float fadeDelay = 3f;
     private float fadeDuration = 0.5f;
+
+    // Coroutine field
     private Coroutine hideCoroutine;
 
     // Gets enemy health and becomes invisible
@@ -19,14 +26,13 @@ public class EnemyHealthBar : MonoBehaviour
         SetAlpha(0f);
     }
 
-    // Updates enemy healthbar UI when damage is taken
+    // Updates enemy health bar UI when damage is taken
     public void UpdateHealth(float currentHP)
     {
         float percentHP = currentHP / maxHP;
         fillImage.fillAmount = percentHP;
         fillImage.color = healthGradient.Evaluate(percentHP);
 
-        // Healthbar shows up when enemy takes damage
         SetAlpha(1f);
 
         // Restart healthbar fade timer
@@ -37,34 +43,16 @@ public class EnemyHealthBar : MonoBehaviour
         hideCoroutine = StartCoroutine(FadeAfterDelay());
     }
 
-    // Hides the healthbar after a few seconds
+    // Fades the healthbar away after a few seconds
     private IEnumerator FadeAfterDelay()
     {
-        float elapsedDelay = 0f;
-        while (elapsedDelay < fadeDelay)
-        {
-            while (ProjectileManager.IsFrozen)
-            {
-                yield return null;
-            }
+        yield return new WaitForSeconds(fadeDelay);
 
-            elapsedDelay += Time.deltaTime;
-            yield return null;
-        }
-
+        float startAlpha = backgroundImage.color.a;
         float elapsedFade = 0f;
-        Color bgColor = backgroundImage.color;
-        Color fillColor = fillImage.color;
-
-        float startAlpha = bgColor.a;
 
         while (elapsedFade < fadeDuration)
         {
-            while (ProjectileManager.IsFrozen)
-            {
-                yield return null;
-            }
-
             elapsedFade += Time.deltaTime;
             float percentElapsed = elapsedFade / fadeDuration;
             float alpha = Mathf.Lerp(startAlpha, 0f, percentElapsed);

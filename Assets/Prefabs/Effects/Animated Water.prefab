@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 1857062954594730473}
   - component: {fileID: 6716313816048660789}
   - component: {fileID: 8085948896877375240}
-  - component: {fileID: 744357123178037185}
   m_Layer: 4
   m_Name: Animated Water
   m_TagString: Untagged
@@ -90,15 +89,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &744357123178037185
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5720280285793832083}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc97e9684ee46304695689d035dbe4fb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FreezeWater

@@ -3,7 +3,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class HomingProjectile : MonoBehaviour
 {
-    // Targeting
+    // Targeting fields
     protected Transform target;
     private Transform lastHitEnemy;
     private int hitEnemies = 0;
@@ -11,46 +11,43 @@ public class HomingProjectile : MonoBehaviour
     private LevelInstance level;
     private Collider myCollider;
     
-    // Arc / Steering
+    // Homing fields
     protected float steerSpeed = 10f;
     protected float maxSpeed = 10f;
-    public float arcBoost = 2f;
+    [SerializeField] private float arcBoost = 2f;
 
-    // Behavior / Type
-    public float destroyAfter = 15f;
-    public ProjectileType type;
+    // Projectile lifetime and type
+    protected float destroyAfter = 15f;
+    [HideInInspector] public ProjectileType type;
 
-    // Effects
-    public GameObject normalLightningRingPrefab;
-    public GameObject upgradedLightningRingPrefab;
-    public GlowingSphereEmitter sphereEmitter;
-    public GameObject normalExplosionPrefab;
-    public GameObject upgradedExplosionPrefab;
+    // Charge fields
+    [SerializeField] private GameObject normalLightningRingPrefab;
+    [SerializeField] private GameObject upgradedLightningRingPrefab;
+    [SerializeField] private GlowingSphereEmitter sphereEmitter;
+    [SerializeField] private GameObject normalExplosionPrefab;
+    [SerializeField] private GameObject upgradedExplosionPrefab;
     private int chargeLevel = 0;
 
-    // Stats
+    // Projecitle stats
     [SerializeField] protected ProjectileStatsContainer statsContainer;
     private int damage;
     private float aoe;
 
+    // Projectile rigidbody
     protected Rigidbody rb;
 
     void Awake()
     {
+        // Initializes fields and registers the projectile
         rb = GetComponent<Rigidbody>();
-        ProjectileManager.Instance.RegisterProjectile(rb);
         rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
         rb.linearVelocity = Vector3.zero;
         level = LevelInstance.Instance;
         myCollider = GetComponent<Collider>();
 
-        if (ProjectileManager.IsFrozen)
-        {
-            rb.useGravity = false;
-        }
+        ProjectileManager.Instance.RegisterProjectile(rb);
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         // Assigns stat values to projectiles
@@ -60,34 +57,24 @@ public class HomingProjectile : MonoBehaviour
         maxSpeed = stats.speed;
         aoe = stats.aoeRadius;
 
-        if (type == ProjectileType.PrimaryHoming)
+        // Assigns a target to each projectile
+        switch (type)
         {
-            AssignNearestEnemy();
-        }
-        else if (type == ProjectileType.SecondaryHoming)
-        {
-            AssignFirstEnemy();
+            case ProjectileType.PrimaryHoming:
+                AssignNearestEnemy();
+                break;
+
+            case ProjectileType.SecondaryHoming:
+                AssignNthEnemy(1);
+                break;
         }
 
-        // Destroys projectile after destroyAfter seconds
-        if (destroyAfter > 0f)
-        {
-            Destroy(gameObject, destroyAfter);
-        }
+        Destroy(gameObject, destroyAfter);
     }
 
     // Updates for projectile physics 
     protected virtual void FixedUpdate()
     {        
-        if (ProjectileManager.IsFrozen)
-        {
-            return;
-        }
-        else if (rb.useGravity == false)
-        {
-            rb.useGravity = true;
-        }
-
         if ((target == null && !isPiercing) || BaseHealthManager.IsGameOver)
         {
             Destroy(gameObject);
@@ -104,7 +91,7 @@ public class HomingProjectile : MonoBehaviour
         {
             if (isPiercing)
             {
-                AssignSecondEnemy();
+                AssignNthEnemy(2);
             }
             else
             {
@@ -139,7 +126,7 @@ public class HomingProjectile : MonoBehaviour
         desiredVelocity.x = horizontal.x;
         desiredVelocity.z = horizontal.z;
 
-        // Smoothly adjust current velocity toward desired
+        // Smoothly adjust current velocity toward desired velocity
         float alpha = 1f - Mathf.Exp(-steerSpeed * Time.fixedDeltaTime);
         rb.linearVelocity = Vector3.Lerp(rb.linearVelocity, desiredVelocity, alpha);
 
@@ -150,21 +137,13 @@ public class HomingProjectile : MonoBehaviour
         }
     }
 
-    // Runs when projectile collides with a valid object
+    // Detects collisions between the projectile and other objects
     void OnCollisionEnter(Collision collision)
     {
         if (type == ProjectileType.PrimaryHoming)
         {
-            if (chargeLevel <= 1)
-            {
-                DoAoEDamage(0f);
-                SpawnNormalExplosion();
-            }
-            else
-            {
-                DoAoEDamage(2f);
-                SpawnUpgradedExplosion();
-            }
+            DoAoEDamage(chargeLevel, 2f);
+            SpawnExplosion(chargeLevel);
 
             Destroy(gameObject);
             return;
@@ -172,8 +151,9 @@ public class HomingProjectile : MonoBehaviour
 
         // Single target damage
         DoSingleTargetDamage(collision);
-        SpawnNormalExplosion();
+        SpawnExplosion(chargeLevel);
 
+        // Bounce to a second enemy after hitting one enemy
         if (chargeLevel == 2 && hitEnemies < 1)
         {
             Collider enemyCol = collision.collider;
@@ -184,7 +164,7 @@ public class HomingProjectile : MonoBehaviour
             hitEnemies++;
             
             target = null;
-            AssignSecondEnemy();
+            AssignNthEnemy(chargeLevel);
             
             return;
         }    
@@ -192,27 +172,23 @@ public class HomingProjectile : MonoBehaviour
         Destroy(gameObject);
     }
 
-    // Assigns the first enemy to the projectile
-    private void AssignFirstEnemy()
+    // Assigns the nth enemy along the path to the projectile
+    private void AssignNthEnemy(int n)
     {
-        BaseEnemy firstEnemy = level.GetFirstEnemy();
-        if (firstEnemy != null)
+        BaseEnemy enemy = null;
+
+        if (n == 1)
         {
-            target = firstEnemy.visualObj.transform;
+            enemy = level.GetFirstEnemy();
         }
         else
         {
-            Destroy(gameObject);
+            enemy = level.GetSecondEnemy();
         }
-    }
-
-    // Assigns the second enemy to the projectile
-    private void AssignSecondEnemy()
-    {
-        BaseEnemy secondEnemy = level.GetSecondEnemy();
-        if (secondEnemy != null)
+        
+        if (enemy != null)
         {
-            target = secondEnemy.visualObj.transform;
+            target = enemy.visualObj.transform;
         }
         else
         {
@@ -243,6 +219,7 @@ public class HomingProjectile : MonoBehaviour
                 minDist = dist;
             }
         }
+
         if (closest != null)
         {
             target = closest.transform;
@@ -262,41 +239,32 @@ public class HomingProjectile : MonoBehaviour
         }
     }
 
-    // Enables normal lightning and sphere emitter effects
-    public void EnableNormalEffects()
+    // Enables lightning and sphere emitter effects
+    public void EnableChargeEffects(int charge)
     {
-        if (!ProjectileManager.IsFrozen)
+        if (charge == 1)
         {
-            return;
-        }
+            if (normalLightningRingPrefab != null)
+            {
+                Instantiate(normalLightningRingPrefab, transform);
+            }
 
-        if (normalLightningRingPrefab != null)
-        {
-            Instantiate(normalLightningRingPrefab, transform);
+            if (sphereEmitter != null)
+            {
+                sphereEmitter.enabled = true;
+            }
         }
-
-        if (sphereEmitter != null)
+        else if (charge == 2)
         {
-            sphereEmitter.enabled = true;
-        }
+            if (upgradedLightningRingPrefab != null)
+            {
+                Instantiate(upgradedLightningRingPrefab, transform);
+            }
+        }    
     }
 
-    // Enables upgraded lightning effects
-    public void EnableUpgradedEffects()
-    {
-        if (!ProjectileManager.IsFrozen)
-        {
-            return;
-        }
-
-        if (upgradedLightningRingPrefab != null)
-        {
-            Instantiate(upgradedLightningRingPrefab, transform);
-        }
-    }
-
-    // Spawns normal explosion on collision with enemy
-    private void SpawnNormalExplosion()
+    // Spawns explosion on collision with enemy
+    private void SpawnExplosion(int chargeLevel)
     {
         if (type == ProjectileType.PrimaryHoming)
         {
@@ -307,22 +275,12 @@ public class HomingProjectile : MonoBehaviour
             ProjectileManager.Instance.PlayNormalHitSound();
         }
         
-        if (normalExplosionPrefab != null)
+        if (normalExplosionPrefab != null && chargeLevel < 2)
         {
             GameObject normEx = Instantiate(normalExplosionPrefab, transform.position, transform.rotation);
             Destroy(normEx, 0.8f);
         }
-    }
-
-    // Spawns upgraded explosion on collision with enemy
-    private void SpawnUpgradedExplosion()
-    {
-        if (type == ProjectileType.PrimaryHoming)
-        {
-            ProjectileManager.Instance.PlayExplosionSound();
-        }
-
-        if (upgradedExplosionPrefab != null)
+        else if (upgradedExplosionPrefab != null && chargeLevel == 2)
         {
             GameObject upgradedEx = Instantiate(upgradedExplosionPrefab, transform.position, transform.rotation);
             Destroy(upgradedEx, 1f);
@@ -330,26 +288,30 @@ public class HomingProjectile : MonoBehaviour
     }
 
     // Does damage to hit targets in a radius
-    private void DoAoEDamage(float aoeBoost)
+    private void DoAoEDamage(int charge, float aoeBoost)
     {
-        // Get all colliders in radius - AoE damage
-            Collider[] hitColliders = Physics.OverlapSphere(transform.position, aoe + aoeBoost);
-            
-            foreach (Collider col in hitColliders)
-            {
-                // Check up the hierarchy for an EnemyProxy
-                EnemyProxy proxy = col.GetComponent<EnemyProxy>();
-                if (proxy == null)
-                {
-                    proxy = col.GetComponentInParent<EnemyProxy>();
-                }  
+        if (charge == 2)
+        {
+            aoe += aoeBoost;
+        }
 
-                if (proxy != null && proxy.enemyData != null)
-                {
-                    proxy.enemyData.TakeDamage(new DamageInstance(damage));
-                }
-            }
+        // Get all colliders in radius
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, aoe);
         
+        foreach (Collider col in hitColliders)
+        {
+            // Check up the hierarchy for an EnemyProxy
+            EnemyProxy proxy = col.GetComponent<EnemyProxy>();
+            if (proxy == null)
+            {
+                proxy = col.GetComponentInParent<EnemyProxy>();
+            }  
+
+            if (proxy != null && proxy.enemyData != null)
+            {
+                proxy.enemyData.TakeDamage(new DamageInstance(damage));
+            }
+        }
     }
 
     // Does damage to a single hit target
@@ -392,7 +354,7 @@ public class HomingProjectile : MonoBehaviour
         damage += dmg;
     }
 
-    // Unregisters projectiles when destroyed
+    // Unregisters the projecitle when destroyed
     void OnDestroy()
     {
         ProjectileManager.Instance?.UnregisterProjectile(rb);

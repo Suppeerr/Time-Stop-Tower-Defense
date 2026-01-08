@@ -1,5 +1,6 @@
 using UnityEngine;
 
+// Connects enemy data with enemy instances
 public class EnemyProxy : MonoBehaviour
 {
     public BaseEnemy enemyData;

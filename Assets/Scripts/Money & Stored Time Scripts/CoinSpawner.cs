@@ -2,47 +2,39 @@ using UnityEngine;
 
 public class CoinSpawner : MonoBehaviour
 {
-    public static CoinSpawner Instance { get; private set; }
+    // Coin spawner instance
+    public static CoinSpawner Instance;
+
+    // Coin prefabs
     [SerializeField] private GameObject coinPrefab;
     [SerializeField] private GameObject homingCoinPrefab;
-    // [SerializeField] private float spawnInterval = 5f;
-    [SerializeField] private Drone droneScript;
 
-    // private float timer = 0f;
+    // Drone script
+    [SerializeField] private Drone droneScript;
 
     private void Awake()
     {
-        if (Instance != null && Instance != this)
+        // Avoids duplicates of this object
+        if (Instance == null)
         {
-            Destroy(gameObject);
-            return;
+            Instance = this;
         }
-        Instance = this;
+        else
+        {
+            Debug.LogWarning("There is a duplicate of the script " + this + "!");
+            Destroy(gameObject);
+        }
     }
 
-    public void SpawnCoin(bool isCoinLauncher, Vector3? enemyPos = null, Vector3? launcherPos = null)
+    // Spawns a normal coin when enemies die or a projectile coin from the drone cannon
+    public void SpawnCoin(Vector3? enemyPos = null, Vector3? launcherPos = null)
     {
         Vector3 spawnPos = Vector3.zero;
 
         if (enemyPos.HasValue)
         {
+            // Spawns normal coin
             spawnPos = enemyPos.Value;
-        }
-        else if (launcherPos.HasValue)
-        {
-            spawnPos = launcherPos.Value;
-        }
-
-        if (isCoinLauncher)
-        {
-            GameObject clone = Instantiate(
-            homingCoinPrefab,
-            spawnPos,
-            Quaternion.Euler(0, 0, 90)
-            );
-        }
-        else
-        {
             GameObject droppedCoin = Instantiate(
             coinPrefab,
             spawnPos,
@@ -50,6 +42,16 @@ public class CoinSpawner : MonoBehaviour
             );
 
             droneScript.FindClosestCoin();
-        }  
+        }
+        else if (launcherPos.HasValue)
+        {
+            // Spawns projectile coin
+            spawnPos = launcherPos.Value;
+            GameObject clone = Instantiate(
+            homingCoinPrefab,
+            spawnPos,
+            Quaternion.Euler(0, 0, 90)
+            );
+        } 
     }
 }

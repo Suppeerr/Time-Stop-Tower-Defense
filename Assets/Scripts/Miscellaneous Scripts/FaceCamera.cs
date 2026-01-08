@@ -2,22 +2,15 @@ using UnityEngine;
 
 public class UIFaceCamera : MonoBehaviour
 {
-    private Camera mainCamera;
-
-    // Initiates camera to the main camera
-    void Start()
-    {
-    }
-    
-    // Updates to make UI face camera
     void Update()
     {
-        if (CameraSwitch.CurrentCamera == null) 
+        // Makes UI face the current active camera
+        if (CameraSwitcher.Instance.CurrentCamera == null) 
         {
             return;
         }
 
-        Vector3 dir = transform.position - CameraSwitch.CurrentCamera.transform.position;
+        Vector3 dir = transform.position - CameraSwitcher.Instance.CurrentCamera.transform.position;
         transform.rotation = Quaternion.LookRotation(dir, Vector3.up);
     }
 }

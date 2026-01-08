@@ -187,11 +187,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98c73760247936d418333d8d4f887cc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BallSpawner
-  homingPrimaryPrefab: {fileID: 5614694088177908068, guid: 6202bc6e4cabd8047bfcdfab610e6ecc, type: 3}
-  homingSecondaryPrefab: {fileID: 5176513416565621517, guid: 3de8e5317eb531b4a9eab6b582237682, type: 3}
-  normalPrimaryPrefab: {fileID: 4926105239026105867, guid: 6a57a689b20abdc48aca5ab69f52cec9, type: 3}
-  normalSecondaryPrefab: {fileID: 6538674577565016964, guid: 5382d1ff16439594d86b5d87a67cbcae, type: 3}
-  cannonBallPrefab: {fileID: 0}
   spawnPerSecond: 0.4
   isCannon: 0
   isAutoCannon: 0
@@ -225,6 +220,7 @@ MonoBehaviour:
   dirtBurstPrefab: {fileID: 1980934778042839552, guid: d50433ae2ba827c449530a081c20d5aa, type: 3}
   impactRingPrefab: {fileID: 1980934778042839552, guid: 73406ae7cb214b641ba7126a4e142fb4, type: 3}
   towerPlaceSFX: {fileID: -2601456304385175096}
+  sellPrice: 4
 --- !u!82 &-2601456304385175096
 AudioSource:
   m_ObjectHideFlags: 0
@@ -234,7 +230,7 @@ AudioSource:
   m_GameObject: {fileID: 6898122641207344880}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 2508741947034709795, guid: 2b6874786b09ce64b9f0be183bb576b4, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 2bc2da046977ca645828a614e08e7dfd, type: 3}
   m_PlayOnAwake: 0

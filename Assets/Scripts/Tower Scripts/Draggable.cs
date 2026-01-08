@@ -4,30 +4,26 @@ using System.Collections;
 
 public class Draggable : MonoBehaviour
 {
-    // Placement layer and checks
-    public LayerMask groundMask;
-    public string[] invalidTags = {"Tower", "GameController", "Enemy"};
-    
-    // Drag check
+    // Ground layer and invalid placement tags 
+    [SerializeField] private LayerMask groundMask;
+    [SerializeField] private string[] invalidTags = {"Tower", "GameController", "Enemy"};
+
+    // Drag check boolean
     private bool isDragging = false;
-    private Vector3 offset;
 
     // Placement variables
     private float placementRadius = 2f;
-    private bool canPlace = true;
     private bool isPlaced = false;
+    private Vector3 offset;
     
-    // Renderers and ballSpawner script
+    // Renderers and ball spawner script
     private Renderer[] rends;
     private Color[][] originalColors;
-    public GameObject placedTowerPrefab;
-
-    // Dragging start and stop events
-    public static event System.Action OnDragStart;
-    public static event System.Action OnDragEnd;
+    [SerializeField] private GameObject placedTowerPrefab;
 
     void Awake()
     {
+        // Grabs tower renderers
         rends = GetComponentsInChildren<Renderer>(true);
 
         // Store original tower colors
@@ -36,6 +32,7 @@ public class Draggable : MonoBehaviour
         {
             Material[] mats = rends[i].materials;
             originalColors[i] = new Color[mats.Length];
+
             for (int j = 0; j < mats.Length; j++)
             {
                 originalColors[i][j] = mats[j].color;
@@ -53,8 +50,9 @@ public class Draggable : MonoBehaviour
     {
         if (isDragging)
         {
+            bool isColliding = false;
             bool insidePlacementZone = false;
-            Ray ray = CameraSwitch.CurrentCamera.ScreenPointToRay(Input.mousePosition);
+            Ray ray = CameraSwitcher.Instance.CurrentCamera.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
 
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, groundMask))
@@ -71,7 +69,6 @@ public class Draggable : MonoBehaviour
 
                 // Check for nearby objects
                 Collider[] nearby = Physics.OverlapSphere(desiredPos, placementRadius);
-                canPlace = true;
 
                 // Update color based on placement validity
                 foreach (Collider col in nearby)
@@ -80,21 +77,23 @@ public class Draggable : MonoBehaviour
                     {
                         insidePlacementZone = true;
                     }
+
                     foreach (string invTag in invalidTags)
                     {
                         if (col.CompareTag(invTag) && col.gameObject != gameObject)
                         {
-                            canPlace = false;
+                            isColliding = true;
                             break;
                         }
                     }
-                    if (!canPlace)
+                    
+                    if (isColliding)
                     {
                         break;
                     }
                 }
 
-                if (canPlace && insidePlacementZone)
+                if (!isColliding && insidePlacementZone)
                 {
                     ApplyColor(0.6f);
                 }
@@ -107,20 +106,20 @@ public class Draggable : MonoBehaviour
             // Stop dragging if mouse released
             if (Input.GetMouseButtonUp(0))
             {
-                if (canPlace && insidePlacementZone)
+                if (!isColliding && insidePlacementZone)
                 {
-                    StopDrag();
+                    StopDrag(true);
                 }
                 else
                 {
-                    CancelDrag();
+                    StopDrag(false);
                 }
             }
 
             // Cancel drag if time stopped or x pressed
-            if (ProjectileManager.IsFrozen || Keyboard.current.xKey.wasPressedThisFrame)
+            if (TimeStop.Instance.IsFrozen || Keyboard.current.xKey.wasPressedThisFrame)
             {
-                CancelDrag();
+                StopDrag(false);
             }
         }
     }
@@ -137,31 +136,35 @@ public class Draggable : MonoBehaviour
     // Starts dragging the tower
     public void BeginDrag()
     {
-        Ray ray = CameraSwitch.CurrentCamera.ScreenPointToRay(Input.mousePosition);
+        Ray ray = CameraSwitcher.Instance.CurrentCamera.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
-        OnDragStart?.Invoke();
         isDragging = true;
+        PlacementZoneManager.Instance.ShowZone();
 
         if (Physics.Raycast(ray, out hit))
         {
             offset = transform.position - hit.point;
-            
         }
     }
 
     // Stops dragging the tower
-    private void StopDrag()
+    private void StopDrag(bool canPlace)
     {
-        OnDragEnd?.Invoke();
+        isDragging = false;
+        PlacementZoneManager.Instance.HideZone();
+
+        // Cancels dragging
         if (!canPlace)
         {
-            CancelDrag();
+            Destroy(gameObject);
             return;
         }
+
         if (!isPlaced)
         {
             GameObject placedTower = Instantiate(placedTowerPrefab);
             PlacedTower placedTowerScript = placedTower.GetComponent<PlacedTower>();
+
             if (placedTowerScript != null)
             {
                 placedTowerScript.StartCoroutine(placedTowerScript.PlaceTower(gameObject.transform.position));
@@ -170,30 +173,17 @@ public class Draggable : MonoBehaviour
             Destroy(gameObject);
         }
     }
-   
-    // Cancels placement
-    private void CancelDrag()
-    {
-        OnDragEnd?.Invoke();
-        isDragging = false;
-        Destroy(gameObject);
-    }
 
-    public bool GetIsDragging()
-    {
-        return isDragging;
-    }
-
+    // Changes the color and transparency of the draggable tower 
     private void ApplyColor(float alpha = 1f, Color? tint = null, bool useOriginal = true)
     {
-        int i = 0;
-        foreach (Renderer rend in rends)
+        for (int i = 0; i < rends.Length; i++)
         {
-            int j = 0;
             int originalMaterialCount = originalColors[i].Length;
 
-            foreach (Material mat in rend.materials)
+            for (int j = 0; j < rends[i].materials.Length; j++)
             {
+                Material mat = rends[i].material;
                 Color baseColor = useOriginal 
                 ? originalColors[i][Mathf.Min(j, originalMaterialCount - 1)] 
                 : (tint ?? originalColors[i][Mathf.Min(j, originalMaterialCount - 1)]);
@@ -222,11 +212,8 @@ public class Draggable : MonoBehaviour
                     mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
                     mat.SetInt("_ZWrite", 1);
                     mat.renderQueue = -1;
-                }
-                    
-                j++;
+                }  
             }
-            i++;
         }
     }
 }

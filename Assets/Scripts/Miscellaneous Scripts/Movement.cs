@@ -4,14 +4,8 @@ using UnityEngine;
 
 public class CamMovement : MonoBehaviour
 {
-    // Start is called before the first frame update
     [SerializeField] private float velocity = 5.0f;
-    void Start()
-    {
 
-    }
-
-    // Update is called once per frame
     void Update()
     {
         if (Input.GetKey(KeyCode.W))

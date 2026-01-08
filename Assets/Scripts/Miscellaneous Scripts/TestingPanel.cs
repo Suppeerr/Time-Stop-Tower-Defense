@@ -4,10 +4,15 @@ using System.Collections;
 
 public class TestingPanel : MonoBehaviour
 {
+    // Scripts 
     [SerializeField] private MoneyManager moneyManager;
     [SerializeField] private StoredTimeManager storedTimeManager;
     [SerializeField] private EnemyCounter enemyCounter;
+
+    // The panel's rect transform
     private RectTransform rt;
+
+    // Movement and position fields
     private bool isOnScreen = false;
     private bool isMoving = false;
     private float moveTime = 1f;
@@ -17,49 +22,45 @@ public class TestingPanel : MonoBehaviour
         rt = GetComponent<RectTransform>();
     }
 
-    public void StartMoving()
-    {
-        StartCoroutine(MoveOnAndOffScreen());
-    }
-
-    public IEnumerator MoveOnAndOffScreen()
+    // Smoothly moves the testing panel on and off the screen
+    public void MoveOnAndOffScreen()
     {
         if (isMoving)
         {
-            yield break;
+            return;
         }
 
         isMoving = true;
-        float elapsedDelay = 0f;
+
         if (!isOnScreen)
         {
-            while (elapsedDelay < moveTime)
-            {
-            elapsedDelay += Time.deltaTime;
-            float t = elapsedDelay / moveTime;
-            rt.anchoredPosition = Vector3.Lerp(new Vector2(-2244f, -1163f), new Vector2(-1256f, -1163f), t);
-
-            yield return null;
-            }
+            StartCoroutine(MoveUI(new Vector2(-2244f, -1163f), new Vector2(-1256f, -1163f)));
             isOnScreen = true;
         }
         else
         {
-            while (elapsedDelay < moveTime)
-            {
-            elapsedDelay += Time.deltaTime;
-            float t = elapsedDelay / moveTime;
-            rt.anchoredPosition = Vector3.Lerp(new Vector2(-1256f, -1163f), new Vector2(-2244f, -1163f), t);
-
-            yield return null;
-            }
+            StartCoroutine(MoveUI(new Vector2(-1256f, -1163f), new Vector2(-2244f, -1163f)));
             isOnScreen = false;
         }
         isMoving = false;
-
-        yield return null;
     }
 
+    // Moves the panel's UI to a specified location
+    private IEnumerator MoveUI(Vector2 from, Vector2 to)
+    {
+        float elapsedDelay = 0f;
+
+        while (elapsedDelay < moveTime)
+        {
+            elapsedDelay += Time.unscaledDeltaTime;
+            float t = elapsedDelay / moveTime;
+            rt.anchoredPosition = Vector3.Lerp(from, to, t);
+
+            yield return null;
+        }
+    }
+
+    // Increases or decreases coins by a specified amount
     public void UpdateCoins(int coins)
     {
         if (coins < 0 && moneyManager.GetMoney() + coins < 0)
@@ -70,9 +71,10 @@ public class TestingPanel : MonoBehaviour
         moneyManager.UpdateMoney(coins);
     }
 
+    // Increases or decreases seconds by a specified amount
     public void UpdateSeconds(int seconds)
     {
-        if (!LevelStarter.HasLevelStarted && seconds < 0 && storedTimeManager.GetSeconds() + seconds < 0)
+        if (seconds < 0 && storedTimeManager.GetSeconds() + seconds < 0)
         {
             return;
         }
@@ -80,6 +82,7 @@ public class TestingPanel : MonoBehaviour
         storedTimeManager.UpdateSeconds(seconds);
     }
 
+    // Increases or decreases base hp by a specified amount
     public void UpdateHP(int hp)
     {
         if (hp < 0 && BaseHealthManager.Instance.GetBaseHp() + hp < 0)
@@ -90,21 +93,25 @@ public class TestingPanel : MonoBehaviour
         BaseHealthManager.Instance.UpdateBaseHP(hp);
     }
 
+    // Toggles game over
     public void ToggleGameOver()
     {
         BaseHealthManager.Instance.ToggleGameOver();
     }
 
+    // Toggles win
     public void ToggleWin()
     {
         BaseHealthManager.Instance.ToggleWin();
     }
 
+    // Restarts the level
     public void RestartLevel()
     {
         BaseHealthManager.Instance.RestartLevel();
     }
 
+    // Destroys all projectiles on screen
     public void DestroyProjectiles()
     {
         ProjectileManager.Instance.DestroyAllProjectiles();

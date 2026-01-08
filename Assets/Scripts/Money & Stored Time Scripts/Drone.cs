@@ -5,20 +5,25 @@ using Vector3 = UnityEngine.Vector3;
 
 public class Drone : MonoBehaviour
 {
+    // Coin object
+    private GameObject coin;
+
+    // Drone speed
     [SerializeField] private float speed;
-    private GameObject Coin;
+    
+    // Coin collecting fields
     private bool isCollecting = false;
     private float checkInterval = 1f;
     private float elapsed = 0f;
 
-    // Update is called once per frame
     void Update()
     {
-        if (ProjectileManager.IsFrozen || isCollecting)
+        if (isCollecting)
         {
             return;
         }
 
+        // Checks for uncollected coins after each interval
         if (elapsed < checkInterval)
         {
             elapsed += Time.deltaTime;
@@ -29,12 +34,40 @@ public class Drone : MonoBehaviour
             elapsed = 0f;
         }
 
-        if (Coin != null)
+        MoveDrone();
+    }
+
+    // Searches for the closest coin 
+    public void FindClosestCoin()
+    {
+        GameObject[] coins = GameObject.FindGameObjectsWithTag("Collectable");;
+
+        GameObject closest = null;
+        float distance = Mathf.Infinity;
+        Vector3 dronePos = transform.position;
+
+        foreach (GameObject c in coins)
+        {
+            Vector3 diff = c.transform.position - dronePos;
+            float curDistance = diff.sqrMagnitude;
+            if (curDistance < distance)
+            {
+                closest = c;
+                distance = curDistance;
+            }
+        }
+        coin = closest;
+    }
+
+    // Moves drone horizontally toward the nearest uncollected coin
+    private void MoveDrone()
+    {
+        if (coin != null)
         {
             float fixedY = transform.position.y;
 
-            // XZ positions only
-            Vector3 coinXZ = new Vector3(Coin.transform.position.x, 0f, Coin.transform.position.z);
+            // Uses XZ positions only
+            Vector3 coinXZ = new Vector3(coin.transform.position.x, 0f, coin.transform.position.z);
             Vector3 currXZ = new Vector3(transform.position.x, 0f, transform.position.z);
 
             Vector3 direction = coinXZ - currXZ;
@@ -44,12 +77,12 @@ public class Drone : MonoBehaviour
             {
                 direction.Normalize();
 
-                // Rotation
+                // Rotates the drone in the direction of motion
                 float rotateStep = 45f * Time.deltaTime;
                 Vector3 newDirection = Vector3.RotateTowards(transform.forward, direction, rotateStep, 0f);
                 transform.rotation = Quaternion.LookRotation(newDirection);
 
-                // Movement, clamped to avoid overshoot
+                // Moves drone
                 float moveStep = speed * Time.deltaTime;
                 if (moveStep > distance)
                 {
@@ -60,34 +93,10 @@ public class Drone : MonoBehaviour
                 // Keep Y level fixed
                 transform.position = new Vector3(transform.position.x, fixedY, transform.position.z);
             }
-}
-    }
-
-    public void FindClosestCoin()
-    {
-        GameObject[] gos;
-        gos = GameObject.FindGameObjectsWithTag("Collectable");
-        GameObject closest = null;
-        float distance = Mathf.Infinity;
-        Vector3 position = transform.position;
-        foreach (GameObject go in gos)
-        {
-            Vector3 diff = go.transform.position - position;
-            float curDistance = diff.sqrMagnitude;
-            if (curDistance < distance)
-            {
-                closest = go;
-                distance = curDistance;
-            }
         }
-        Coin = closest;
     }
 
-    public void ChangeCoin(GameObject newCoin)
-    {
-        Coin = newCoin;
-    }
-
+    // Toggles the drone's collecting state
     public void ToggleCoinCollect(bool isCollect)
     {
         isCollecting = isCollect;
