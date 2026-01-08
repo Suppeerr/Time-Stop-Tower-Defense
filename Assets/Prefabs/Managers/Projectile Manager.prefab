@@ -51,6 +51,7 @@ MonoBehaviour:
   explosionSFX: {fileID: -3613417858386922989}
   normalHitSFX: {fileID: 7689455874485948544}
   activeProjectiles: []
+  statsContainer: {fileID: 11400000, guid: 0ed108a3a2db58946b6bdc754b742454, type: 2}
 --- !u!82 &-7606052773318764168
 AudioSource:
   m_ObjectHideFlags: 0

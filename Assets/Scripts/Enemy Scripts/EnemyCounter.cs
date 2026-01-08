@@ -41,7 +41,7 @@ public class EnemyCounter : MonoBehaviour
         }
 
         // Changes position of UI for certain cameras
-        if (CameraSwitch.ActiveCam == 2)
+        if (CameraSwitcher.Instance.ActiveCam == 2)
         {
             enemiesDefeatedText.rectTransform.anchoredPosition = new Vector2(123, 56);
         }

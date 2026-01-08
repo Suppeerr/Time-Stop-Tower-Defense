@@ -22,6 +22,7 @@ public class LevelStarter : MonoBehaviour
         }
         else
         {
+            Debug.LogWarning("There is a duplicate of the script " + this + "!");
             Destroy(gameObject);
         }
 

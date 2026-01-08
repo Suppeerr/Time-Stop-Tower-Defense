@@ -5,16 +5,21 @@ using System.Collections;
 
 public class TimeStopOverlay : MonoBehaviour
 {
-    public Volume timeStopVolume;
+    // Time stop volume 
+    [SerializeField] private Volume timeStopVolume;
+
+    // Volume fade fields
     private float fadeDuration = 1.5f;
     private Coroutine currentFade = null;
 
     void Awake()
     {
+        // Initializes fields
         timeStopVolume.weight = 0f;
         timeStopVolume.enabled = true;
     }
 
+    // Starts fading the time stop volume to grayscale
     public void StartTimeStopVFX()
     {
         if (currentFade != null)
@@ -25,6 +30,7 @@ public class TimeStopOverlay : MonoBehaviour
         currentFade = StartCoroutine(FadeWeightTo(1f));
     }
 
+    // Starts fading the time stop volume away from grayscale
     public void StopTimeStopVFX()
     {
         if (currentFade != null)
@@ -35,6 +41,7 @@ public class TimeStopOverlay : MonoBehaviour
         currentFade = StartCoroutine(FadeWeightTo(0f));
     }
 
+    // Fades the time stop volume weight to a target weight
     private IEnumerator FadeWeightTo(float target)
     {
         float start = timeStopVolume.weight;
@@ -48,6 +55,5 @@ public class TimeStopOverlay : MonoBehaviour
         }
 
         timeStopVolume.weight = target;
-            
     }
 }

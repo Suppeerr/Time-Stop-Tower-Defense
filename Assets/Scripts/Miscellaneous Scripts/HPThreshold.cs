@@ -1,5 +1,6 @@
 using UnityEngine;
 
+// Defines the hp thresholds that change the hp indicator visual
 [System.Serializable]
 public class HpThreshold
 {

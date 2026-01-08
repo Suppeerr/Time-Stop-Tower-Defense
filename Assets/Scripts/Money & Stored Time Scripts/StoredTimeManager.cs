@@ -3,6 +3,9 @@ using TMPro;
 
 public class StoredTimeManager : MonoBehaviour
 {
+    // Stored time manager instance
+    public static StoredTimeManager Instance;
+
     // Stored seconds
     private int seconds;
 
@@ -14,6 +17,17 @@ public class StoredTimeManager : MonoBehaviour
 
     void Awake()
     {
+        // Avoids duplicates of this object
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Debug.LogWarning("There is a duplicate of the script " + this + "!");
+            Destroy(gameObject);
+        }
+
         // Initializes seconds amount
         seconds = 0;
         UpdateUI();
@@ -22,7 +36,7 @@ public class StoredTimeManager : MonoBehaviour
     void Update()
     {
         // Changes indicator color during time stop
-        if (ProjectileManager.Instance.IsFrozen)
+        if (TimeStop.Instance.IsFrozen)
         {
             storedTimeText.color = Color.yellow;
         }
@@ -32,7 +46,7 @@ public class StoredTimeManager : MonoBehaviour
         }
 
         // Moves the seconds indicator for specific cameras
-        if (CameraSwitch.ActiveCam == 2)
+        if (CameraSwitcher.Instance.ActiveCam == 2)
         {
             storedTimeText.rectTransform.anchoredPosition = new Vector3(-270, 132, 0);
         }
@@ -54,16 +68,13 @@ public class StoredTimeManager : MonoBehaviour
     // Increments seconds by amount
     public void UpdateSeconds(int amount = 1, bool isNeg = false)
     {
-        if (seconds < maxSeconds)
+        if (isNeg && seconds + amount >= 0)
         {
-            if (isNeg)
-            {
-                seconds -= amount;
-            }
-            else
-            {
-                seconds += amount;
-            }
+            seconds -= amount;
+        }
+        else if (seconds < maxSeconds || amount < 0)
+        {
+            seconds += amount;
         }
         
         UpdateUI();

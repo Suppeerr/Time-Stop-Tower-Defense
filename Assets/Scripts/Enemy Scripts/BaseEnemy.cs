@@ -151,11 +151,6 @@ public class BaseEnemy
     // Moves enemy along the track
     private void _s_move()
     {   //... change positioning later - jack (self)
-        if (ProjectileManager.Instance.IsFrozen)
-        {
-            return;
-        }
-
         float distance_traveled = speed * Time.deltaTime;
         Waypoint targ_waypoint = spath.waypoints[currentWaypoint];
 

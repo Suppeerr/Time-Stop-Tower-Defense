@@ -3,6 +3,9 @@ using TMPro;
 
 public class MoneyManager : MonoBehaviour
 {
+    // Money manager instance
+    public static MoneyManager Instance;
+    
     // Stored money
     private int money;
 
@@ -11,6 +14,17 @@ public class MoneyManager : MonoBehaviour
 
     void Awake()
     {
+        // Avoids duplicates of this object
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Debug.LogWarning("There is a duplicate of the script " + this + "!");
+            Destroy(gameObject);
+        }
+
         // Initializes money amount
         money = 10;
         UpdateUI();
@@ -19,7 +33,7 @@ public class MoneyManager : MonoBehaviour
     void Update()
     {
         // Moves the money indicator for specific cameras
-        if (CameraSwitch.ActiveCam == 2)
+        if (CameraSwitcher.Instance.ActiveCam == 2)
         {
             moneyText.rectTransform.anchoredPosition = new Vector2(124, 187);
         }

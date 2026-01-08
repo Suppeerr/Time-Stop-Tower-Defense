@@ -22,8 +22,10 @@ public class EnemyStats
 [CreateAssetMenu(fileName = "EnemyStatsContainer", menuName = "Enemies/StatsContainer")]
 public class EnemyStatsContainer : ScriptableObject
 {
+    // List of stats for each enemy
     public EnemyStats[] stats;
 
+    // Gets the stats of a specified enemy type
     public EnemyStats GetStats(EnemyType type)
     {
         foreach (var s in stats)

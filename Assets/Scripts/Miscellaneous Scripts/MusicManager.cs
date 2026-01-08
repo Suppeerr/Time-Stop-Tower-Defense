@@ -3,6 +3,9 @@ using System.Collections;
 
 public class MusicManager : MonoBehaviour
 {
+    // Music manager instance
+    public static MusicManager Instance;
+
     // Main valley track
     [SerializeField] private AudioSource valleyTrack;
     
@@ -18,7 +21,20 @@ public class MusicManager : MonoBehaviour
     private bool lastFrozenState = false;
     private Coroutine fadeRoutine;
     
-
+    void Awake()
+    {
+        // Avoids duplicates of this object
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Debug.LogWarning("There is a duplicate of the script " + this + "!");
+            Destroy(gameObject);
+        }
+    }
+    
     void Start()
     {
         StartCoroutine(LoopSoundtrack());
@@ -37,9 +53,9 @@ public class MusicManager : MonoBehaviour
     void Update()
     {
         // Fades volume and pitch with time stop start or end
-        if (ProjectileManager.Instance.IsFrozen != lastFrozenState)
+        if (TimeStop.Instance.IsFrozen != lastFrozenState)
         {
-            if (ProjectileManager.Instance.IsFrozen)
+            if (TimeStop.Instance.IsFrozen)
             {
                 if (fadeRoutine != null)
                 {
@@ -58,7 +74,7 @@ public class MusicManager : MonoBehaviour
                 fadeRoutine = StartCoroutine(FadeIn());
             }
 
-            lastFrozenState = ProjectileManager.Instance.IsFrozen;
+            lastFrozenState = TimeStop.Instance.IsFrozen;
         }
     }
 

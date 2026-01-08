@@ -6,53 +6,48 @@ using UnityEngine.InputSystem;
 
 public class BeamZap : MonoBehaviour
 {
-    public Transform firePoint;
-    public LineRenderer beam;
-    public float maxDistance = 50f;
-    public LayerMask hitLayers;
+    // Ball spawner script
+    [SerializeField] private BallSpawner ballSpawner;
+
+    // Beam fields
+    [SerializeField] private LineRenderer beam;
+    [SerializeField] private Transform firePoint;
     private float zapDuration = 0.1f;
-    public BallSpawner ballSpawner;
-    public AudioSource zapSFX;
-    private bool wasFrozen = false;
+
+    // Layers the beam can hit
+    [SerializeField] private LayerMask hitLayers;
+
+    // Pre-charge fields
+    private int preChargePercentage = 25;
+    
+    // Zap sound effect
+    [SerializeField] private AudioSource zapSFX;
 
     void Update()
     {
-        bool isFrozen = ProjectileManager.Instance.IsFrozen;
-        if (UpgradeManager.Instance.IsBought(UpgradeType.PreCharge) && isFrozen != wasFrozen)
+        // Zaps a projectile when it is clicked
+        if ((Mouse.current.leftButton.wasPressedThisFrame || Keyboard.current.spaceKey.wasPressedThisFrame) && TimeStop.Instance.IsFrozen)
         {
-            if (isFrozen)
-            {
-                PreChargeProjectiles();
-            }
-            
-            wasFrozen = isFrozen;
-        }
-
-        if ((Mouse.current.leftButton.wasPressedThisFrame || Keyboard.current.spaceKey.wasPressedThisFrame) && ProjectileManager.Instance.IsFrozen)
-        {
-            FireZap();
+            StartCoroutine(FireZap());
         }
     }
 
-    public void FireZap()
-    { 
-        StartCoroutine(Fire());
-    }
-
-    private IEnumerator Fire()
-    {
-        Vector3 endPos = Vector3.zero;
-
-        // Raycast in the direction the tower is facing
-        Ray ray = CameraSwitch.CurrentCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
-        RaycastHit hit;
-        float radius = 0.8f;
+    // Zaps a clicked projectile
+    private IEnumerator FireZap()
+    {        
+        // Defines the layers a zap can hit
         int projectileLayers = LayerMask.GetMask("Normal Projectile");
 
+        // Allows zapped homing projectiles to be zapped again and multi-charged
         if (UpgradeManager.Instance.IsBought(UpgradeType.MultiCharge))
         {
             projectileLayers |= 1 << LayerMask.NameToLayer("Homing Projectile");
         }
+
+        // Sphere casts to a projectile 
+        Ray ray = CameraSwitcher.Instance.CurrentCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
+        RaycastHit hit;
+        float radius = 0.8f;
 
         if (Physics.SphereCast(ray, radius, out hit, Mathf.Infinity, projectileLayers))
         {
@@ -61,61 +56,56 @@ public class BeamZap : MonoBehaviour
             HomingProjectile homingProjScript = hitProj.GetComponent<HomingProjectile>();
 
             beam.enabled = true;
-            endPos = hit.point;
             beam.SetPosition(0, firePoint.position);
-            beam.SetPosition(1, endPos);
+            beam.SetPosition(1, hit.point);
             zapSFX?.Play();
 
-            if (homingProjScript != null)
-            {
-                homingProjScript.IncrementChargeLevel();
-                homingProjScript.ChangeLayer();
-                homingProjScript.EnableUpgradedEffects();
-
-                if (homingProjScript.type == ProjectileType.PrimaryHoming)
-                {
-                    homingProjScript.AddDamage(400);
-                }
-            }
+            // Normal charging
             if (normalProjScript != null)
             {
                 SpawnHomingProjectile(hitProj, normalProjScript);
                 Destroy(hitProj);
-            }   
+            }
+
+            // Multi-charging 
+            if (homingProjScript != null)
+            {
+                MultiChargeProjectiles(homingProjScript);
+            }       
         }
 
-        // Disable beam
         yield return new WaitForSecondsRealtime(zapDuration);
         beam.enabled = false;
     }
 
+    // Tells the ball spawner to spawn a homing rock where the zapped projectile was
     private void SpawnHomingProjectile(GameObject proj, NormalProjectile normalProjScript)
     {
-        if (normalProjScript != null)
-            {
-                normalProjScript.MarkDestroyedByParry();
+        normalProjScript.MarkDestroyedByParry();
 
-                switch (normalProjScript.type)
-                {
-                    case ProjectileType.PrimaryNormal:
-                        ballSpawner?.SpawnHomingRock(ProjectileType.PrimaryHoming, proj.transform.position, proj.transform.rotation);
-                        break;
-                    case ProjectileType.SecondaryNormal:
-                        ballSpawner?.SpawnHomingRock(ProjectileType.SecondaryHoming, proj.transform.position, proj.transform.rotation);
-                        break;
-                }
-            }
+        switch (normalProjScript.type)
+        {
+            case ProjectileType.PrimaryNormal:
+                ballSpawner?.SpawnHomingRock(ProjectileType.PrimaryHoming, proj.transform.position, proj.transform.rotation);
+                break;
+            case ProjectileType.SecondaryNormal:
+                ballSpawner?.SpawnHomingRock(ProjectileType.SecondaryHoming, proj.transform.position, proj.transform.rotation);
+                break;
+        }
     }
-
-    private void PreChargeProjectiles()
+    // Randomly pre-charges several projectiles if the upgrade is bought
+    public void PreChargeProjectiles()
     {
+        if (!UpgradeManager.Instance.IsBought(UpgradeType.PreCharge))
+        {
+            return;
+        }
+
         List<GameObject> normalProjList = ProjectileManager.Instance.GetNormalProjectileList(0f);
 
         foreach (GameObject proj in normalProjList)
         {
-            int random = Random.Range(0, 9);
-
-            if (random <= 1)
+            if (Random.Range(0, 100) <= preChargePercentage)
             {
                 SpawnHomingProjectile(proj, proj.GetComponent<NormalProjectile>());
                 Destroy(proj);
@@ -123,13 +113,16 @@ public class BeamZap : MonoBehaviour
         }
     }
 
-    void OnEnable()
+    // Multi-charges projectiles if the upgrade is bought
+    private void MultiChargeProjectiles(HomingProjectile homingProj)
     {
-        wasFrozen = false;
-    }
+        homingProj.IncrementChargeLevel();
+        homingProj.ChangeLayer();
+        homingProj.EnableChargeEffects(2);
 
-    void OnDisable()
-    {
-        beam.enabled = false;
+        if (homingProj.type == ProjectileType.PrimaryHoming)
+        {
+            homingProj.AddDamage(400);
+        }
     }
 }

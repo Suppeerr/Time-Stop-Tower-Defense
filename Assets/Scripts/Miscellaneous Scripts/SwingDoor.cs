@@ -1,22 +1,27 @@
 using UnityEngine;
 using System.Collections;
 
-public class SwingDoor : MonoBehaviour
+public class SwingWindow : MonoBehaviour
 {
-    private bool doorOpened = false;
+    // Window opened boolean
+    private bool windowOpened = false;
+
+    // Window swing fields
     [SerializeField] private float swingDegree;
     private float rotateSpeed = 90f;
 
     void Update()
     {
-        if (UpgradeManager.Instance.IsBought(UpgradeType.AutoCannon) && !doorOpened)
+        // Opens the auto cannon window when the upgrade is bought
+        if (UpgradeManager.Instance.IsBought(UpgradeType.AutoCannon) && !windowOpened)
         {
-            doorOpened = true;
-            StartCoroutine(OpenDoor());
+            windowOpened = true;
+            StartCoroutine(OpenWindow());
         }
     }
 
-    private IEnumerator OpenDoor()
+    // Smoothly swings open the swinging auto cannon window
+    private IEnumerator OpenWindow()
     {
         Quaternion target = Quaternion.Euler(-90f, swingDegree, 180f);
         while (Quaternion.Angle(transform.localRotation, target) > 0.1f)

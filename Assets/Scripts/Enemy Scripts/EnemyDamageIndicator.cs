@@ -30,11 +30,11 @@ public class EnemyDamageIndicator : MonoBehaviour
         dmgText.text = dmg.ToString();
         SetAlpha(1f);
 
-        StartCoroutine(FadeAndFloat());
+        StartCoroutine(FloatAndFade());
     }
 
     // Floats and fades the indicator gradually
-    private IEnumerator FadeAndFloat()
+    private IEnumerator FloatAndFade()
     {
         // Floats indicator up
         float elapsedDelay = 0f;
@@ -48,15 +48,10 @@ public class EnemyDamageIndicator : MonoBehaviour
 
         while (elapsedDelay < fadeDelay)
         {
-            if (!ProjectileManager.Instance.IsFrozen)
-            {
-                elapsedDelay += Time.deltaTime;
-
-                float t = (elapsedDelay / fadeDelay) * floatSpeed;
-
-                transform.position = Vector3.Lerp(startPos, endPos, t);
-            }
-        
+            elapsedDelay += Time.deltaTime;
+            float t = elapsedDelay / fadeDelay * floatSpeed;
+            transform.position = Vector3.Lerp(startPos, endPos, t);
+    
             yield return null;
         }
 
@@ -67,14 +62,11 @@ public class EnemyDamageIndicator : MonoBehaviour
 
         while (elapsed < fadeDuration)
         {
-            if (!ProjectileManager.Instance.IsFrozen)
-            {
-                elapsed += Time.deltaTime;
-                float percentElapsed = elapsed / fadeDuration;
+            elapsed += Time.deltaTime;
+            float percentElapsed = elapsed / fadeDuration;
+            float alpha = Mathf.Lerp(startAlpha, 0f, percentElapsed);
 
-                float alpha = Mathf.Lerp(startAlpha, 0f, percentElapsed);
-                SetAlpha(alpha);
-            }
+            SetAlpha(alpha);
 
             yield return null;
         }

@@ -14,18 +14,32 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ProjectileStatsContainer
   stats:
   - type: 0
+    projectilePrefab: {fileID: 3039730848133068532, guid: 76a0f53a8c93b88499398cce0977bd8f, type: 3}
     damage: 0
     speed: 45
     aoeRadius: 0
+  - type: 2
+    projectilePrefab: {fileID: 4926105239026105867, guid: 6a57a689b20abdc48aca5ab69f52cec9, type: 3}
+    damage: 0
+    speed: 0
+    aoeRadius: 0
+  - type: 4
+    projectilePrefab: {fileID: 6538674577565016964, guid: 5382d1ff16439594d86b5d87a67cbcae, type: 3}
+    damage: 600
+    speed: 0
+    aoeRadius: 0
   - type: 1
+    projectilePrefab: {fileID: 5614694088177908068, guid: 6202bc6e4cabd8047bfcdfab610e6ecc, type: 3}
     damage: 600
     speed: 15
     aoeRadius: 2
   - type: 3
+    projectilePrefab: {fileID: 5176513416565621517, guid: 3de8e5317eb531b4a9eab6b582237682, type: 3}
     damage: 400
     speed: 25
     aoeRadius: 0
   - type: 5
+    projectilePrefab: {fileID: 6112788603860036965, guid: 3aea3ce83f9a34a44b971eda2107625d, type: 3}
     damage: 600
     speed: 40
     aoeRadius: 0

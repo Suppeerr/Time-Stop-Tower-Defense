@@ -48,11 +48,6 @@ public class ActivateAutoCannon : MonoBehaviour
 
         while (elapsedDelay < activationTime)
         {
-            while (ProjectileManager.Instance.IsFrozen)
-            {
-                yield return null;
-            }
-
             elapsedDelay += Time.deltaTime;
             float t = elapsedDelay / activationTime;
             transform.position = Vector3.Lerp(originalPos, originalPos + Vector3.left * 0.95f, t);

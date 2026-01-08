@@ -3,17 +3,26 @@ using System.Collections;
 
 public class OutlineFlash : MonoBehaviour
 {
+    // Outline script
     private Outline outline;
+
+    // Base outline color
     private Color baseOutlineColor = Color.white;
+
+    // Visual override bool
+    private bool visualOverride = false;
+
+    // Outline flashing fields
     private float flashDuration = 0.6f;
     public bool IsFlashing { get; private set; }
-    private bool visualOverride = false;
     
     void Start()
     {
+        // Gets the object's outline script
         outline = GetComponent<Outline>();
     }
 
+    // Starts flashing the outline
     public void StartFlashing()
     {
         StopAllCoroutines();
@@ -22,6 +31,7 @@ public class OutlineFlash : MonoBehaviour
         StartCoroutine(FlashRoutine());
     }
 
+    // Stops flashing the outline
     public void StopFlashing(bool clicked)
     {
         IsFlashing = false;
@@ -36,6 +46,7 @@ public class OutlineFlash : MonoBehaviour
         }
     }
 
+    // Fades the outline in and out when active
     private IEnumerator FlashRoutine()
     {
         if (outline == null)
@@ -53,20 +64,21 @@ public class OutlineFlash : MonoBehaviour
         }
     }
 
+    // Fades the outline's alpha from one value to another
     private IEnumerator FadeOutline(float from, float to)
     {
         float halfDuration = flashDuration / 2f;
 
         for (float t = 0; t < halfDuration; t += Time.unscaledDeltaTime)
         {
-            while (SettingsManager.Instance.SettingsOpened)
+            while (SettingsMenuOpener.Instance.MenuOpened)
             {
                 yield return null;
             }
 
             if (visualOverride || !IsFlashing)
             {
-                break;
+                break; 
             }
 
             float alpha = Mathf.Lerp(from, to, t / halfDuration);
@@ -76,6 +88,7 @@ public class OutlineFlash : MonoBehaviour
         }
     } 
 
+    // Overrides the outline flash if the object is hovered over
     public void SetVisualOverride(bool isOverriding)
     {
         visualOverride = isOverriding;

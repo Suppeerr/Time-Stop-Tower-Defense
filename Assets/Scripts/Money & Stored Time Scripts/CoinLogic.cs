@@ -3,7 +3,6 @@ using UnityEngine;
 public class CoinLogic : MonoBehaviour
 {
     // Scripts and transform
-    private MoneyManager moneyManagerScript;
     private Drone droneScript;
     private Transform launcher;
 
@@ -16,17 +15,11 @@ public class CoinLogic : MonoBehaviour
     {
         // Initialize fields
         droneScript ??= FindFirstObjectByType<Drone>();
-        moneyManagerScript = GameObject.Find("Money Manager")?.GetComponent<MoneyManager>();
         launcher = GameObject.Find("Coin Launcher")?.transform;
     }
 
     void Update()
     {
-        if (ProjectileManager.Instance.IsFrozen)
-        {
-            return;
-        }
-
         // Floats the coin up if it touches the vacuum collider
         if (isBeingVacuumed)
         {
@@ -60,7 +53,7 @@ public class CoinLogic : MonoBehaviour
         // Increases money when the coin projectile hits the safe collector
         if (other.name == "Safe Collector" && isProjectile)
         {
-            moneyManagerScript.UpdateMoney();
+            MoneyManager.Instance.UpdateMoney();
             Destroy(gameObject);
             return;
         }

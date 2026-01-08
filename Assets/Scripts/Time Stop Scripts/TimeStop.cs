@@ -7,8 +7,11 @@ using TMPro;
 
 public class TimeStop : MonoBehaviour
 {
+    // Time stop instance
+    public static TimeStop Instance;
+
     // Time stop activation fields
-    public static event Action<bool> TimeStopEvent;
+    public bool IsFrozen { get; private set; }
     private bool active = false;
 
     // UI fields
@@ -41,11 +44,25 @@ public class TimeStop : MonoBehaviour
     private float glowRuneIntensity = 2.5f;
     private float runeTransitionTime = 1.5f;
 
-    // Scripts and gameobjects
+    // Scripts and game objects
     [SerializeField] private List<TimeStopObject> timeStopObjects = new List<TimeStopObject>();
-    [SerializeField] GameObject beamSpawner;
+    [SerializeField] private GameObject beamSpawner;
     [SerializeField] private StoredTimeManager storedTimeManager;
     [SerializeField] private TimeStopOverlay timeStopOverlay;
+
+    private void Awake()
+    {
+        // Avoids duplicates of this object
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Debug.LogWarning("There is a duplicate of the script " + this + "!");
+            Destroy(gameObject);
+        }
+    }
 
     void Start()
     {
@@ -59,7 +76,7 @@ public class TimeStop : MonoBehaviour
     void Update()
     {
         if (!UpgradeManager.Instance.IsBought(UpgradeType.TimeStop) || 
-            SettingsManager.Instance.SettingsOpened|| 
+            SettingsMenuOpener.Instance.MenuOpened|| 
             BaseHealthManager.IsGameOver || 
             isTransitioning)
         {
@@ -86,7 +103,7 @@ public class TimeStop : MonoBehaviour
             UpdateRunes(true);
         }
 
-        if (cooldown > 0f && !ProjectileManager.Instance.IsFrozen)
+        if (cooldown > 0f && !IsFrozen)
         {
             // Decreases reactivation cooldown with time outside of time stop
             cooldown -= Time.deltaTime;
@@ -138,10 +155,12 @@ public class TimeStop : MonoBehaviour
         
         yield return StartCoroutine(TransitionTimeStop(1f, 0f));
 
-        TimeStopEvent?.Invoke(true);
+        IsFrozen = true;
         cooldown = cd;
         ProjectileManager.Instance.ToggleNormalBlink(true);
+
         beamSpawner.SetActive(true);
+        beamSpawner.GetComponent<BeamZap>().PreChargeProjectiles();
 
         UpdateParticles();
 
@@ -155,7 +174,7 @@ public class TimeStop : MonoBehaviour
     {
         timeStopEndSFX?.Play();
         timeStopOverlay.StopTimeStopVFX();
-        TimeStopEvent?.Invoke(false);
+        IsFrozen = false;
         active = false;
         ProjectileManager.Instance.ToggleNormalBlink(false);
 
@@ -196,7 +215,7 @@ public class TimeStop : MonoBehaviour
 
         while (duration > 0f)
         {
-            while (SettingsManager.Instance.SettingsOpened)
+            while (SettingsMenuOpener.Instance.MenuOpened)
             {
                 yield return null;
             }
@@ -252,7 +271,7 @@ public class TimeStop : MonoBehaviour
 
         while (elapsed < runeTransitionTime)
         {
-            if (SettingsManager.Instance.SettingsOpened)
+            if (SettingsMenuOpener.Instance.MenuOpened)
             {
                 yield return null;
             }

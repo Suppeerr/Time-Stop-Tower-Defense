@@ -4,39 +4,53 @@ using System.Collections;
 
 public class Upgrader : MonoBehaviour
 {
-    private UpgraderState currentState = UpgraderState.Locked;
+    // Upgrade data container
+    [SerializeField] private UpgradeDataContainer dataContainer;
 
-    private StoredTimeManager storedTimeManagerScript;
-    private MoneyManager moneyManagerScript;
-    [SerializeField] private TMP_Text upgradeIndicator;
-    private RectTransform rt;
+    // Currently available upgrade and its upgrader
+    private UpgradeType currentUpgrade;
+    private static Upgrader activeUpgrader = null;  
+
+    // Current state and type of the active upgrader
+    private UpgraderState currentState = UpgraderState.Locked;
+    private UpgraderType upgraderType;    
+
+    // Current upgrade number in the active upgrader's upgrade chain
+    private int upgradeNum = 0;
+
+    // Clickable and outline flash scripts
     private Clickable clickableScript;
     private OutlineFlash outlineFlashScript;
-    private static Upgrader activeUpgrader = null;
-    private Coroutine timeOutRoutine = null;
 
+    // Upgrader UI fields
+    [SerializeField] private TMP_Text upgradeIndicator;
+    private string baseText;
     private Color baseGlowColor;
     private Color baseColor = Color.yellow;
     [SerializeField] private Color invalidGlowColor;
     private Color invalidColor = Color.red;
 
-    // Upgrade data
-    [SerializeField] private UpgradeDataContainer dataContainer;
-    private UpgraderType upgraderType;
-    private UpgradeType currentUpgrade;
+    // Upgrade indicator rect transform
+    private RectTransform rt;
+    
+    // Upgrade indicator time out coroutine
+    private Coroutine timeOutRoutine = null;
+
+    // Coin and second costs of the currently available upgrade
     private int currentMoneyCost;
     private int currentSecondsCost;
-    private string baseText;
-    private int upgradeNum = 0;
-
+    
+    // Currently stored coin and second amounts
     private int currentMoney;
     private int currentSeconds;
-    private float elapsed;    
 
+    // Previously active camera
     private int lastCam = -1;
 
+    // Static boolean that disables all upgrade interactions during text animations
     public static bool IsLocked { get; private set; } = false;
 
+    // Defines the upgrader's states
     public enum UpgraderState
     {
         Locked,
@@ -51,9 +65,7 @@ public class Upgrader : MonoBehaviour
 
     void Start()
     {
-        storedTimeManagerScript = GameObject.Find("Stored Time Manager")?.GetComponent<StoredTimeManager>();
-        moneyManagerScript = GameObject.Find("Money Manager")?.GetComponent<MoneyManager>();
-
+        // Initializes fields
         clickableScript = this.GetComponent<Clickable>();
         outlineFlashScript = this.GetComponent<OutlineFlash>();
 
@@ -65,6 +77,7 @@ public class Upgrader : MonoBehaviour
         SetCurrentUpgrade();
     }
 
+    // Sets the upgrader's state to a new state
     private void SetState(UpgraderState newState)
     {
         if (currentState == newState)
@@ -79,8 +92,23 @@ public class Upgrader : MonoBehaviour
         EnterState(currentState);
     }
 
+    // Exits the upgrader's old state
+    private void ExitState(UpgraderState state)
+    {
+        if (timeOutRoutine != null)
+        {
+            StopCoroutine(timeOutRoutine);
+        }
+    }
+
+    // Enters the upgrader's new state 
     private void EnterState(UpgraderState state)
     {
+        if (state != UpgraderState.Blinking)
+        {
+            outlineFlashScript.StopFlashing(false);
+        }
+
         switch (state)
         {
             case UpgraderState.Locked:
@@ -93,7 +121,6 @@ public class Upgrader : MonoBehaviour
                 break;
 
             case UpgraderState.Hidden:
-                outlineFlashScript.StopFlashing(false);
                 UpdateVisuals(false, false);
                 break;
 
@@ -136,14 +163,7 @@ public class Upgrader : MonoBehaviour
         }
     }
 
-    private void ExitState(UpgraderState state)
-    {
-        if (timeOutRoutine != null)
-        {
-            StopCoroutine(timeOutRoutine);
-        }
-    }
-
+    // Updates upgrade fields to reflect the currently available upgrade
     private void SetCurrentUpgrade()
     {
         if (upgradeNum >= dataContainer.upgrades.Length)
@@ -162,11 +182,12 @@ public class Upgrader : MonoBehaviour
 
     void OnMouseDown()
     {
-        if (ProjectileManager.Instance.IsFrozen || !clickableScript.ClickableEnabled || BaseHealthManager.IsGameOver)
+        if (TimeStop.Instance.IsFrozen || !clickableScript.ClickableEnabled || BaseHealthManager.IsGameOver)
         {
             return;
         }
 
+        // Resets the upgrader's time out timer
         if (timeOutRoutine != null)
         {
             StopCoroutine(timeOutRoutine);
@@ -175,21 +196,24 @@ public class Upgrader : MonoBehaviour
         CheckUpgrade();
     }
 
+    // Checks to see whether an upgrade can be purchased when the upgrader is clicked
     private void CheckUpgrade()
     {
-        if (upgraderType == UpgraderType.AutoCannon && TowerManager.Instance.GetTowerCount() < 3)
+        if (TowerManager.Instance.GetTowerCount() < 3)
         {
             return;
         }
 
         RequestFocus();
 
+        // Updates the active upgrader's state to clicked
         if (currentState == UpgraderState.Blinking || currentState == UpgraderState.Hidden)
         {
             SetState(UpgraderState.Clicked);
             return;
         }
 
+        // If the upgrade can be purchased, either confirm the purchase or buy the upgrade
         if (CheckUpgradability())
         {
             switch (currentState)
@@ -205,19 +229,43 @@ public class Upgrader : MonoBehaviour
         }
         else
         {
+            // If the upgrade cannot be purchased, briefly flash the indicator red 
             StartCoroutine(FlashRed(0.4f));
             timeOutRoutine = StartCoroutine(TimeOut(5f));
         }
     }
 
+    // Checks whether the conditions for an upgrade to be purchased are met
     private bool CheckUpgradability()
     {
-        currentMoney = moneyManagerScript.GetMoney();
-        currentSeconds = storedTimeManagerScript.GetSeconds();
+        currentMoney = MoneyManager.Instance.GetMoney();
+        currentSeconds = StoredTimeManager.Instance.GetSeconds();
 
         return currentMoney >= currentMoneyCost && currentSeconds >= currentSecondsCost;
     }
 
+    // Requests to make the most recently clicked upgrader the active upgrader
+    private void RequestFocus()
+    {
+        if (activeUpgrader == this)
+        {
+            if (currentState == UpgraderState.Finished)
+            {
+                activeUpgrader = null;
+            }
+
+            return;
+        }
+
+        if (activeUpgrader != null)
+        {
+            activeUpgrader.SetState(UpgraderState.Hidden);
+        }
+
+        activeUpgrader = this;
+    }
+
+    // Runs when an upgrade is successfully purchased
     private IEnumerator SuccessfulUpgrade()
     {
         IsLocked = true;
@@ -227,8 +275,8 @@ public class Upgrader : MonoBehaviour
         AdjustFontSize(1.2f, 1.4f);
         upgradeIndicator.text = "Upgrade\nBought!";
         
-        moneyManagerScript.UpdateMoney(currentMoneyCost, true);
-        storedTimeManagerScript.UpdateSeconds(currentSecondsCost, true);
+        MoneyManager.Instance.UpdateMoney(currentMoneyCost, true);
+        StoredTimeManager.Instance.UpdateSeconds(currentSecondsCost, true);
 
         yield return new WaitForSeconds(3f); 
 
@@ -242,6 +290,7 @@ public class Upgrader : MonoBehaviour
         SetState(UpgraderState.UnlockingUpgrade);
     }
 
+    // Unlocks the next upgrade in the currently active upgrader's upgrade chain
     private IEnumerator UnlockNewUpgrade()
     {
         IsLocked = true;
@@ -256,11 +305,13 @@ public class Upgrader : MonoBehaviour
         SetState(UpgraderState.Hidden);
     }
 
+    // Marks an upgrade as purchased so its effects can be activated
     private void MarkUpgradeBought()
     {
         UpgradeManager.Instance.BuyUpgrade(currentUpgrade);
     }
 
+    // Times out an upgrader's indicator after some time
     private IEnumerator TimeOut(float waitSeconds)
     {
         yield return new WaitForSeconds(waitSeconds);
@@ -268,9 +319,9 @@ public class Upgrader : MonoBehaviour
         SetState(UpgraderState.Hidden);
     }
 
+    // Flashes an upgrader's indicator red if the upgrade cannot be purchased
     private IEnumerator FlashRed(float duration)
     {
-        // Get the font material instance
         Material mat = upgradeIndicator.fontMaterial;
 
         // Set color and glow to red 
@@ -278,35 +329,12 @@ public class Upgrader : MonoBehaviour
         mat.SetColor("_FaceColor", invalidColor);
         mat.SetColor("_GlowColor", invalidGlowColor);
 
-        // Wait for duration
         yield return new WaitForSeconds(duration);
 
         // Revert back to original color and glow
         upgradeIndicator.color = baseColor;
         mat.SetColor("_FaceColor", baseColor);
         mat.SetColor("_GlowColor", baseGlowColor);
-    }
-
-    private void RequestFocus()
-    {
-        if (activeUpgrader == this)
-        {
-            return;
-        }
-
-        if (activeUpgrader != null)
-        {
-            var state = activeUpgrader.currentState;
-
-            if (IsLocked || state == UpgraderState.Finished)
-            {
-                return;
-            }
-
-            activeUpgrader.SetState(UpgraderState.Hidden);
-        }
-
-        activeUpgrader = this;
     }
 
     void Update()
@@ -316,14 +344,23 @@ public class Upgrader : MonoBehaviour
         AdjustUI();
     }
 
+    // Flashes an upgrader's outline whenever its upgrade can be purchased
     private void ManageOutlineFlash()
     {
-        if (ProjectileManager.Instance.IsFrozen || 
+        if (TimeStop.Instance.IsFrozen || 
             (IsLocked && activeUpgrader != this) ||
             (clickableScript.ClickableEnabled && (currentState == UpgraderState.Locked || currentState == UpgraderState.Finished)))
         {
-            UpdateVisuals(false, false, false);
-            SetState(UpgraderState.Locked);
+            if (currentState != UpgraderState.Locked)
+            {
+                SetState(UpgraderState.Locked);
+            }
+            else
+            {
+                UpdateVisuals(false, false, false);
+            }
+            
+            return;
         }
 
         if (currentState != UpgraderState.Locked && currentState != UpgraderState.Hidden && currentState != UpgraderState.Blinking)
@@ -333,23 +370,31 @@ public class Upgrader : MonoBehaviour
 
         if (CheckUpgradability() && TowerManager.Instance.GetTowerCount() >= 3)
         { 
-            SetState(UpgraderState.Blinking);
+            if (currentState != UpgraderState.Blinking)
+            {
+                SetState(UpgraderState.Blinking);
+            }
         }
-        else if (clickableScript.ClickableEnabled && currentState == UpgraderState.Blinking)
+        else 
         {
-            SetState(UpgraderState.Hidden);   
+            if (currentState == UpgraderState.Blinking)
+            {
+                SetState(UpgraderState.Hidden);   
+            }
         }
     }
 
+    // Updates an upgrade indicator's visibility and an upgrader's interactability/outline visibility 
     private void UpdateVisuals(bool visible, bool indicating, bool clickable = true)
     {
         clickableScript.UpdateClickable(visible, clickable);
         upgradeIndicator.enabled = indicating;
     }
 
+    // Adjusts an upgrade indicator's text position in response to camera changes
     private void AdjustUI()
     {
-        int cam = CameraSwitch.ActiveCam;
+        int cam = CameraSwitcher.Instance.ActiveCam;
         if (upgraderType == UpgraderType.AutoCannon && cam != lastCam)
         {
             if (cam == 1)
@@ -369,6 +414,7 @@ public class Upgrader : MonoBehaviour
         }
     }
 
+    // Adjusts an upgrade indicator's text font size 
     private void AdjustFontSize(float acSize, float tsSize)
     {
         switch (upgraderType)
@@ -383,6 +429,7 @@ public class Upgrader : MonoBehaviour
         }
     }
 
+    // Sets the position of an upgrade indicator to specified coordinates 
     private void SetVisualParameters(float x, float y, float z)
     {
         rt.localPosition = new Vector3(x, y, z);

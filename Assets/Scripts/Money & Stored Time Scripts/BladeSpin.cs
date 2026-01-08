@@ -8,10 +8,6 @@ public class BladeSpin : MonoBehaviour
     void Update()
     {
         // Rotates the drone blades
-        if (ProjectileManager.Instance.IsFrozen)
-        {
-            return;
-        }
         transform.Rotate(Vector3.forward * rotationSpeed * Time.deltaTime, Space.Self);
     }
 }

@@ -53,11 +53,6 @@ public class EnemyHealthBar : MonoBehaviour
 
         while (elapsedFade < fadeDuration)
         {
-            while (ProjectileManager.Instance.IsFrozen)
-            {
-                yield return null;
-            }
-
             elapsedFade += Time.deltaTime;
             float percentElapsed = elapsedFade / fadeDuration;
             float alpha = Mathf.Lerp(startAlpha, 0f, percentElapsed);

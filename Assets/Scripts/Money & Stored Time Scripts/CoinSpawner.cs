@@ -3,7 +3,7 @@ using UnityEngine;
 public class CoinSpawner : MonoBehaviour
 {
     // Coin spawner instance
-    public static CoinSpawner Instance { get; private set; }
+    public static CoinSpawner Instance;
 
     // Coin prefabs
     [SerializeField] private GameObject coinPrefab;
@@ -14,13 +14,16 @@ public class CoinSpawner : MonoBehaviour
 
     private void Awake()
     {
-        // Prevents duplicates of this object
-        if (Instance != null && Instance != this)
+        // Avoids duplicates of this object
+        if (Instance == null)
         {
-            Destroy(gameObject);
-            return;
+            Instance = this;
         }
-        Instance = this;
+        else
+        {
+            Debug.LogWarning("There is a duplicate of the script " + this + "!");
+            Destroy(gameObject);
+        }
     }
 
     // Spawns a normal coin when enemies die or a projectile coin from the drone cannon

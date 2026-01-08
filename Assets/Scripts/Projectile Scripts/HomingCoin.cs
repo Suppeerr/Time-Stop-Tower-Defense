@@ -2,32 +2,33 @@ using UnityEngine;
 
 public class HomingCoin : HomingProjectile
 {
+    // Drone object
     private GameObject drone;
+    
+    // Barrel aim script
     private BarrelAim barrelAim;
 
     void Awake()
     {
+        // Initializes fields and registers the coin projectile
         rb = GetComponent<Rigidbody>();
-        ProjectileManager.Instance.RegisterProjectile(rb);
         rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
         rb.linearVelocity = Vector3.zero;
         drone = GameObject.Find("Colored Money Drone");
         barrelAim = drone.GetComponentInChildren<BarrelAim>();
+
+        ProjectileManager.Instance.RegisterProjectile(rb);
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        // Assigns a target for the coin and initializes stats
         AssignSafe();
         ProjectileStats stats = statsContainer.GetStats(type);
         steerSpeed = stats.speed;
         maxSpeed = stats.speed;
 
-        // Destroys coin after destroyAfter seconds
-        if (destroyAfter > 0f)
-        {
-            Destroy(gameObject, destroyAfter);
-        }
+        Destroy(gameObject, destroyAfter);
     }
 
     protected override void FixedUpdate()
@@ -40,10 +41,9 @@ public class HomingCoin : HomingProjectile
         base.HomeToTarget();
     }
     
-    // Assigns the safe to the coin
+    // Assigns the safe collector target to the coin
     private void AssignSafe()
     {
-        // Homes onto safe
         if (target == null)
         {
             GameObject safe = GameObject.FindGameObjectWithTag("Safe Collector");

@@ -54,7 +54,7 @@ public class LightningRing : MonoBehaviour
         // Creates a random jittering effect
         for (int i = 0; i < points; i++)
         {
-            while (SettingsManager.Instance.SettingsOpened)
+            while (SettingsMenuOpener.Instance.MenuOpened)
             {
                 yield return null;
             }

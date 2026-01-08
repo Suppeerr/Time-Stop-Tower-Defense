@@ -29,8 +29,18 @@ public class LevelInstance : MonoBehaviour
     EnemySpawnHandler sptest;
     public async Task Awake()
     {
+        // Avoids duplicates of this object
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Debug.LogWarning("There is a duplicate of the script " + this + "!");
+            Destroy(gameObject);
+        }
+
         Time.timeScale = 1f;
-        Instance = this;
         string normalAddress = "Enemies/Normal Bandit";
         normalEPrefab = await AddressableLoader.GetAsset<GameObject>(normalAddress);
         string speedyAddress = "Enemies/Speedy Bandit";
@@ -71,7 +81,7 @@ public class LevelInstance : MonoBehaviour
 
     public async Task Update()
     {
-        if (!s_enabled || ProjectileManager.Instance.IsFrozen || !LevelStarter.HasLevelStarted)
+        if (!s_enabled || !LevelStarter.HasLevelStarted)
         {
             return;
         }
@@ -149,6 +159,7 @@ public class LevelInstance : MonoBehaviour
         return;
     }
 
+    // Gets the furthest enemy along the path
     public BaseEnemy GetFirstEnemy()
     {
         float currentWaypointDist = -1;
@@ -170,6 +181,7 @@ public class LevelInstance : MonoBehaviour
         return firstEnemy;
     }
 
+    // Gets the second furthest enemy along the path
     public BaseEnemy GetSecondEnemy()
     {
         float currentWaypointDist = -1;

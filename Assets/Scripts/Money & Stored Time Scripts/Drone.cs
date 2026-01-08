@@ -18,7 +18,7 @@ public class Drone : MonoBehaviour
 
     void Update()
     {
-        if (ProjectileManager.Instance.IsFrozen || isCollecting)
+        if (isCollecting)
         {
             return;
         }
