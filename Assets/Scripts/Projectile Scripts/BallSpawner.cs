@@ -23,7 +23,7 @@ public class BallSpawner : MonoBehaviour
 
     void Start()
     {
-        // Initialize fields
+        // Initializes fields
         barrelAim = GetComponentInParent<BarrelAim>();
         shootPoint = this.transform;
         
@@ -33,7 +33,7 @@ public class BallSpawner : MonoBehaviour
     void Update()
     {
         // Frozen if time stopped or the level has not started
-        if (!LevelStarter.HasLevelStarted || TimeStop.Instance.IsFrozen)
+        if (!LevelStarter.HasLevelStarted || SettingsMenuOpener.Instance.MenuOpened || TimeStop.Instance.IsFrozen)
         {
             return;
         }

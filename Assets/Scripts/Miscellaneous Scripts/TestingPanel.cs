@@ -34,12 +34,14 @@ public class TestingPanel : MonoBehaviour
 
         if (!isOnScreen)
         {
-            StartCoroutine(MoveUI(new Vector2(-2244f, -1163f), new Vector2(-1256f, -1163f)));
+            // Moves panel on screen
+            StartCoroutine(MoveUI(new Vector2(-471, -236), new Vector2(-257, -236)));
             isOnScreen = true;
         }
         else
         {
-            StartCoroutine(MoveUI(new Vector2(-1256f, -1163f), new Vector2(-2244f, -1163f)));
+            // Moves panel off screen
+            StartCoroutine(MoveUI(new Vector2(-257, -236), new Vector2(-471, -236)));
             isOnScreen = false;
         }
         isMoving = false;
