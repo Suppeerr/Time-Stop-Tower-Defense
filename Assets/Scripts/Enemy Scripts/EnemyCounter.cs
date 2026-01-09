@@ -11,6 +11,9 @@ public class EnemyCounter : MonoBehaviour
 
     // Enemy counter
     private int enemiesDefeatedCounter = 0;
+
+    // Enemies defeated needed to win the level
+    private int enemiesNeeded = 90;
     
     // Level won check
     private bool hasWon = false;
@@ -43,11 +46,11 @@ public class EnemyCounter : MonoBehaviour
         // Changes position of UI for certain cameras
         if (CameraSwitcher.Instance.ActiveCam == 2)
         {
-            enemiesDefeatedText.rectTransform.anchoredPosition = new Vector2(123, 56);
+            enemiesDefeatedText.rectTransform.anchoredPosition = new Vector2(178, 70);
         }
         else
         {
-            enemiesDefeatedText.rectTransform.anchoredPosition = new Vector2(758, 56);
+            enemiesDefeatedText.rectTransform.anchoredPosition = new Vector2(780, 70);
         }
     }
 
@@ -56,7 +59,7 @@ public class EnemyCounter : MonoBehaviour
     {
         if (enemiesDefeatedText != null)
         {
-            enemiesDefeatedText.text = enemiesDefeatedCounter.ToString();
+            enemiesDefeatedText.text = enemiesDefeatedCounter.ToString() + "/" + enemiesNeeded;
         }
     }
 

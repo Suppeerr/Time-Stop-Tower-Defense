@@ -108,6 +108,7 @@ public class Clickable : MonoBehaviour
         if (clickedThisFrame && outlineFlashScript != null)
         {
             outlineFlashScript.StopFlashing(true);
+            OutlineManager.Instance.UpdateOutlineVisibility(this, true);
         }
     }
 
