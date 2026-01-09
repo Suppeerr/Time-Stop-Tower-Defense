@@ -64,6 +64,11 @@ public class LanternUpdater : MonoBehaviour
         }
 
         lastIsNight = isNight;
+
+        if (state == LanternState.Off && lanternLight.intensity != 0f)
+        {
+            lanternLight.intensity = 0f;
+        }
     }
 
     // Switches lantern state to turning on or turning off
