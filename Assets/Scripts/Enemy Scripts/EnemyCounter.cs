@@ -37,8 +37,11 @@ public class EnemyCounter : MonoBehaviour
         }
 
         // Toggles level win when goal reached
-        if (enemiesDefeatedCounter == 90 && !hasWon)
+        if (enemiesDefeatedCounter >= enemiesNeeded && !hasWon)
         {
+            enemiesDefeatedCounter = enemiesNeeded;
+            UpdateUI();
+
             hasWon = true;
             BaseHealthManager.Instance.ToggleWin();
         }

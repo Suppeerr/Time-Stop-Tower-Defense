@@ -5603,9 +5603,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f1c1f6e671292649bb6eb4e675b1bb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Upgrader
+  dataContainer: {fileID: 11400000, guid: 7b8e875af1802654a9e5a675529c9e41, type: 2}
   upgradeIndicator: {fileID: 9016082355031510267}
   invalidGlowColor: {r: 4.2370963, g: 0, b: 0, a: 1}
-  dataContainer: {fileID: 11400000, guid: 7b8e875af1802654a9e5a675529c9e41, type: 2}
 --- !u!1 &5448564514537316974
 GameObject:
   m_ObjectHideFlags: 0
@@ -5950,13 +5950,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b223d8afcd54f741b6d805df69cecb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  firePoint: {fileID: 8109918587252948483}
+  ballSpawner: {fileID: 7703208739090267004, guid: a477c0fc531854b409fdb902634bc6ec, type: 3}
   beam: {fileID: 4311995836532839496}
-  maxDistance: 5000
+  firePoint: {fileID: 8109918587252948483}
   hitLayers:
     serializedVersion: 2
     m_Bits: 64
-  ballSpawner: {fileID: 7703208739090267004, guid: a477c0fc531854b409fdb902634bc6ec, type: 3}
   zapSFX: {fileID: 2305923369085142817}
 --- !u!120 &4311995836532839496
 LineRenderer:
@@ -6679,7 +6678,7 @@ GameObject:
   - component: {fileID: 7745278548086986881}
   - component: {fileID: 1705824217569073978}
   m_Layer: 9
-  m_Name: Icospheres
+  m_Name: Monument Bushes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

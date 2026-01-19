@@ -85,6 +85,12 @@ public class LevelInstance : MonoBehaviour
         {
             return;
         }
+
+        if (BaseHealthManager.IsGameOver)
+        {
+            DestroyEnemies();
+            return;
+        }
         
         // if (elapsed < spawnInterval)
         // {
@@ -207,5 +213,15 @@ public class LevelInstance : MonoBehaviour
         }
         
         return secondEnemy;
+    }
+
+    // Destroys all active enemies
+    private void DestroyEnemies()
+    {
+        foreach (BaseEnemy enemy in enemies)
+        {
+            enemies.Remove(enemy);
+            Destroy(enemy.visualObj);
+        }
     }
 }
