@@ -119,8 +119,6 @@ public class BaseHealthManager : MonoBehaviour
         levelWinText.enabled = true;
         levelRestartText.enabled = true;
         ProjectileManager.Instance.DestroyAllProjectiles();
-
-        Time.timeScale = 0f;
     }
 
     // Toggles game over when lose conditions are met
@@ -135,8 +133,6 @@ public class BaseHealthManager : MonoBehaviour
         gameOverText.enabled = true;
         levelRestartText.enabled = true;
         ProjectileManager.Instance.DestroyAllProjectiles();
-
-        Time.timeScale = 0f;
     }
 
     // Restarts the level
