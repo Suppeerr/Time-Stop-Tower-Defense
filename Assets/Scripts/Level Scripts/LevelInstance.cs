@@ -41,7 +41,7 @@ public class LevelInstance : MonoBehaviour
         }
 
         Time.timeScale = 1f;
-        string normalAddress = "Enemies/Normal Bandit";
+        string normalAddress = "Enemies/Animated Normal Bandit";
         normalEPrefab = await AddressableLoader.GetAsset<GameObject>(normalAddress);
         string speedyAddress = "Enemies/Speedy Bandit";
         speedyEPrefab = await AddressableLoader.GetAsset<GameObject>(speedyAddress);

@@ -20,6 +20,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 41352ee67a6535546924e2d6dcb24f60
+    m_Address: Enemies/Animated Normal Bandit
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 775ba0a3fcbfe96408f7bb9b2911127b
     m_Address: Enemies/Normal Bandit
     m_ReadOnly: 0
