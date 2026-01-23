@@ -312,8 +312,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f4aa9a42e25c2e42ab64f4257550357, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  damageIndicator: {fileID: 8090588558786134674, guid: 2db5da30788e55f4cad3d6f019a0a6ed, type: 3}
-  enemy: {fileID: 7535940422768914396}
+  dmgText: {fileID: 0}
 --- !u!114 &7304308727890363602
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -352,7 +351,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3fefe3f88b2afa24fa10b2003bd1fffd, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.521
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3fefe3f88b2afa24fa10b2003bd1fffd, type: 3}
       propertyPath: m_LocalPosition.z
@@ -510,10 +509,5 @@ BoxCollider:
 --- !u!4 &7196428190881264998 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 3fefe3f88b2afa24fa10b2003bd1fffd, type: 3}
-  m_PrefabInstance: {fileID: 7229509073185067661}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &7535940422768914396 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 3fefe3f88b2afa24fa10b2003bd1fffd, type: 3}
   m_PrefabInstance: {fileID: 7229509073185067661}
   m_PrefabAsset: {fileID: 0}

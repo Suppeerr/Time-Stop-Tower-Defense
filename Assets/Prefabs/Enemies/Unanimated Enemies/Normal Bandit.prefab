@@ -162,8 +162,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f4aa9a42e25c2e42ab64f4257550357, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  damageIndicator: {fileID: 8090588558786134674, guid: a68e55b76c3e5c040b3718519d65d40e, type: 3}
-  enemy: {fileID: 172965282212442296}
+  dmgText: {fileID: 0}
 --- !u!114 &7627162781160812120
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -448,11 +447,6 @@ PrefabInstance:
       addedObject: {fileID: 2917785214608530875}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 90909e1b653c2429482a9c415a7e51d1, type: 3}
---- !u!1 &172965282212442296 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 90909e1b653c2429482a9c415a7e51d1, type: 3}
-  m_PrefabInstance: {fileID: 1055837720665017833}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &661377879569803778 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 90909e1b653c2429482a9c415a7e51d1, type: 3}

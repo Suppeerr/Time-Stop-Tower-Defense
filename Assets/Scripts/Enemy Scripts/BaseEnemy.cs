@@ -40,6 +40,11 @@ public class BaseEnemy
     private GameObject damageIndicatorPrefab;
     private EnemyCounter enemyCounterScript;
 
+    // Enemy pathing offset/smoothing
+    [SerializeField] private float maxPathOffset = 0.45f;
+    private float pathOffset;
+    private Vector3 currentRight;
+
     // Level instance
     private LevelInstance level;
     
@@ -65,6 +70,8 @@ public class BaseEnemy
         enemyvObjPrefab = prefab;
         this.level = level;
         this.spath = spath;
+
+        pathOffset = UnityEngine.Random.Range(-maxPathOffset, maxPathOffset);
         
         await As_spawn();
     }
@@ -152,27 +159,60 @@ public class BaseEnemy
     private void _s_move()
     {   //... change positioning later - jack (self)
         float distance_traveled = speed * Time.deltaTime;
-        Waypoint targ_waypoint = spath.waypoints[currentWaypoint];
-
-        if (curdist_traveled + distance_traveled >= targ_waypoint.dist)
+    
+        while (distance_traveled > 0f && currentWaypoint < spath.waypoints.Length)
         {
-            this.s_position = targ_waypoint.position;
-            distance_traveled = curdist_traveled + distance_traveled - targ_waypoint.dist;
-            curdist_traveled = 0;
-            currentWaypoint += 1;
-            if (spath.waypoints.Length <= currentWaypoint)
+            Waypoint targ_waypoint = spath.waypoints[currentWaypoint];
+            Vector3 offsetVec = ComputeOffset(targ_waypoint);
+            Vector3 targetPosWithOffset = targ_waypoint.position + offsetVec;
+
+            Vector3 toWaypoint = targetPosWithOffset - s_position;
+            float distToWaypoint = toWaypoint.magnitude;
+
+            if (distance_traveled >= distToWaypoint)
             {
-                this._s_pathend();
-                return;
+                s_position = targetPosWithOffset;
+
+                distance_traveled -= distToWaypoint;
+
+                curdist_traveled = 0;
+                currentWaypoint += 1;
+
+                if (currentWaypoint >= spath.waypoints.Length)
+                {
+                    this._s_pathend();
+                    return;
+                }
+
+                visualObj.transform.rotation = visObjbaseRot * spath.waypoints[currentWaypoint].faceDirection;
+                Vector3 testv = visualObj.transform.eulerAngles;
+                visualObj.transform.rotation = Quaternion.Euler(-testv.z, testv.y, 0f); //correct facing direction
             }
-            targ_waypoint = spath.waypoints[currentWaypoint];
-            visualObj.transform.rotation = visObjbaseRot * spath.waypoints[currentWaypoint].faceDirection;
-            Vector3 testv = visualObj.transform.eulerAngles;
-            visualObj.transform.rotation = Quaternion.Euler(-testv.z, testv.y, -testv.x); //correct facing direction
+            else
+            {
+                s_position += toWaypoint.normalized * distance_traveled;
+                curdist_traveled += distance_traveled;
+                distance_traveled = 0f;
+            }
+        }
+    }
+
+    // Computes the enemy's pathing offset
+    private Vector3 ComputeOffset(Waypoint waypoint)
+    {
+        // Offsets and smooths enemy pathing
+        Vector3 forward = waypoint.modif.normalized;
+        forward.Normalize();
+        Vector3 targetRight = Vector3.Cross(Vector3.up, forward).normalized;
+
+        if (Vector3.Dot(currentRight, targetRight) < 0f)
+        {
+            targetRight = -targetRight;
         }
 
-        curdist_traveled += distance_traveled;
-        s_position += distance_traveled * targ_waypoint.modif;
+        currentRight = Vector3.Slerp(currentRight, targetRight, 4f * Time.deltaTime);
+
+        return currentRight * pathOffset;
     }
 
     // Gets the enemy's distance from the previous waypoint
