@@ -6280,8 +6280,9 @@ MonoBehaviour:
   timeStopStartSFX: {fileID: 2398438723132002101}
   timeStopEndSFX: {fileID: 3250563157802718777}
   cooldownEndSFX: {fileID: 3506978250642618987}
-  baseRuneColor: {r: 0, g: 0, b: 0, a: 0}
-  glowRuneColor: {r: 0, g: 0, b: 0, a: 0}
+  baseRuneColor: {r: 0.29803923, g: 0.29803923, b: 0.29803923, a: 1}
+  glowRuneColor: {r: 7.384615, g: 8, b: 0, a: 1}
+  upgradedGlowRuneColor: {r: 0.1112744, g: 37.09122, b: 35.74158, a: 1}
   timeStopObjects: []
   beamSpawner: {fileID: 6113056683632870968}
   storedTimeManager: {fileID: 0}

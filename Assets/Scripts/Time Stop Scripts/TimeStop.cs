@@ -40,8 +40,11 @@ public class TimeStop : MonoBehaviour
     // Rune animation fields
     [SerializeField] private Color baseRuneColor;
     [SerializeField] private Color glowRuneColor;
+    [SerializeField] private Color upgradedGlowRuneColor;
+    private Color activeGlowColor;
     private float baseRuneIntensity = 1f;
-    private float glowRuneIntensity = 2.5f;
+    private float glowRuneIntensity = 2f;
+    private float currentIntensity;
     private float runeTransitionTime = 1.5f;
 
     // Scripts and game objects
@@ -70,6 +73,9 @@ public class TimeStop : MonoBehaviour
         durationText.enabled = false;
         cooldownText.enabled = false;
         beamSpawner.SetActive(false);
+
+        // Initializes active rune glow color
+        activeGlowColor = glowRuneColor;
     }
 
     // Once timestop is triggered, all animated objects freeze for the duration
@@ -90,46 +96,32 @@ public class TimeStop : MonoBehaviour
 
             duration = 0f;
         }
-        
-        // Recharge duration when inactive
-        if (!active && duration < maxDur)
+
+        // Changes rune glow color if multi-charge has been bought
+        if (UpgradeManager.Instance.IsBought(UpgradeType.MultiCharge) && activeGlowColor != upgradedGlowRuneColor)
         {
-            duration += rechargeRate * Time.deltaTime;
-            if (duration > maxDur)
+            duration = maxDur;
+            activeGlowColor = upgradedGlowRuneColor;
+
+            for (int i = 0; i < timeStopObjects.Count; i++)
             {
-                duration = maxDur;
+                StartCoroutine(AnimateRunes(currentIntensity, currentIntensity, glowRuneColor, upgradedGlowRuneColor, i));
             }
 
             UpdateRunes(true);
         }
-
-        if (cooldown > 0f && !IsFrozen)
-        {
-            // Decreases reactivation cooldown with time outside of time stop
-            cooldown -= Time.deltaTime;
-            if (cooldown < 0f)
-            {
-                if (!active)
-                {
-                    cooldownEndSFX.Play();
-                }
-                 
-                cooldown = 0f;
-            }
-        }
-        else
-        {
-            // Decreases deactivation cooldown with time during time stop
-            cooldown -= Time.unscaledDeltaTime;
-            if (cooldown < 0f)
-            { 
-                cooldown = 0f;
-            }
-        }
-
+        
+        RechargeDuration();
+        DecreaseCooldown();
         UpdateUI();
 
         // Starts or stops time stop when t key pressed
+        ToggleTimeStop();
+    }
+
+    // Starts or stops time stop when t key pressed
+    private void ToggleTimeStop()
+    {
         if (Keyboard.current.tKey.wasPressedThisFrame && cooldown == 0f)
         {
             if (active)
@@ -208,6 +200,21 @@ public class TimeStop : MonoBehaviour
         isTransitioning = false;
     }
 
+    // Recharge time stop duration when inactive
+    private void RechargeDuration()
+    {
+        if (!active && duration < maxDur)
+        {
+            duration += rechargeRate * Time.deltaTime;
+            if (duration > maxDur)
+            {
+                duration = maxDur;
+            }
+
+            UpdateRunes(true);
+        }
+    }
+
     // Counts down time stop duration when active 
     private IEnumerator CountdownTimeStop()
     {
@@ -234,6 +241,34 @@ public class TimeStop : MonoBehaviour
         }
     }
 
+    // Decrease time stop reactivation/deactivion cooldown outside of/during time stop
+    private void DecreaseCooldown()
+    {
+        if (cooldown > 0f && !IsFrozen)
+        {
+            // Decreases reactivation cooldown with time outside of time stop
+            cooldown -= Time.deltaTime;
+            if (cooldown < 0f)
+            {
+                if (!active)
+                {
+                    cooldownEndSFX.Play();
+                }
+                 
+                cooldown = 0f;
+            }
+        }
+        else
+        {
+            // Decreases deactivation cooldown with time during time stop
+            cooldown -= Time.unscaledDeltaTime;
+            if (cooldown < 0f)
+            { 
+                cooldown = 0f;
+            }
+        }
+    }
+
     // Syncs rune glow with time stop duration
     private void UpdateRunes(bool isRecharging)
     {
@@ -249,7 +284,7 @@ public class TimeStop : MonoBehaviour
                 if (tsPercent >= runePercent && !runeActive)
                 {
                     timeStopObjects[i].SetObjectActive(true);
-                    StartCoroutine(AnimateRunes(baseRuneIntensity, glowRuneIntensity, baseRuneColor, glowRuneColor, i));
+                    StartCoroutine(AnimateRunes(baseRuneIntensity, glowRuneIntensity, baseRuneColor, activeGlowColor, i));
                 }
             }
             else
@@ -257,7 +292,7 @@ public class TimeStop : MonoBehaviour
                 if (tsPercent <= runePercent && runeActive)
                 {
                     timeStopObjects[i].SetObjectActive(false);
-                    StartCoroutine(AnimateRunes(glowRuneIntensity, baseRuneIntensity, glowRuneColor, baseRuneColor, i));
+                    StartCoroutine(AnimateRunes(glowRuneIntensity, baseRuneIntensity, activeGlowColor, baseRuneColor, i));
                 }
             }
         }
@@ -267,6 +302,7 @@ public class TimeStop : MonoBehaviour
     private IEnumerator AnimateRunes(float from, float to, Color fromColor, Color toColor, int num)
     { 
         float elapsed = 0f;
+
         List<GameObject> runes = timeStopObjects[num].runeObjects;
 
         while (elapsed < runeTransitionTime)
@@ -276,12 +312,16 @@ public class TimeStop : MonoBehaviour
                 yield return null;
             }
 
-            float intensity = Mathf.Lerp(from, to, elapsed / runeTransitionTime); 
+            if (from != to)
+            {
+                currentIntensity = Mathf.Lerp(from, to, elapsed / runeTransitionTime); 
+            }
+            
             Color curColor = Color.Lerp(fromColor, toColor, elapsed / runeTransitionTime);
 
             for (int i = 0; i < runes.Count; i++)
             {
-                runes[i].GetComponent<Renderer>().material.SetColor("_Emission_Color", curColor * intensity);
+                runes[i].GetComponent<Renderer>().material.SetColor("_Emission_Color", curColor * currentIntensity);
             }
 
             elapsed += Time.unscaledDeltaTime;

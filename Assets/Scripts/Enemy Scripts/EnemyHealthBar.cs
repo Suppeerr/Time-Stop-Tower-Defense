@@ -9,8 +9,13 @@ public class EnemyHealthBar : MonoBehaviour
     [SerializeField] private Image backgroundImage;
     [SerializeField] private Gradient healthGradient;
 
-    // Max enemy health
-    private float maxHP;
+    // Enemy health fields
+    private int maxHP;
+    private float percentHP;
+    private float oldPercentHP;
+
+    // Health bar transition field
+    private float transitionDuration = 0.2f;
 
     // Health bar fade fields
     private float fadeDelay = 3f;
@@ -20,22 +25,23 @@ public class EnemyHealthBar : MonoBehaviour
     private Coroutine hideCoroutine;
 
     // Gets enemy health and becomes invisible
-    public void Init(float maxHP)
+    public void Init(int maxHP)
     {
         this.maxHP = maxHP;
         SetAlpha(0f);
     }
 
     // Updates enemy health bar UI when damage is taken
-    public void UpdateHealth(float currentHP)
+    public void UpdateHealth(int current, int old)
     {
-        float percentHP = currentHP / maxHP;
-        fillImage.fillAmount = percentHP;
-        fillImage.color = healthGradient.Evaluate(percentHP);
+        oldPercentHP = (float) old / maxHP;
+        percentHP = (float) current / maxHP;
+
+        StartCoroutine(TransitionHealthBar());
 
         SetAlpha(1f);
 
-        // Restart healthbar fade timer
+        // Restart health bar fade timer
         if (hideCoroutine != null)
         {
             StopCoroutine(hideCoroutine);
@@ -43,7 +49,27 @@ public class EnemyHealthBar : MonoBehaviour
         hideCoroutine = StartCoroutine(FadeAfterDelay());
     }
 
-    // Fades the healthbar away after a few seconds
+    // Smoothly transitions the healthbar color 
+    private IEnumerator TransitionHealthBar()
+    {
+        float elapsed = 0f;
+
+        while (elapsed < transitionDuration)
+        {
+            elapsed += Time.deltaTime;
+            float percentElapsed = elapsed / transitionDuration;
+
+            fillImage.fillAmount = Mathf.Lerp(oldPercentHP, percentHP, percentElapsed);
+            fillImage.color = healthGradient.Evaluate(Mathf.Lerp(oldPercentHP, percentHP, percentElapsed));
+
+            yield return null;
+        }
+
+        fillImage.fillAmount = percentHP;
+        fillImage.color = healthGradient.Evaluate(percentHP);
+    }
+
+    // Fades the health bar away after a few seconds
     private IEnumerator FadeAfterDelay()
     {
         yield return new WaitForSeconds(fadeDelay);
@@ -58,12 +84,14 @@ public class EnemyHealthBar : MonoBehaviour
             float alpha = Mathf.Lerp(startAlpha, 0f, percentElapsed);
 
             SetAlpha(alpha);
+
             yield return null;
         }
+
         SetAlpha(0f);
     }
 
-    // Sets healthbar visibility
+    // Sets health bar visibility
     private void SetAlpha(float alpha)
     {
         Color bgColor = backgroundImage.color;

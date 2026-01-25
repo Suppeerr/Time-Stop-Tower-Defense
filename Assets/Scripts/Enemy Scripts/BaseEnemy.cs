@@ -19,6 +19,9 @@ public class BaseEnemy
     private int def;
     private int res;
 
+    // Previous enemy hp
+    private int oldHP;
+
     // Enemy movement fields
     private Vector3 s_position;
     private float speed;
@@ -86,10 +89,11 @@ public class BaseEnemy
 
         if (damage.isDef) damageRecieved = Mathf.Clamp(damageRecieved - def, minDamage, damageRecieved);
         if (damage.isRes) damageRecieved = Mathf.Clamp(damageRecieved * (1 - (float)res), minDamage, damageRecieved);
+        oldHP = hp;
         hp -= (int)damageRecieved;
 
         // Updates healthbar to indicate damage taken
-        healthbar?.UpdateHealth(hp);
+        healthbar?.UpdateHealth(hp, oldHP);
 
         // Spawns a damage indicator visual above the enemy's head
         EnemyDamageIndicator damageIndicator = UnityEngine.Object.Instantiate(damageIndicatorPrefab).GetComponent<EnemyDamageIndicator>();

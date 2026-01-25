@@ -31,6 +31,7 @@ public class BaseHealthManager : MonoBehaviour
         // Initializes base hp image and avoids duplicates of this object
         currentHpImage.sprite = thresholds[0].image;
 
+        // Avoids duplicates of this object
         if (Instance == null)
         {
             Instance = this;

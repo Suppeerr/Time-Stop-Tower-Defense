@@ -43,7 +43,7 @@ public class EnemyDamageIndicator : MonoBehaviour
         float heightOffset = Random.Range(-1f, 1f);
 
         Vector3 startPos = enemy.position;
-        startPos += Vector3.up * 2.5f + new Vector3(xOffset, 0f, 0f);
+        startPos += Vector3.up * 3.2f + new Vector3(xOffset, 0f, 0f);
         Vector3 endPos = startPos + new Vector3(0f, floatDistance + heightOffset, 0f);
 
         while (elapsedDelay < fadeDelay)
