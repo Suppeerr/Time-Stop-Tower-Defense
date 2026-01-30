@@ -102,11 +102,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98c73760247936d418333d8d4f887cc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BallSpawner
-  homingPrimaryPrefab: {fileID: 0}
-  homingSecondaryPrefab: {fileID: 0}
-  normalPrimaryPrefab: {fileID: 0}
-  normalSecondaryPrefab: {fileID: 0}
-  cannonBallPrefab: {fileID: 3039730848133068532, guid: 76a0f53a8c93b88499398cce0977bd8f, type: 3}
   spawnPerSecond: 2.5
   isCannon: 1
   isAutoCannon: 0

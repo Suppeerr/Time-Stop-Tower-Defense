@@ -75,7 +75,7 @@ public class HomingProjectile : MonoBehaviour
     // Updates for projectile physics 
     protected virtual void FixedUpdate()
     {        
-        if ((target == null && !isPiercing) || BaseHealthManager.IsGameOver)
+        if ((target == null && !isPiercing) || BaseHealthManager.Instance.IsGameOver)
         {
             Destroy(gameObject);
             return;

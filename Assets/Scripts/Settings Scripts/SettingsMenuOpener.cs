@@ -32,17 +32,20 @@ public class SettingsMenuOpener : MonoBehaviour
         {
             settingsMenu.SetActive(true);
             SettingsManager.Instance.OpenSettings();
+            UISoundManager.Instance.PlayClickSound(false);
         }
         else if (!MenuOpened && settingsMenu.activeSelf)
         {
             settingsMenu.SetActive(false);
             SettingsManager.Instance.CloseSettings();
+            UISoundManager.Instance.PlayClickSound(true);
         }
     }
     
     // Switches the menu opened boolean when menu opened/closed 
     public void UpdateMenu()
     {
+        
         MenuOpened = !MenuOpened;
         UpdatePause();
     }

@@ -76,7 +76,7 @@ public class CameraSwitcher : MonoBehaviour
         }
 
         Time.timeScale = 0.1f;
-        yield return StartCoroutine(MoveCamera(cameras[previousActiveCamNum], cameras[ActiveCam], 2f));
+        yield return StartCoroutine(MoveCamera(cameras[previousActiveCamNum], cameras[ActiveCam], 1.5f));
         SyncOverlayCamera();
 
         yield return new WaitForSecondsRealtime(1f);
@@ -182,7 +182,7 @@ public class CameraSwitcher : MonoBehaviour
         TutorialManager.Instance.UpdateScreenUI(false);
         previousActiveCamNum = ActiveCam;
         
-        yield return StartCoroutine(MoveCamera(cameras[ActiveCam], cameras[0], 3f));
+        yield return StartCoroutine(MoveCamera(cameras[ActiveCam], cameras[0], 2.5f));
 
         SyncOverlayCamera();
         
@@ -195,7 +195,7 @@ public class CameraSwitcher : MonoBehaviour
         SyncOverlayCamera();
         TutorialManager.Instance.UpdateTutorialUI(false);
 
-        yield return StartCoroutine(MoveCamera(cameras[0], cameras[previousActiveCamNum], 3f));
+        yield return StartCoroutine(MoveCamera(cameras[0], cameras[previousActiveCamNum], 2.5f));
 
         TutorialManager.Instance.UpdateImage();
         TutorialManager.Instance.UpdateScreenUI(true);

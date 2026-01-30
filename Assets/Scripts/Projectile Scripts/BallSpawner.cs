@@ -33,7 +33,7 @@ public class BallSpawner : MonoBehaviour
     void Update()
     {
         // Frozen if time stopped, the level has not started, or the level is over
-        if (TimeStop.Instance.IsFrozen || !LevelStarter.HasLevelStarted || SettingsMenuOpener.Instance.MenuOpened || BaseHealthManager.IsGameOver)
+        if (TimeStop.Instance.IsFrozen || !LevelStarter.HasLevelStarted || SettingsMenuOpener.Instance.MenuOpened || BaseHealthManager.Instance.IsGameOver)
         {
             return;
         }

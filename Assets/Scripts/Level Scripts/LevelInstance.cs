@@ -86,7 +86,7 @@ public class LevelInstance : MonoBehaviour
             return;
         }
 
-        if (BaseHealthManager.IsGameOver)
+        if (BaseHealthManager.Instance.IsGameOver)
         {
             DestroyEnemies();
             return;

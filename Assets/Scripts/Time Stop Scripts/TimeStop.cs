@@ -83,7 +83,7 @@ public class TimeStop : MonoBehaviour
     {
         if (!UpgradeManager.Instance.IsBought(UpgradeType.TimeStop) || 
             SettingsMenuOpener.Instance.MenuOpened|| 
-            BaseHealthManager.IsGameOver || 
+            BaseHealthManager.Instance.IsGameOver || 
             isTransitioning)
         {
             return;

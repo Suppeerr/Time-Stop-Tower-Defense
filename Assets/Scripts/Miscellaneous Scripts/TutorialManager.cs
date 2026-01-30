@@ -57,12 +57,25 @@ public class TutorialManager : MonoBehaviour
         {
             StartTutorial();
         }    
+
+        // Disables the left button on the first page
+        if (currentIndex == 0 && leftArrowButton.interactable == true)
+        {
+            leftArrowButton.interactable = false;
+        }
+
+        // Disables the right button on the last page
+        if (currentIndex == tutorialImages.Count - 1 && rightArrowButton.interactable == true)
+        {
+            rightArrowButton.interactable = false;
+        }
     }
 
     // Starts the tutorial
     public void StartTutorial()
     {
         IsTutorialActive = true;
+        UISoundManager.Instance.PlayClickSound(false);
 
         DayAndNightAdjuster.Instance.ToggleCycle(true);
 
@@ -73,6 +86,7 @@ public class TutorialManager : MonoBehaviour
     public void EndTutorial()
     {
         IsTutorialActive = false;
+        UISoundManager.Instance.PlayClickSound(false);
         currentIndex = 0;
 
         DayAndNightAdjuster.Instance.ToggleCycle(false);
@@ -97,39 +111,31 @@ public class TutorialManager : MonoBehaviour
         exitButton.SetActive(enabled);
     }
 
+    // Displays the previous tutorial page
+        public void PreviousImage()
+        {
+            currentIndex--;
+            UpdateImage();
+            UISoundManager.Instance.PlayClickSound(true);
+
+            if (rightArrowButton.interactable == false)
+            {
+            rightArrowButton.interactable = true; 
+            }
+        }  
+
     // Displays the next tutorial page
     public void NextImage()
     {
         currentIndex++;
         UpdateImage();
-
-        if (currentIndex == tutorialImages.Count - 1)
-        {
-            rightArrowButton.interactable = false;
-        }
+        UISoundManager.Instance.PlayClickSound(false);
 
         if (leftArrowButton.interactable == false)
         {
             leftArrowButton.interactable = true;
         }
     }
-
-    // Displays the previous tutorial page
-    public void PreviousImage()
-    {
-        currentIndex--;
-        UpdateImage();
-
-        if (currentIndex == 0)
-        {
-            leftArrowButton.interactable = false;
-        }
-
-        if (rightArrowButton.interactable == false)
-        {
-           rightArrowButton.interactable = true; 
-        }
-    }   
 
     // Shows the tutorial image corresponding to the current page
     public void UpdateImage()

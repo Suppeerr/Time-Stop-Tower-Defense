@@ -26,8 +26,11 @@ Material:
     m_TexEnvs: []
     m_Ints: []
     m_Floats:
+    - _FaceDilate: -0.1
     - _OutlineWidth: 0
     - _ScaleRatioA: 0.8333333
+    - _ScaleRatioB: 0.7604167
+    - _ScaleRatioC: 0.7604167
     m_Colors:
     - _GlowColor: {r: 2.6082375, g: 2.6082375, b: 2.6082375, a: 1}
   m_BuildTextureStacks: []

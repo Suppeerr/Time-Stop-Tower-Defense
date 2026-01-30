@@ -26,7 +26,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1ab1715d1fc6c44ee83dc8a8b5d820d7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 1.575
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1ab1715d1fc6c44ee83dc8a8b5d820d7, type: 3}
       propertyPath: m_LocalPosition.z
@@ -336,7 +336,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Homing
   arcBoost: 1
-  destroyAfter: 15
   type: 1
   normalLightningRingPrefab: {fileID: 472945448216530197, guid: 73463932c03cbba409d6cd242964ba32, type: 3}
   upgradedLightningRingPrefab: {fileID: 472945448216530197, guid: 01bbac061358a0e4e91355aeff964640, type: 3}
