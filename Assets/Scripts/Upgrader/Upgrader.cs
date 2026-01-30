@@ -182,7 +182,7 @@ public class Upgrader : MonoBehaviour
 
     void OnMouseDown()
     {
-        if (TimeStop.Instance.IsFrozen || !clickableScript.ClickableEnabled || BaseHealthManager.IsGameOver)
+        if (TimeStop.Instance.IsFrozen || !clickableScript.ClickableEnabled || BaseHealthManager.Instance.IsGameOver)
         {
             return;
         }

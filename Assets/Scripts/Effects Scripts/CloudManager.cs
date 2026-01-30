@@ -18,8 +18,8 @@ public class CloudManager : MonoBehaviour
     private float cloudLifetime = 120f;
     
     // Minimum and maximum cloud movement speeds
-    private float minCloudSpeed = 0.4f;
-    private float maxCloudSpeed = 0.7f;
+    private float minCloudSpeed = 0.3f;
+    private float maxCloudSpeed = 0.6f;
 
     // Timing field
     private float elapsed;
@@ -82,7 +82,10 @@ public class CloudManager : MonoBehaviour
     {
         foreach (GameObject cloud in clouds)
         {
-            cloud.transform.position += new Vector3(0f, 0f, -Random.Range(minCloudSpeed, maxCloudSpeed) * Time.deltaTime);
+            if (cloud != null)
+            {
+                cloud.transform.position += new Vector3(0f, 0f, -Random.Range(minCloudSpeed, maxCloudSpeed) * Time.deltaTime);
+            }
         }
     }
 

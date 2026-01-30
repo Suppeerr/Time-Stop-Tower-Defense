@@ -12,6 +12,9 @@ public class MoneyManager : MonoBehaviour
     // Money stored UI
     [SerializeField] private TMP_Text moneyText;
 
+    // Coin drop sound effect
+    [SerializeField] private AudioSource coinDrop;
+
     void Awake()
     {
         // Avoids duplicates of this object
@@ -62,6 +65,7 @@ public class MoneyManager : MonoBehaviour
         else
         {
             money += amount;
+            coinDrop.Play();
         }
         
         UpdateUI();

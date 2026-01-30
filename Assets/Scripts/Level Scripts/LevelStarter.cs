@@ -44,5 +44,6 @@ public class LevelStarter : MonoBehaviour
         HasLevelStarted = true;
         gameObject.SetActive(false);
         tutorialImage.enabled = false;
+        UISoundManager.Instance.PlayClickSound(false);
     }
 }

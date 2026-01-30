@@ -22,7 +22,7 @@ public class OutlineManager : MonoBehaviour
     // Updates outline visibility on a clickable object
     public void UpdateOutlineVisibility(Clickable clickable, bool visible)
     {
-        if (BaseHealthManager.IsGameOver)
+        if (BaseHealthManager.Instance.IsGameOver)
         {
             return;
         }
@@ -47,7 +47,7 @@ public class OutlineManager : MonoBehaviour
     // Toggles the outline of a clickable object on or off
     public void ToggleOutlineActive(Clickable clickable, bool active)
     {
-        if (BaseHealthManager.IsGameOver)
+        if (BaseHealthManager.Instance.IsGameOver)
         {
             return;
         }

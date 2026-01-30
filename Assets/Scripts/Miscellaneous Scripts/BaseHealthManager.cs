@@ -23,8 +23,11 @@ public class BaseHealthManager : MonoBehaviour
     private int maxBaseHp = 500;
     private int currentBaseHp;
 
-    // Game over static boolean
-    public static bool IsGameOver { get; private set; }
+    // Chain clanking sound effect
+    [SerializeField] private AudioSource chainClank;
+
+    // Game over boolean
+    public bool IsGameOver { get; private set; }
 
     private void Awake()
     {
@@ -91,7 +94,7 @@ public class BaseHealthManager : MonoBehaviour
     }
 
     // Updates base hp by amount parameter
-    public void UpdateBaseHP(int amount)
+    public void UpdateBaseHP(int amount, bool leaked = false)
     {
         if (IsGameOver || (amount > 0 && currentBaseHp >= maxBaseHp))
         {
@@ -100,6 +103,11 @@ public class BaseHealthManager : MonoBehaviour
 
         currentBaseHp += amount;
         UpdateUI();
+
+        if (leaked)
+        {
+            chainClank.Play();
+        }
     }
 
     // Returns the current base hp
@@ -120,6 +128,7 @@ public class BaseHealthManager : MonoBehaviour
         levelWinText.enabled = true;
         levelRestartText.enabled = true;
         ProjectileManager.Instance.DestroyAllProjectiles();
+        SettingsManager.Instance.MuteMusicVolume();
     }
 
     // Toggles game over when lose conditions are met
@@ -134,6 +143,7 @@ public class BaseHealthManager : MonoBehaviour
         gameOverText.enabled = true;
         levelRestartText.enabled = true;
         ProjectileManager.Instance.DestroyAllProjectiles();
+        SettingsManager.Instance.MuteMusicVolume();
     }
 
     // Restarts the level

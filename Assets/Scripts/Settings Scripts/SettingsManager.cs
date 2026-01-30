@@ -10,22 +10,22 @@ public class SettingsManager : MonoBehaviour
     public static SettingsManager Instance;
 
     // Master volume fields
-    [SerializeField] AudioMixer masterMixer;
-    [SerializeField] Slider masterSlider;
+    [SerializeField] private AudioMixer masterMixer;
+    [SerializeField] private Slider masterSlider;
 
     // Sound effect volume field
-    [SerializeField] Slider soundSlider;
+    [SerializeField] private Slider soundSlider;
 
     // Music volume fields
-    [SerializeField] Slider musicSlider;
-    [SerializeField] AudioSource musicSource;
+    [SerializeField] private Slider musicSlider;
+    [SerializeField] private AudioSource musicSource;
 
     // Damage indicator fields
-    [SerializeField] Slider dmgIndicatorSlider;
-    [SerializeField] EnemyDamageIndicator dmgIndicatorScript;
+    [SerializeField] private Slider dmgIndicatorSlider;
+    [SerializeField] private EnemyDamageIndicator dmgIndicatorScript;
 
     // Day/night cycle field
-    [SerializeField] Toggle dayNightFreezeToggle;
+    [SerializeField] private Toggle dayNightFreezeToggle;
 
     void Awake()
     {
@@ -92,7 +92,12 @@ public class SettingsManager : MonoBehaviour
             masterMixer.SetFloat("SfxVolume", -80f);
         }
 
-        if (musicSlider.value <= -39.5f || masterSlider.value <= -39.5f)
+        if (BaseHealthManager.Instance.IsGameOver)
+        {
+            return;
+        }
+
+        if ((musicSlider.value <= -39.5f || masterSlider.value <= -39.5f))
         {
             musicSource.mute = true;
         }
@@ -100,6 +105,12 @@ public class SettingsManager : MonoBehaviour
         {
             musicSource.mute = false;
         }
+    }
+
+    // Manually mutes the music volume
+    public void MuteMusicVolume()
+    {
+        musicSource.mute = true;
     }
 
     // Tells the damage indicator script to update its indicator sizes to the slider value
@@ -112,6 +123,7 @@ public class SettingsManager : MonoBehaviour
     public void FreezeDayNightCycle()
     {
         StartCoroutine(FreezeCycle());
+        UISoundManager.Instance.PlayClickSound(!dayNightFreezeToggle.isOn);
     }
 
     private IEnumerator FreezeCycle()
@@ -128,17 +140,20 @@ public class SettingsManager : MonoBehaviour
     public void ResetDayNightCycle()
     {
         DayAndNightAdjuster.Instance.ResetCycle();
+        UISoundManager.Instance.PlayClickSound(false);
     }
 
     // Restarts the level
     public void RestartLevel()
     {
+        UISoundManager.Instance.PlayClickSound(false);
         BaseHealthManager.Instance.RestartLevel();
     }
 
     // Exits the level and returns to the level selector scene
     public void ExitLevel()
     {
+        UISoundManager.Instance.PlayClickSound(false);
         SceneManager.LoadScene("UI and Main Menu", LoadSceneMode.Single);
     }
 }

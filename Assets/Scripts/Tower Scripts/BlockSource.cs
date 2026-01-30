@@ -33,7 +33,7 @@ public class BlockSource : MonoBehaviour
 
     public void OnMouseDown()
     {
-        if (TimeStop.Instance.IsFrozen || BaseHealthManager.IsGameOver)
+        if (TimeStop.Instance.IsFrozen || BaseHealthManager.Instance.IsGameOver)
         {
             return;
         }
