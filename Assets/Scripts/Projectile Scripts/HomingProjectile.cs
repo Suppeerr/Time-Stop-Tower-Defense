@@ -23,7 +23,7 @@ public class HomingProjectile : MonoBehaviour
     // Charge fields
     [SerializeField] private GameObject normalLightningRingPrefab;
     [SerializeField] private GameObject upgradedLightningRingPrefab;
-    [SerializeField] private GlowingSphereEmitter sphereEmitter;
+    [SerializeField] private GameObject glowingSpherePrefab;
     [SerializeField] private GameObject normalExplosionPrefab;
     [SerializeField] private GameObject upgradedExplosionPrefab;
     private int chargeLevel = 0;
@@ -242,17 +242,17 @@ public class HomingProjectile : MonoBehaviour
     // Enables lightning and sphere emitter effects
     public void EnableChargeEffects(int charge)
     {
+        if (glowingSpherePrefab != null)
+        {
+            Instantiate(glowingSpherePrefab, transform);
+        }
+
         if (charge == 1)
         {
             if (normalLightningRingPrefab != null)
             {
                 Instantiate(normalLightningRingPrefab, transform);
-            }
-
-            if (sphereEmitter != null)
-            {
-                sphereEmitter.enabled = true;
-            }
+            }            
         }
         else if (charge == 2)
         {
