@@ -93,6 +93,7 @@ public class BeamZap : MonoBehaviour
                 break;
         }
     }
+    
     // Randomly pre-charges several projectiles if the upgrade is bought
     public void PreChargeProjectiles()
     {

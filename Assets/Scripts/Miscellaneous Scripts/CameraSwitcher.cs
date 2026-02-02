@@ -75,12 +75,20 @@ public class CameraSwitcher : MonoBehaviour
             ActiveCam = 1;
         }
 
-        Time.timeScale = 0.1f;
+        if (!TimeStop.Instance.IsFrozen)
+        {
+            Time.timeScale = 0.1f;
+        }
+
         yield return StartCoroutine(MoveCamera(cameras[previousActiveCamNum], cameras[ActiveCam], 1.5f));
         SyncOverlayCamera();
 
         yield return new WaitForSecondsRealtime(1f);
-        Time.timeScale = 1f;
+
+        if (!TimeStop.Instance.IsFrozen)
+        {
+            Time.timeScale = 1f;
+        }
     }
 
     // Sets the active camera to a specified camera via camera number

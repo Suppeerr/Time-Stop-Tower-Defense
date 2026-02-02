@@ -273,11 +273,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Homing
   arcBoost: 1
-  destroyAfter: 15
   type: 3
   normalLightningRingPrefab: {fileID: 472945448216530197, guid: 73463932c03cbba409d6cd242964ba32, type: 3}
   upgradedLightningRingPrefab: {fileID: 472945448216530197, guid: 01bbac061358a0e4e91355aeff964640, type: 3}
-  sphereEmitter: {fileID: 0}
+  glowingSpherePrefab: {fileID: 6558791096087875646, guid: 1342576d05e995946ad020580f21b305, type: 3}
   normalExplosionPrefab: {fileID: 4707553116422246363, guid: 0fcade7b52067d34c961bff21cc00293, type: 3}
   upgradedExplosionPrefab: {fileID: 0}
   statsContainer: {fileID: 11400000, guid: 0ed108a3a2db58946b6bdc754b742454, type: 2}
