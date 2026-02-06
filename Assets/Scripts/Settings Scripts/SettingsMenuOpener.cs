@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class SettingsMenuOpener : MonoBehaviour
 {
@@ -40,12 +41,17 @@ public class SettingsMenuOpener : MonoBehaviour
             SettingsManager.Instance.CloseSettings();
             UISoundManager.Instance.PlayClickSound(true);
         }
+
+        // Opens the settings when the escape key is pressed
+        if (Keyboard.current.escapeKey.wasPressedThisFrame)
+        {
+            UpdateMenu();
+        }
     }
     
     // Switches the menu opened boolean when menu opened/closed 
     public void UpdateMenu()
     {
-        
         MenuOpened = !MenuOpened;
         UpdatePause();
     }
@@ -53,7 +59,7 @@ public class SettingsMenuOpener : MonoBehaviour
     // Updates the time scale in response to whether the settings are open
     public void UpdatePause()
     {
-        if (!MenuOpened && Time.timeScale == 0f)
+        if (!MenuOpened && Time.timeScale == 0f && !TimeStop.Instance.IsFrozen)
         {
             Time.timeScale = 1f;
         } 

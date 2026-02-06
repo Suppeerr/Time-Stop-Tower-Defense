@@ -26,7 +26,7 @@ public class NormalProjectile : MonoBehaviour
     private float splitTimer = 3f;
     [SerializeField] private int splitCount = 2;
     [SerializeField] private float spreadAngle = 30f;
-    
+
     // Parry field
     private bool parryDeath = false;
 
