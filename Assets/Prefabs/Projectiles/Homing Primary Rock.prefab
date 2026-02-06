@@ -339,4 +339,5 @@ MonoBehaviour:
   glowingSpherePrefab: {fileID: 6558791096087875646, guid: 1342576d05e995946ad020580f21b305, type: 3}
   normalExplosionPrefab: {fileID: 1937064554090219862, guid: a1d62460fa2a91046bb239293bde50a5, type: 3}
   upgradedExplosionPrefab: {fileID: 1937064554090219862, guid: 573e35c6100fb2f429a022c54fc3e054, type: 3}
+  parryVFX: {fileID: 3168525067736904555, guid: 91651cb32e668b14a92f2a8eb9eb69e0, type: 3}
   statsContainer: {fileID: 11400000, guid: 0ed108a3a2db58946b6bdc754b742454, type: 2}

@@ -288,27 +288,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   thresholds:
-  - image: {fileID: 21300000, guid: ec09a52093972674fbd95cfb50995f09, type: 3}
+  - image: {fileID: 21300000, guid: ad24a99559ce6294596457d7b468524c, type: 3}
     percent: 1
-  - image: {fileID: 21300000, guid: 66e74aa0aa1f49c48806ca7df066bbb6, type: 3}
+  - image: {fileID: 21300000, guid: 5295b021e1798684a94ef2f7f66bbecc, type: 3}
     percent: 0.9
-  - image: {fileID: 21300000, guid: 670e6fd4611b5824abf90dd1be69f490, type: 3}
+  - image: {fileID: 21300000, guid: 79f09c6008af2e542ab74cc5deb5e040, type: 3}
     percent: 0.8
-  - image: {fileID: 21300000, guid: 5e3fcc12121332344859c952c93afc5a, type: 3}
+  - image: {fileID: 21300000, guid: 82891dd9c840b8d43abee1ee1ae99308, type: 3}
     percent: 0.7
-  - image: {fileID: 21300000, guid: 9830832c6a6be7844b85222ffe891716, type: 3}
+  - image: {fileID: 21300000, guid: f7489b291a339484484c90b81c07a071, type: 3}
     percent: 0.6
-  - image: {fileID: 21300000, guid: 1197878beae4a63438e56e7e61ea2934, type: 3}
+  - image: {fileID: 21300000, guid: 0a7c03ea5df5ce24f93942e8da255a89, type: 3}
     percent: 0.5
-  - image: {fileID: 21300000, guid: 34b5d00cbdf947a49a9ba450ecbcf312, type: 3}
+  - image: {fileID: 21300000, guid: 30155c4bd3cec394482ed5b6a3592932, type: 3}
     percent: 0.4
-  - image: {fileID: 21300000, guid: 7af9624f4f5290d40ae822607c5d65d3, type: 3}
+  - image: {fileID: 21300000, guid: cb6bbbbf8f7a45046bf55d031d910851, type: 3}
     percent: 0.3
-  - image: {fileID: 21300000, guid: c83442a5316fda54e971ada13b754561, type: 3}
+  - image: {fileID: 21300000, guid: 86e619a47d1058f41b3eca52d63b464d, type: 3}
     percent: 0.2
-  - image: {fileID: 21300000, guid: 1b6cf5cb93ed5454c8ca1ec9893d32e2, type: 3}
+  - image: {fileID: 21300000, guid: d642e40b85f59e2498f7e41d40203e69, type: 3}
     percent: 0.1
-  - image: {fileID: 21300000, guid: 92483f7fe3386854bb03a192b7479af1, type: 3}
+  - image: {fileID: 21300000, guid: f5ac73e03583275499030e8116514c2c, type: 3}
     percent: 0
   currentHpImage: {fileID: 8683824831425680825}
   gameOverText: {fileID: 8335442978605386118}

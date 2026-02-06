@@ -38,11 +38,11 @@ public class MoneyManager : MonoBehaviour
         // Moves the money indicator for specific cameras
         if (CameraSwitcher.Instance.ActiveCam == 2)
         {
-            moneyText.rectTransform.anchoredPosition = new Vector2(124, 187);
+            moneyText.rectTransform.anchoredPosition = new Vector2(124f, 187f);
         }
         else
         {
-            moneyText.rectTransform.anchoredPosition = new Vector2(761, 187);
+            moneyText.rectTransform.anchoredPosition = new Vector2(761f, 187f);
         }
     }
 
