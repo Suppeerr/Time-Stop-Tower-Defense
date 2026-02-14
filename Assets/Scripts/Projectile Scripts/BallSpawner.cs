@@ -49,7 +49,7 @@ public class BallSpawner : MonoBehaviour
         if (isCannon)
         {
             // Fires a cannon ball to a clicked projectile
-            if ((Mouse.current.leftButton.wasPressedThisFrame || Keyboard.current.spaceKey.wasPressedThisFrame) && timer >= spawnRate)
+            if (InputManager.Instance.Input.Gameplay.ZapParry.triggered && timer >= spawnRate)
             {
                 Ray ray = CameraSwitcher.Instance.CurrentCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
 
