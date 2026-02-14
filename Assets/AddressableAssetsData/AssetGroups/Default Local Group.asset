@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Default Local Group
+  m_EditorClassIdentifier: Unity.Addressables.Editor::UnityEditor.AddressableAssets.Settings.AddressableAssetGroup
+  m_GroupName: Default Local Group
+  m_GUID: 08074f1a9abf0264ea0ae33166487087
+  m_SerializeEntries:
+  - m_GUID: 20d251a011cb30d48bd2ff5f1d18f078
+    m_Address: ScriptableObjects/Stats & Data Containers/EnemyStatsContainer
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 41352ee67a6535546924e2d6dcb24f60
+    m_Address: Enemies/Animated Normal Bandit
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 775ba0a3fcbfe96408f7bb9b2911127b
+    m_Address: Enemies/Normal Bandit
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a68e55b76c3e5c040b3718519d65d40e
+    m_Address: Enemies/Enemy Damage Indicator
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c1fcc4200927af145b598f9c37b64806
+    m_Address: Enemies/Speedy Bandit
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 3931168a6e693cd49bf341fac07f3064, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: e29c964cd3bacb146ac4dd8670bb88ae, type: 2}
+    - {fileID: 11400000, guid: bb259a0652a340e4db9aa73bcfc51745, type: 2}

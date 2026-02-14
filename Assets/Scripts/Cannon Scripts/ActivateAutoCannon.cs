@@ -24,7 +24,7 @@ public class ActivateAutoCannon : MonoBehaviour
     void Update()
     {
         // Checks to see if cannon upgrade has been bought
-        if (Upgrader.AutoCannonBought && !isActivated)
+        if (UpgradeManager.Instance.IsBought(UpgradeType.AutoCannon) && !isActivated)
         {
             foreach (Transform child in transform) 
             {
@@ -48,11 +48,6 @@ public class ActivateAutoCannon : MonoBehaviour
 
         while (elapsedDelay < activationTime)
         {
-            while (ProjectileManager.IsFrozen)
-            {
-                yield return null;
-            }
-
             elapsedDelay += Time.deltaTime;
             float t = elapsedDelay / activationTime;
             transform.position = Vector3.Lerp(originalPos, originalPos + Vector3.left * 0.95f, t);

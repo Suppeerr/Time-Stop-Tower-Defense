@@ -5,6 +5,7 @@ public class BarrelAim : MonoBehaviour
 {
     // Shoot location
     [SerializeField] private Transform shootPoint;
+    
     // Target direction
     private Vector3 targetDirection;        
 

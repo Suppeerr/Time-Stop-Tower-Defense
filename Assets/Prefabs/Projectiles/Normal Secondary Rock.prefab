@@ -277,7 +277,9 @@ MonoBehaviour:
   ballSpawner: {fileID: 7703208739090267004, guid: a477c0fc531854b409fdb902634bc6ec, type: 3}
   type: 4
   initialYVel: 10
+  splitCount: 2
   spreadAngle: 50
+  parryVFX: {fileID: 3168525067736904555, guid: 91651cb32e668b14a92f2a8eb9eb69e0, type: 3}
 --- !u!114 &6865520828780464435
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -6,9 +6,10 @@ using System.Collections.Generic;
 
 public class BlockSource : MonoBehaviour
 {
-    // Draggable tower prefab and money manager script
+    // Draggable tower prefab
     [SerializeField] private GameObject draggablePrefab;
-    private MoneyManager moneyManagerScript;
+
+    // Red flash coroutine for invalid purchases
     private Coroutine flashRedRoutine = null;
 
     // Cost indicator text and parameters
@@ -17,73 +18,44 @@ public class BlockSource : MonoBehaviour
     private Color invalidColor = Color.red;
     [SerializeField] private Color baseGlowColor;
     [SerializeField] private Color invalidGlowColor;
-    private int currentMoney;
-    private float elapsed = 0f;
 
     void Start()
     {
-        // Initializes script and text variables
-        moneyManagerScript = GameObject.Find("Money Manager")?.GetComponent<MoneyManager>();
+        // Initializes text variables
         UpdateUI();
         costIndicator.color = baseColor;
     }
 
     void Update()
     {
-        if (elapsed < 0.05f)
-        {
-            elapsed += Time.deltaTime;
-        }
-        else
-        {
-            elapsed = 0f;
-            currentMoney = moneyManagerScript.GetMoney();
-
-            if (flashRedRoutine != null)
-            {
-                return;
-            }
-
-            if (currentMoney >= TowerManager.Instance.GetSplitterCost())
-            {
-                costIndicator.fontMaterial.SetFloat("_GlowPower", 0.3f);
-            }
-            else
-            {
-                costIndicator.fontMaterial.SetFloat("_GlowPower", 0f);
-            }
-        }
+        UpdateGlow();
     }
 
     public void OnMouseDown()
     {
-        if (ProjectileManager.IsFrozen || BaseHealthManager.IsGameOver)
+        if (TimeStop.Instance.IsFrozen || BaseHealthManager.Instance.IsGameOver)
         {
             return;
         }
 
-        // Get a spawn position under the cursor (XZ plane)
-        Ray ray = CameraSwitch.CurrentCamera.ScreenPointToRay(Input.mousePosition);
+        // Get a spawn position under the cursor in the XZ plane
+        Ray ray = CameraSwitcher.Instance.CurrentCamera.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
-        Vector3 spawnPos = transform.position; // fallback position
+        Vector3 spawnPos = transform.position; 
 
         if (Physics.Raycast(ray, out hit))
         {
             spawnPos = new Vector3(hit.point.x, hit.point.y, hit.point.z);
         }
 
-        // Check if money manager has enough money
-        currentMoney = moneyManagerScript.GetMoney();
-
         // If there is enough money, start dragging the tower
-        if (currentMoney >= TowerManager.Instance.GetSplitterCost())
+        if (MoneyManager.Instance.GetMoney() >= TowerManager.Instance.GetSplitterCost())
         {
-            // Spawn the draggable tower
             GameObject newTower = Instantiate(draggablePrefab, spawnPos, Quaternion.identity);
 
-            // Begin dragging
             Draggable draggable = newTower.GetComponent<Draggable>();
+
             if (draggable != null)
             {
                 draggable.BeginDrag();
@@ -95,25 +67,41 @@ public class BlockSource : MonoBehaviour
         }
     }
 
+    // Updates the tower price indicator to reflect the current cost
     public void UpdateUI()
     {
         costIndicator.text = TowerManager.Instance.GetSplitterCost() + " Coins";
     }
+
+    // Makes the tower price indicator glow when the tower is purchasable 
+    private void UpdateGlow()
+    {
+        if (flashRedRoutine != null)
+        {
+            return;
+        }
+
+        if (MoneyManager.Instance.GetMoney() >= TowerManager.Instance.GetSplitterCost())
+        {
+            costIndicator.fontMaterial.SetFloat("_GlowPower", 0.3f);
+        }
+        else
+        {
+            costIndicator.fontMaterial.SetFloat("_GlowPower", 0f);
+        }
+    }
     
+    // Flashes the tower price indicator red briefly
     private IEnumerator FlashRed(float duration)
     {
-        // Get the font material instance
         Material mat = costIndicator.fontMaterial;
 
-        // Set color and glow to red 
         costIndicator.color = invalidColor;
         mat.SetColor("_GlowColor", invalidGlowColor);
         costIndicator.fontMaterial.SetFloat("_GlowPower", 0.3f);
 
-        // Wait for duration
         yield return new WaitForSeconds(duration);
 
-        // Revert back to original color and glow
         costIndicator.color = baseColor;
         mat.SetColor("_GlowColor", baseGlowColor);
         costIndicator.fontMaterial.SetFloat("_GlowPower", 0f);

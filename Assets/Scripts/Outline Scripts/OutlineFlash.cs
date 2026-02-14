@@ -3,82 +3,92 @@ using System.Collections;
 
 public class OutlineFlash : MonoBehaviour
 {
+    // Outline script
     private Outline outline;
-    private Coroutine flashCoroutine;
+
+    // Base outline color
     private Color baseOutlineColor = Color.white;
-    private float flashDuration = 0.5f;
-    public bool IsFlashing { get; private set; }
+
+    // Visual override bool
     private bool visualOverride = false;
+
+    // Outline flashing fields
+    private float flashDuration = 0.6f;
+    public bool IsFlashing { get; private set; }
     
     void Start()
     {
+        // Gets the object's outline script
         outline = GetComponent<Outline>();
     }
 
+    // Starts flashing the outline
     public void StartFlashing()
     {
-        if (flashCoroutine != null)
-        {
-            StopCoroutine(flashCoroutine);
-        }
+        StopAllCoroutines();
 
         IsFlashing = true;
         StartCoroutine(FlashRoutine());
     }
 
+    // Stops flashing the outline
     public void StopFlashing(bool clicked)
     {
         IsFlashing = false;
-        flashCoroutine = null;
+        visualOverride = false;
+        StopAllCoroutines();
+
+        outline.OutlineColor = new Color(baseOutlineColor.r, baseOutlineColor.g, baseOutlineColor.b, 0f);
+
         if (!clicked)
         {
             visualOverride = true;
-            outline.OutlineColor = new Color(baseOutlineColor.r, baseOutlineColor.g, baseOutlineColor.b, 0f);
         }
     }
 
+    // Fades the outline in and out when active
     private IEnumerator FlashRoutine()
     {
         if (outline == null)
         {
             yield break;
         }
-
-        yield return null;
-
-        float halfDuration = flashDuration / 2f;
+        
         while (IsFlashing)
         {
             // Fade in
-            for (float t = 0; t < halfDuration; t += Time.deltaTime)
-            {
-                if (visualOverride || !IsFlashing)
-                {
-                    break;
-                }
-
-                float alpha = Mathf.Lerp(0f, baseOutlineColor.a, t / halfDuration);
-                outline.OutlineColor = new Color(baseOutlineColor.r, baseOutlineColor.g, baseOutlineColor.b, alpha);
-                yield return null;
-            }
+            yield return StartCoroutine(FadeOutline(0f, baseOutlineColor.a));
 
             // Fade out
-            for (float t = 0; t < halfDuration; t += Time.deltaTime)
-            {
-                if (visualOverride || !IsFlashing)
-                {
-                    break;
-                }
-
-                float alpha = Mathf.Lerp(baseOutlineColor.a, 0f, t / halfDuration);
-                outline.OutlineColor = new Color(baseOutlineColor.r, baseOutlineColor.g, baseOutlineColor.b, alpha);
-                yield return null;
-            }
-
-            yield return null;
+            yield return StartCoroutine(FadeOutline(baseOutlineColor.a, 0f));
         }
     }
 
+    // Fades the outline's alpha from one value to another
+    private IEnumerator FadeOutline(float from, float to)
+    {
+        float halfDuration = flashDuration / 2f;
+
+        for (float t = 0; t < halfDuration; t += Time.unscaledDeltaTime)
+        {
+            while (SettingsMenuOpener.Instance.MenuOpened)
+            {
+                yield return null;
+            }
+
+            if (visualOverride || !IsFlashing)
+            {
+                break; 
+            }
+
+            float alpha = Mathf.Lerp(from, to, t / halfDuration);
+            outline.OutlineColor = new Color(baseOutlineColor.r, baseOutlineColor.g, baseOutlineColor.b, alpha);
+
+            yield return null;
+        }
+    } 
+
+    // Overrides the outline flash if the object is hovered over
     public void SetVisualOverride(bool isOverriding)
     {
         visualOverride = isOverriding;

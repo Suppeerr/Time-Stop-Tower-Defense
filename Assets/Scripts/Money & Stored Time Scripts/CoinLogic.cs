@@ -2,29 +2,25 @@ using UnityEngine;
 
 public class CoinLogic : MonoBehaviour
 {
-    // Scripts and transforms
-    private MoneyManager moneyManagerScript;
+    // Scripts and transform
     private Drone droneScript;
     private Transform launcher;
 
+    // Coin fields
     private float floatSpeed = 10f;
     private bool isBeingVacuumed = false;
     [SerializeField] private bool isProjectile;
 
     void Awake()
     {
+        // Initialize fields
         droneScript ??= FindFirstObjectByType<Drone>();
-        moneyManagerScript = GameObject.Find("Money Manager")?.GetComponent<MoneyManager>();
         launcher = GameObject.Find("Coin Launcher")?.transform;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if (ProjectileManager.IsFrozen)
-        {
-            return;
-        }
+        // Floats the coin up if it touches the vacuum collider
         if (isBeingVacuumed)
         {
             FloatIntoDrone();
@@ -34,25 +30,32 @@ public class CoinLogic : MonoBehaviour
         transform.rotation *= Quaternion.Euler(-90 * Time.deltaTime, 0, 0);
     }
 
-    // Call CollectCoin when the coin collides with drone collector
     private void OnTriggerEnter(Collider other)
     {
+        // Tells drone that its vacuum is active when the coin touches the collider
         if (other.name == "Coin Vacuum" && !isBeingVacuumed && !isProjectile)
         {
             isBeingVacuumed = true;
             droneScript.ToggleCoinCollect(true);
+            return;
         }
-        else if (other.name == "Coin Collector" && !isProjectile)
+
+        // Collects the coin when it collides with drone collector
+        if (other.name == "Coin Collector" && !isProjectile)
         {
             droneScript.ToggleCoinCollect(false);
             droneScript.FindClosestCoin();
             Destroy(gameObject);
-            CoinSpawner.Instance.SpawnCoin(true, launcherPos: launcher.position);
+            CoinSpawner.Instance.SpawnCoin(launcherPos: launcher.position);
+            return;
         }
-        else if (other.name == "Safe Collector" && isProjectile)
+
+        // Increases money when the coin projectile hits the safe collector
+        if (other.name == "Safe Collector" && isProjectile)
         {
-            moneyManagerScript.UpdateMoney();
+            MoneyManager.Instance.UpdateMoney();
             Destroy(gameObject);
+            return;
         }
     }
 

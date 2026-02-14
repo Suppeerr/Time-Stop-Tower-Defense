@@ -3,25 +3,39 @@ using static UnityEngine.Random;
 
 public class NormalProjectile : MonoBehaviour
 {
-    public BallSpawner ballSpawner;
+    // Ball spawner script
+    [SerializeField] private BallSpawner ballSpawner;
+
+    // Clickable and outline flash scripts
     private Clickable clickableScript;
     private OutlineFlash outlineFlashScript;
-    public ProjectileType type;
-    private float initialXVel = -1f;
-    public float initialYVel = 0f;
-    private float initialZVel = -1f;
+
+    // Projectile lifetime and type
+    private float timeAfterSpawn = 0f;
+    [HideInInspector] public ProjectileType type;
+
+    // Initial spawn coordinates
+    private float initialXVel;
+    [SerializeField] private float initialYVel = 0f;
+    private float initialZVel;
+
+    // Gravity multiplier
     private float gravityMultiplier = 0.7f;
-    private int splitCount = 2;
-    public float spreadAngle = 30f;
-    private float destroyAfter = 3f;
-    private float lifetime = 0f;
+
+    // Split fields
+    private float splitTimer = 3f;
+    [SerializeField] private int splitCount = 2;
+    [SerializeField] private float spreadAngle = 30f;
+
+    // Parry field
     private bool parryDeath = false;
+
+    // Projectile rigidbody
     private Rigidbody rb;
     
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        // Randomizes spawn position, registers projectile, and initializes fields
         initialXVel = Random.Range(-0.8f, 0.8f);
         initialZVel = Random.Range(-0.8f, 0.8f);
 
@@ -29,31 +43,30 @@ public class NormalProjectile : MonoBehaviour
         outlineFlashScript = this.GetComponent<OutlineFlash>();
         
         rb = GetComponent<Rigidbody>();
-        ProjectileManager.Instance.RegisterProjectile(rb);
         rb.collisionDetectionMode =  CollisionDetectionMode.ContinuousDynamic;
         rb.linearVelocity = new Vector3(initialXVel, initialYVel, initialZVel);
+
+        ProjectileManager.Instance.RegisterProjectile(rb);
     }
 
-    // Update is called once per frame
     void FixedUpdate()
     {
-        if (ProjectileManager.IsFrozen)
+        // Splits primary projectiles after some time
+        if (this.type == ProjectileType.PrimaryNormal)
         {
-            return;
-        }
-        else if (this.type == ProjectileType.PrimaryNormal)
-        {
-            lifetime += Time.deltaTime;
+            timeAfterSpawn += Time.deltaTime;
         }
 
-        if (lifetime >= destroyAfter)
+        if (timeAfterSpawn >= splitTimer)
         {
             SplitAndDestroy();
         }
 
+        // Shifts the gravity on projectiles
         rb.AddForce(Physics.gravity * (gravityMultiplier - 1f), ForceMode.Acceleration);
     }
 
+    // Handles collisions between the projectile and other objects
     void OnCollisionEnter(Collision collision)
     {
         if (collision.collider.CompareTag("Cannon Projectile"))
@@ -71,9 +84,9 @@ public class NormalProjectile : MonoBehaviour
         }
     }
 
+    // Spawns a homing projectile where the normal projectile was destroyed
     void BecomeHoming()
     {
-        // Spawn homing projectile
         Destroy(gameObject);
 
         if (ballSpawner != null)
@@ -90,11 +103,13 @@ public class NormalProjectile : MonoBehaviour
         }
     }
 
+    // Marks the projectile as destroyed by a parry/zap, not the splitting
     public void MarkDestroyedByParry()
     {
         parryDeath = true;
     }
 
+    // Splits the primary projectile into multiple secondary projectiles
     public void SplitAndDestroy()
     {
         if (this.type == ProjectileType.PrimaryNormal && !parryDeath)
@@ -110,6 +125,7 @@ public class NormalProjectile : MonoBehaviour
         Destroy(gameObject);
     }
 
+    // Updates the projectile's outline flash
     public void UpdateBlinking(bool blinkCon)
     {
         if (blinkCon)
@@ -122,6 +138,7 @@ public class NormalProjectile : MonoBehaviour
         }
     }
 
+    // Unregisters the projectile upon its destruction
     void OnDestroy()
     {
         ProjectileManager.Instance?.UnregisterProjectile(rb);

@@ -51,6 +51,7 @@ MonoBehaviour:
   explosionSFX: {fileID: -3613417858386922989}
   normalHitSFX: {fileID: 7689455874485948544}
   activeProjectiles: []
+  statsContainer: {fileID: 11400000, guid: 0ed108a3a2db58946b6bdc754b742454, type: 2}
 --- !u!82 &-7606052773318764168
 AudioSource:
   m_ObjectHideFlags: 0
@@ -60,7 +61,7 @@ AudioSource:
   m_GameObject: {fileID: 1360090404083059143}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 2508741947034709795, guid: 2b6874786b09ce64b9f0be183bb576b4, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 3efb277ea0057484f8aa00326c98617b, type: 3}
   m_PlayOnAwake: 0
@@ -157,7 +158,7 @@ AudioSource:
   m_GameObject: {fileID: 1360090404083059143}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 2508741947034709795, guid: 2b6874786b09ce64b9f0be183bb576b4, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: edb645fb6692462439725f23ef2cdb94, type: 3}
   m_PlayOnAwake: 0
@@ -254,7 +255,7 @@ AudioSource:
   m_GameObject: {fileID: 1360090404083059143}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 2508741947034709795, guid: 2b6874786b09ce64b9f0be183bb576b4, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: a06da6ce19de3f242a850129621786a4, type: 3}
   m_PlayOnAwake: 0

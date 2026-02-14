@@ -8,23 +8,18 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Grass
-  m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 8dd27a834e42a5d44aec5cb1426ebf36, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords:
-  - _ALPHAPREMULTIPLY_ON
-  - _SURFACE_TYPE_TRANSPARENT
+  m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
+  m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 3000
-  stringTagMap:
-    RenderType: Transparent
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
   disabledShaderPasses:
   - MOTIONVECTORS
-  - DepthOnly
-  - SHADOWCASTER
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -106,6 +101,7 @@ Material:
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
+    - _Grass_Height: 500
     - _MaxHeight: 5
     - _Metallic: 0
     - _Noise_Strength: 1
@@ -123,6 +119,9 @@ Material:
     - _Surface: 1
     - _SwayAmount: 0.5
     - _SwaySpeed: 1
+    - _Sway_Density: 1.5
+    - _Sway_Speed: 0.4
+    - _Sway_Strength: 25
     - _WindDensity: 2
     - _WorkflowMode: 1
     - _XRMotionVectorsPass: 1

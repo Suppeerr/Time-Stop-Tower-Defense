@@ -4,14 +4,23 @@ using TMPro;
 
 public class EnemyCounter : MonoBehaviour
 {
+    // UI fields
     [SerializeField] private TMP_Text enemiesDefeatedText;
     [SerializeField] private Image enemiesDefeatedImage;
-    private int enemiesDefeatedCounter = 0;
     private bool textEnabled = false;
+
+    // Enemy counter
+    private int enemiesDefeatedCounter = 0;
+
+    // Enemies defeated needed to win the level
+    private int enemiesNeeded = 90;
+    
+    // Level won check
     private bool hasWon = false;
 
     void Start()
     {
+        // Sets UI to inactive
         enemiesDefeatedText.enabled = false;
         enemiesDefeatedImage.enabled = false;
         UpdateUI();
@@ -19,6 +28,7 @@ public class EnemyCounter : MonoBehaviour
 
     void Update()
     {
+        // Sets UI active on level start
         if (LevelStarter.HasLevelStarted && textEnabled == false)
         {
             textEnabled = true;
@@ -26,31 +36,37 @@ public class EnemyCounter : MonoBehaviour
             enemiesDefeatedImage.enabled = true;
         }
 
-        if (enemiesDefeatedCounter == 90 && !hasWon)
+        // Toggles level win when goal reached
+        if (enemiesDefeatedCounter >= enemiesNeeded && !hasWon)
         {
+            enemiesDefeatedCounter = enemiesNeeded;
+            UpdateUI();
+
             hasWon = true;
             BaseHealthManager.Instance.ToggleWin();
         }
 
-        if (CameraSwitch.ActiveCam == 2)
+        // Changes position of UI for certain cameras
+        if (CameraSwitcher.Instance.ActiveCam == 2)
         {
-            enemiesDefeatedText.rectTransform.anchoredPosition = new Vector2(123, 56);
+            enemiesDefeatedText.rectTransform.anchoredPosition = new Vector2(178, 70);
         }
         else
         {
-            enemiesDefeatedText.rectTransform.anchoredPosition = new Vector2(758, 56);
+            enemiesDefeatedText.rectTransform.anchoredPosition = new Vector2(780, 70);
         }
     }
 
-    // Calls whenever an enemy is defeated
+    // Updates visible enemies defeated counter
     private void UpdateUI()
     {
         if (enemiesDefeatedText != null)
         {
-            enemiesDefeatedText.text = enemiesDefeatedCounter.ToString();
+            enemiesDefeatedText.text = enemiesDefeatedCounter.ToString() + "/" + enemiesNeeded;
         }
     }
 
+    // Increments enemies defeated count
     public void IncrementCount()
     {
         enemiesDefeatedCounter++;

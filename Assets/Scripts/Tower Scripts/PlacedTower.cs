@@ -4,31 +4,31 @@ using System.Collections;
 
 public class PlacedTower : MonoBehaviour
 {
-    // Tower placement animation
+    // Tower placement animation fields
     private float placementTime = 0.3f;
     private float placementHeight = 3f;
     private bool isPlaced = false;
-    public ParticleSystem dirtBurstPrefab;
-    public ParticleSystem impactRingPrefab;
 
-    // Tower placement audio
-    public AudioSource towerPlaceSFX;
-
-    // Raycasting
+    // Raycasting tower layer
     private static LayerMask towerLayer;
 
-    // Money manager script
-    private MoneyManager moneyManagerScript;
+    // Tower placement visual effects
+    [SerializeField] private ParticleSystem dirtBurstPrefab;
+    [SerializeField] private ParticleSystem impactRingPrefab;
 
-    // Ball spawner script
+    // Tower placement audio
+    [SerializeField] private AudioSource towerPlaceSFX;
+
+    // Ball spawner and block source scripts
     private BallSpawner ballSpawner;
-
-    // Block source script
     private BlockSource towerSchematic;
+
+    // Tower sell price
+    [SerializeField] private int sellPrice;
 
     void Awake()
     {
-        moneyManagerScript = GameObject.Find("Money Manager")?.GetComponent<MoneyManager>();
+        // Initializes fields
         towerSchematic = GameObject.Find("Splitter Schematic")?.GetComponent<BlockSource>();
         ballSpawner = GetComponent<BallSpawner>();
         ballSpawner.enabled = false;
@@ -37,26 +37,27 @@ public class PlacedTower : MonoBehaviour
 
     void Update()
     {
-        SellTower();
+        // Sells tower if x is pressed while cursor is hovering over 
+        if (isPlaced && Keyboard.current.xKey.wasPressedThisFrame)
+        {
+            SellTower();
+        }
     }
 
-    // Places the tower with animations
+    // Places the tower with an animation
     public IEnumerator PlaceTower(Vector3 endPos)
     {
         towerPlaceSFX?.Play();
-        float elapsedDelay = 0f;
+        
         Vector3 startPos = endPos + Vector3.up * placementHeight;
-        moneyManagerScript.DecreaseMoney(TowerManager.Instance.GetSplitterCost());
+        MoneyManager.Instance.UpdateMoney(TowerManager.Instance.GetSplitterCost(), true);
         TowerManager.Instance.RegisterTower(this.gameObject);
         towerSchematic.UpdateUI();
 
+        float elapsedDelay = 0f;
+
         while (elapsedDelay < placementTime)
         {
-            while (ProjectileManager.IsFrozen)
-            {
-                yield return null;
-            }
-
             elapsedDelay += Time.deltaTime;
             float t = elapsedDelay / placementTime;
             gameObject.transform.position = Vector3.Lerp(startPos, endPos, t);
@@ -88,22 +89,19 @@ public class PlacedTower : MonoBehaviour
         isPlaced = true;
     }
 
-    // Sells tower if x pressed while cursor is hovering over
+    // Sells tower and refunds some coins
     private void SellTower()
     {
-        // Tower Selling
-        if (isPlaced && Keyboard.current.xKey.wasPressedThisFrame)
+        Ray ray = CameraSwitcher.Instance.CurrentCamera.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, towerLayer))
         {
-            Ray ray = CameraSwitch.CurrentCamera.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, towerLayer))
+            if (hit.collider.transform == this.transform)
             {
-                if (hit.collider.transform == this.transform)
-                {
-                    moneyManagerScript.UpdateMoney(4);
-                    TowerManager.Instance.UnregisterTower(this.gameObject);
-                    towerSchematic.UpdateUI();
-                    Destroy(this.gameObject);
-                }
+                MoneyManager.Instance.UpdateMoney(sellPrice);
+                TowerManager.Instance.UnregisterTower(this.gameObject);
+                towerSchematic.UpdateUI();
+
+                Destroy(this.gameObject);
             }
         }
     }

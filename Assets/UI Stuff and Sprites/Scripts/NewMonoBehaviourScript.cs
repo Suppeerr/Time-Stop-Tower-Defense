@@ -21,8 +21,9 @@ public class NewMonoBehaviourScript : MonoBehaviour, IDeselectHandler
 
     }
 
-    void OnMouseDown(){
-        if (ProjectileManager.IsFrozen)
+    void OnMouseDown()
+    {
+        if (TimeStop.Instance.IsFrozen)
         {
             return;
         }

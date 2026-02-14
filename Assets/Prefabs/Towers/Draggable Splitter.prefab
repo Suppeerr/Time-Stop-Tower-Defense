@@ -189,6 +189,7 @@ MonoBehaviour:
   - GameController
   - Enemy
   placedTowerPrefab: {fileID: 6898122641207344880, guid: a477c0fc531854b409fdb902634bc6ec, type: 3}
+  placementZone: {fileID: 2411327813313629775, guid: 5e68fca42453d9d4b8e263998e6f410b, type: 3}
 --- !u!114 &-8244955772181401185
 MonoBehaviour:
   m_ObjectHideFlags: 0

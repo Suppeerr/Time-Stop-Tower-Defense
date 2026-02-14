@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 [ExecuteAlways]
 [RequireComponent(typeof(LineRenderer))]
@@ -33,11 +34,11 @@ public class LightningRing : MonoBehaviour
     void Update()
     {
         // Make the ring flicker over time
-        AnimateLightning();
+        StartCoroutine(AnimateLightning());
     }
 
     // Generates the basic circle for the ring
-    void GenerateBaseCircle()
+    private void GenerateBaseCircle()
     {
         // Creates the ring using points
         for (int i = 0; i < points; i++)
@@ -48,14 +49,19 @@ public class LightningRing : MonoBehaviour
     }
 
     // Animates the ring to appear like lightning
-    void AnimateLightning()
+    private IEnumerator AnimateLightning()
     {
         // Creates a random jittering effect
         for (int i = 0; i < points; i++)
         {
-            float noiseX = Mathf.PerlinNoise(Time.time * jitterSpeed, i * 1.3f) - 0.5f;
-            float noiseY = Mathf.PerlinNoise(Time.time * jitterSpeed + 100, i * 2.1f) - 0.5f;
-            float noiseZ = Mathf.PerlinNoise(Time.time * jitterSpeed + 200, i * 3.7f) - 0.5f;
+            while (SettingsMenuOpener.Instance.MenuOpened)
+            {
+                yield return null;
+            }
+
+            float noiseX = Mathf.PerlinNoise(Time.unscaledTime * jitterSpeed, i * 1.3f) - 0.5f;
+            float noiseY = Mathf.PerlinNoise(Time.unscaledTime * jitterSpeed + 100, i * 2.1f) - 0.5f;
+            float noiseZ = Mathf.PerlinNoise(Time.unscaledTime * jitterSpeed + 200, i * 3.7f) - 0.5f;
 
             // Jitter in all directions
             Vector3 offset = new Vector3(noiseX, noiseY, noiseZ) * 2f * jitterAmount;

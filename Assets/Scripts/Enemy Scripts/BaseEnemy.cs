@@ -1,45 +1,63 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.UIElements;
 
 //base stats: (could be stored as a seperate data structure)
 //reference numbers: enemy hp 100~100000, projectile damage 25~x
 public class BaseEnemy
 {
-    //base stats: (could be stored as a seperate data structure)
+    // Base enemy stats
     private int baseHp;
     private int baseDef;
     private int baseRes;
 
+    // Current enemy stats
     private int hp;
     private int def;
     private int res;
 
-    public Vector3 s_position;
+    // Previous enemy hp
+    private int oldHP;
+
+    // Enemy movement fields
+    private Vector3 s_position;
     private float speed;
+    private Quaternion visObjbaseRot;
+    private EnemyWaypointPath spath;
+    private int currentWaypoint = 1;
+    private float curdist_traveled;
 
-    public EnemyType type;
-    public EnemyWaypointPath spath;
-    public int currentWaypoint = 1;
-    public float curdist_traveled;
+    // Enemy type and stats container
+    private EnemyType type;
+    private EnemyStatsContainer statsContainer;
 
-    public EnemyStatsContainer statsContainer;
+    // Enemy instance
     public GameObject visualObj;
-    public GameObject enemyvObjPrefab;
-    public EnemyHealthBar healthbar;
-    public EnemyDamageIndicator damageIndicator;
-    public EnemyCounter enemyCounterScript;
-    public LevelInstance level;
+    private GameObject enemyvObjPrefab;
 
-    public Quaternion visObjbaseRot;
+    // Enemy visuals
+    private EnemyHealthBar healthbar;
+    private GameObject damageIndicatorPrefab;
+    private EnemyCounter enemyCounterScript;
 
-    public void Init(GameObject prefab, LevelInstance level, EnemyWaypointPath spath, EnemyType eType)
+    // Enemy pathing offset/smoothing
+    [SerializeField] private float maxPathOffset = 0.45f;
+    private float pathOffset;
+    private Vector3 currentRight;
+
+    // Level instance
+    private LevelInstance level;
+    
+    // Initializes an enemy with its stats and then spawns it
+    public async Task Init(GameObject prefab, LevelInstance level, EnemyWaypointPath spath, EnemyType eType)
     {
-        //other init also goes here...
         // Assigns stat values to enemies
         type = eType;
-        statsContainer = Resources.Load<EnemyStatsContainer>("EnemyStatsContainer");
+        string statsAddress = "ScriptableObjects/Stats & Data Containers/EnemyStatsContainer";
+        statsContainer = await AddressableLoader.GetAsset<EnemyStatsContainer>(statsAddress);
 
         EnemyStats stats = statsContainer.GetStats(type);
         if (stats == null)
@@ -55,30 +73,31 @@ public class BaseEnemy
         enemyvObjPrefab = prefab;
         this.level = level;
         this.spath = spath;
+
+        pathOffset = UnityEngine.Random.Range(-maxPathOffset, maxPathOffset);
         
-        As_spawn();
+        await As_spawn();
     }
 
+    // Called whenever an enemy takes damage
     public virtual void TakeDamage(DamageInstance damage)
     {
-        float damagerecieved = Mathf.Max(0, damage.damage);
-        if (damage.isPercentage) damagerecieved = ((float)damage.damage) / 100 * baseHp;
-        if (damage.damageMax != -1) Mathf.Clamp(damagerecieved, 0, damage.damageMax);
-        float minDamage = damagerecieved * 0.05f;
+        float damageRecieved = Mathf.Max(0, damage.damage);
+        if (damage.isPercentage) damageRecieved = ((float)damage.damage) / 100 * baseHp;
+        if (damage.damageMax != -1) Mathf.Clamp(damageRecieved, 0, damage.damageMax);
+        float minDamage = damageRecieved * 0.05f;
 
-        if (damage.isDef) damagerecieved = Mathf.Clamp(damagerecieved - def, minDamage, damagerecieved);
-        if (damage.isRes) damagerecieved = Mathf.Clamp(damagerecieved * (1 - (float)res), minDamage, damagerecieved);
-        hp -= (int)damagerecieved;
-
-        // Spawns a damage indicator visual above the enemy's head
-        damageIndicator?.ShowDamage(damagerecieved);
-        if (damageIndicator == null)
-        {
-            Debug.Log("Damage indicator is null.");
-        }
+        if (damage.isDef) damageRecieved = Mathf.Clamp(damageRecieved - def, minDamage, damageRecieved);
+        if (damage.isRes) damageRecieved = Mathf.Clamp(damageRecieved * (1 - (float)res), minDamage, damageRecieved);
+        oldHP = hp;
+        hp -= (int)damageRecieved;
 
         // Updates healthbar to indicate damage taken
-        healthbar?.UpdateHealth(hp);
+        healthbar?.UpdateHealth(hp, oldHP);
+
+        // Spawns a damage indicator visual above the enemy's head
+        EnemyDamageIndicator damageIndicator = UnityEngine.Object.Instantiate(damageIndicatorPrefab).GetComponent<EnemyDamageIndicator>();
+        damageIndicator.ShowDamage(damageRecieved, visualObj.transform);
 
         // The enemy dies if its hp becomes 0 or less
         if (hp <= 0)
@@ -89,9 +108,12 @@ public class BaseEnemy
         }
     }
 
-    public void As_spawn()
+    // Called on enemy spawn
+    public async Task As_spawn()
     {
         visualObj = GameObject.Instantiate(enemyvObjPrefab);
+        visualObj.SetActive(false);
+
         this.s_position = spath.waypoints[0].position;
         visualObj.transform.position = s_position;
         visObjbaseRot = visualObj.transform.rotation;
@@ -101,7 +123,8 @@ public class BaseEnemy
         proxy.Init(this);
 
         // Gets damage indicator
-        damageIndicator = visualObj.GetComponentInChildren<EnemyDamageIndicator>();
+        string indicatorAddress = "Enemies/Enemy Damage Indicator";
+        damageIndicatorPrefab = await AddressableLoader.GetAsset<GameObject>(indicatorAddress);
 
         // Gets healthbar
         healthbar = visualObj.GetComponentInChildren<EnemyHealthBar>();
@@ -109,76 +132,112 @@ public class BaseEnemy
 
         // Gets enemies defeated counter
         enemyCounterScript = GameObject.Find("Enemies Defeated Manager")?.GetComponent<EnemyCounter>();
+        visualObj.SetActive(true);
     }
+
+    // Called each frame the enemy is active
     public void As_update()
     {
         _s_move();
         visualObj.transform.position = s_position;
         //other internal enemy things
     }
+
+    // Called when enemy should be destroyed
     private void _s_clearself()
     {
         Object.Destroy(visualObj);
         level.queueRemove.Add(this);
-        //s
     }
+
+    // Called when enemy reaches end of track
     private void _s_pathend()
     {
         OnReachEnd();
         _s_clearself();
-        BaseHealthManager.Instance.UpdateBaseHP(-50);
+        BaseHealthManager.Instance.UpdateBaseHP(-50, true);
         Debug.Log("enemy reached end");
     }
 
-    //called per-update
+    // Moves enemy along the track
     private void _s_move()
     {   //... change positioning later - jack (self)
-        if (ProjectileManager.IsFrozen)
-        {
-            return;
-        }
-
         float distance_traveled = speed * Time.deltaTime;
-        Waypoint targ_waypoint = spath.waypoints[currentWaypoint];
-
-        if (curdist_traveled + distance_traveled >= targ_waypoint.dist)
+    
+        while (distance_traveled > 0f && currentWaypoint < spath.waypoints.Length)
         {
-            this.s_position = targ_waypoint.position;
-            distance_traveled = curdist_traveled + distance_traveled - targ_waypoint.dist;
-            curdist_traveled = 0;
-            currentWaypoint += 1;
-            if (spath.waypoints.Length <= currentWaypoint)
-            {
-                this._s_pathend();
-                return;
-            }
-            targ_waypoint = spath.waypoints[currentWaypoint];
-            visualObj.transform.rotation = visObjbaseRot * spath.waypoints[currentWaypoint].faceDirection;
-            Vector3 testv = visualObj.transform.eulerAngles;
-            visualObj.transform.rotation = Quaternion.Euler(-testv.z, testv.y, -testv.x); //correct facing direction
-        }
+            Waypoint targ_waypoint = spath.waypoints[currentWaypoint];
+            Vector3 offsetVec = ComputeOffset(targ_waypoint);
+            Vector3 targetPosWithOffset = targ_waypoint.position + offsetVec;
 
-        curdist_traveled += distance_traveled;
-        s_position += distance_traveled * targ_waypoint.modif;
+            Vector3 toWaypoint = targetPosWithOffset - s_position;
+            float distToWaypoint = toWaypoint.magnitude;
+
+            if (distance_traveled >= distToWaypoint)
+            {
+                s_position = targetPosWithOffset;
+
+                distance_traveled -= distToWaypoint;
+
+                curdist_traveled = 0;
+                currentWaypoint += 1;
+
+                if (currentWaypoint >= spath.waypoints.Length)
+                {
+                    this._s_pathend();
+                    return;
+                }
+
+                visualObj.transform.rotation = visObjbaseRot * spath.waypoints[currentWaypoint].faceDirection;
+                Vector3 testv = visualObj.transform.eulerAngles;
+                visualObj.transform.rotation = Quaternion.Euler(-testv.z, testv.y, 0f); //correct facing direction
+            }
+            else
+            {
+                s_position += toWaypoint.normalized * distance_traveled;
+                curdist_traveled += distance_traveled;
+                distance_traveled = 0f;
+            }
+        }
     }
 
+    // Computes the enemy's pathing offset
+    private Vector3 ComputeOffset(Waypoint waypoint)
+    {
+        // Offsets and smooths enemy pathing
+        Vector3 forward = waypoint.modif.normalized;
+        forward.Normalize();
+        Vector3 targetRight = Vector3.Cross(Vector3.up, forward).normalized;
+
+        if (Vector3.Dot(currentRight, targetRight) < 0f)
+        {
+            targetRight = -targetRight;
+        }
+
+        currentRight = Vector3.Slerp(currentRight, targetRight, 4f * Time.deltaTime);
+
+        return currentRight * pathOffset;
+    }
+
+    // Gets the enemy's distance from the previous waypoint
     public float GetCurDistTraveled()
     {
         return curdist_traveled;
     }
 
+    // Gets the enemy's previous waypoint number
     public float GetCurrentWaypoint()
     {
         return currentWaypoint;
     }
 
 
-    //overridable implementations for diff enemy types
+    // Overridable implementations for diff enemy types
     public virtual void OnReachEnd() { }
     public virtual void OnSpawn() { }
     public virtual void OnDestroy() { }
     public virtual void OnDeath()
     {
-        CoinSpawner.Instance.SpawnCoin(false, enemyPos: visualObj.transform.position);
+        CoinSpawner.Instance.SpawnCoin(enemyPos: visualObj.transform.position);
     }
 }

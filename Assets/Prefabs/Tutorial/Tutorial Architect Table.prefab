@@ -891,6 +891,14 @@ PrefabInstance:
       value: Tutorial Start Canvas
       objectReference: {fileID: 0}
     - target: {fileID: 2253651062674455102, guid: 8d5aca8e63ab0f84b892dd4143ac48da, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 2253651062674455102, guid: 8d5aca8e63ab0f84b892dd4143ac48da, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2253651062674455102, guid: 8d5aca8e63ab0f84b892dd4143ac48da, type: 3}
       propertyPath: m_LocalScale.x
       value: 8
       objectReference: {fileID: 0}
@@ -904,11 +912,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2253651062674455102, guid: 8d5aca8e63ab0f84b892dd4143ac48da, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -1260
+      value: -200
       objectReference: {fileID: 0}
     - target: {fileID: 2253651062674455102, guid: 8d5aca8e63ab0f84b892dd4143ac48da, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -580
+      value: -131.8
       objectReference: {fileID: 0}
     - target: {fileID: 2453085253566336720, guid: 8d5aca8e63ab0f84b892dd4143ac48da, type: 3}
       propertyPath: m_Pivot.x

@@ -91,25 +91,5 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 6717922679894084860, guid: b2949cd54d8664ec08593c3954dc632f, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 7447582053700798500}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b2949cd54d8664ec08593c3954dc632f, type: 3}
---- !u!1 &8467447740615669808 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6717922679894084860, guid: b2949cd54d8664ec08593c3954dc632f, type: 3}
-  m_PrefabInstance: {fileID: 2934290656059995340}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &7447582053700798500
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8467447740615669808}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a7aa0203e273047488b0288a18b6dcaf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FreezeSway
