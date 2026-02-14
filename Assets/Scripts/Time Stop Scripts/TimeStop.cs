@@ -82,9 +82,9 @@ public class TimeStop : MonoBehaviour
     void Update()
     {
         if (!UpgradeManager.Instance.IsBought(UpgradeType.TimeStop) || 
-            SettingsMenuOpener.Instance.MenuOpened|| 
+            SettingsMenuOpener.Instance.MenuOpened || 
             BaseHealthManager.Instance.IsGameOver || 
-            isTransitioning)
+            isTransitioning || CameraSwitcher.Instance.IsCameraMoving)
         {
             return;
         }
@@ -222,7 +222,7 @@ public class TimeStop : MonoBehaviour
 
         while (duration > 0f)
         {
-            while (SettingsMenuOpener.Instance.MenuOpened)
+            while (SettingsMenuOpener.Instance.MenuOpened || CameraSwitcher.Instance.IsCameraMoving)
             {
                 yield return null;
             }

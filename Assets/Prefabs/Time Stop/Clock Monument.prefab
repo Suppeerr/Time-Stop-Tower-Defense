@@ -5957,6 +5957,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   zapSFX: {fileID: 2305923369085142817}
+  zappedVFX: {fileID: 6558791096087875646, guid: eb0d28275a8b04040bbafe0009de586d, type: 3}
 --- !u!120 &4311995836532839496
 LineRenderer:
   serializedVersion: 2
@@ -6285,7 +6286,7 @@ MonoBehaviour:
   upgradedGlowRuneColor: {r: 0.1112744, g: 37.09122, b: 35.74158, a: 1}
   timeStopObjects: []
   beamSpawner: {fileID: 6113056683632870968}
-  storedTimeManager: {fileID: 0}
+  storedTimeManager: {fileID: 2109539748672988871, guid: b7bdf2e5e228a3544ab374fbd597190c, type: 3}
   timeStopOverlay: {fileID: 0}
 --- !u!82 &2398438723132002101
 AudioSource:

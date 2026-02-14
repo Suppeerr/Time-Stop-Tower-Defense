@@ -23,10 +23,13 @@ public class HomingProjectile : MonoBehaviour
     // Charge fields
     [SerializeField] private GameObject normalLightningRingPrefab;
     [SerializeField] private GameObject upgradedLightningRingPrefab;
-    [SerializeField] private GlowingSphereEmitter sphereEmitter;
+    [SerializeField] private GameObject glowingSpherePrefab;
     [SerializeField] private GameObject normalExplosionPrefab;
     [SerializeField] private GameObject upgradedExplosionPrefab;
     private int chargeLevel = 0;
+
+    // Parry VFX
+    [SerializeField] private GameObject parryVFX;
 
     // Projecitle stats
     [SerializeField] protected ProjectileStatsContainer statsContainer;
@@ -56,17 +59,24 @@ public class HomingProjectile : MonoBehaviour
         steerSpeed = stats.speed;
         maxSpeed = stats.speed;
         aoe = stats.aoeRadius;
-
+        
         // Assigns a target to each projectile
         switch (type)
         {
             case ProjectileType.PrimaryHoming:
                 AssignNearestEnemy();
                 break;
-
             case ProjectileType.SecondaryHoming:
                 AssignNthEnemy(1);
                 break;
+        }
+
+        if (type != ProjectileType.CannonBall && target != null)
+        {
+            Vector3 dir = new Vector3();
+            dir = (transform.position - target.transform.position).normalized;
+            GameObject parryEffect = Instantiate(parryVFX, transform.position, Quaternion.LookRotation(dir));
+            Destroy(parryEffect, 0.6f);
         }
 
         Destroy(gameObject, destroyAfter);
@@ -148,27 +158,29 @@ public class HomingProjectile : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-
-        // Single target damage
-        DoSingleTargetDamage(collision);
-        SpawnExplosion(chargeLevel);
-
-        // Bounce to a second enemy after hitting one enemy
-        if (chargeLevel == 2 && hitEnemies < 1)
+        else
         {
-            Collider enemyCol = collision.collider;
-            Physics.IgnoreCollision(myCollider, enemyCol, true);
-            lastHitEnemy = enemyCol.transform;
-            isPiercing = true;
+            // Single target damage
+            DoSingleTargetDamage(collision);
+            SpawnExplosion(chargeLevel);
 
-            hitEnemies++;
-            
-            target = null;
-            AssignNthEnemy(chargeLevel);
-            
-            return;
-        }    
+            // Bounce to a second enemy after hitting one enemy
+            if (chargeLevel == 2 && hitEnemies < 1)
+            {
+                Collider enemyCol = collision.collider;
+                Physics.IgnoreCollision(myCollider, enemyCol, true);
+                lastHitEnemy = enemyCol.transform;
+                isPiercing = true;
 
+                hitEnemies++;
+                
+                target = null;
+                AssignNthEnemy(chargeLevel);
+                
+                return;
+            }    
+        }
+        
         Destroy(gameObject);
     }
 
@@ -242,17 +254,17 @@ public class HomingProjectile : MonoBehaviour
     // Enables lightning and sphere emitter effects
     public void EnableChargeEffects(int charge)
     {
+        if (glowingSpherePrefab != null)
+        {
+            Instantiate(glowingSpherePrefab, transform);
+        }
+
         if (charge == 1)
         {
             if (normalLightningRingPrefab != null)
             {
                 Instantiate(normalLightningRingPrefab, transform);
-            }
-
-            if (sphereEmitter != null)
-            {
-                sphereEmitter.enabled = true;
-            }
+            }            
         }
         else if (charge == 2)
         {

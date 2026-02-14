@@ -20,8 +20,9 @@ public class BeamZap : MonoBehaviour
     // Pre-charge fields
     private int preChargePercentage = 25;
     
-    // Zap sound effect
+    // Zap sound and visual effect
     [SerializeField] private AudioSource zapSFX;
+    [SerializeField] private GameObject zappedVFX;
 
     void Update()
     {
@@ -60,6 +61,13 @@ public class BeamZap : MonoBehaviour
             beam.SetPosition(1, hit.point);
             zapSFX?.Play();
 
+            if (zappedVFX != null)
+            {
+                Vector3 beamDir = (hit.point - firePoint.position).normalized;
+                Quaternion rot = Quaternion.LookRotation(-beamDir);
+                Instantiate(zappedVFX, hit.point - beamDir * 0.35f, rot);
+            }
+
             // Normal charging
             if (normalProjScript != null)
             {
@@ -93,6 +101,7 @@ public class BeamZap : MonoBehaviour
                 break;
         }
     }
+    
     // Randomly pre-charges several projectiles if the upgrade is bought
     public void PreChargeProjectiles()
     {
