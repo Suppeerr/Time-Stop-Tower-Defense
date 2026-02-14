@@ -23,7 +23,6 @@ public class EnemySpawnHandler
         try
         {
             Debug.Log("attempting to load " + f_path);
-            //var fdat = Resources.Load<TextAsset>("TSTD Data - Level 1_Normal.csv");
             var fdat = Resources.Load<TextAsset>(f_path);
 
             var x = new MemoryStream(Encoding.UTF8.GetBytes(fdat.text));
@@ -79,6 +78,8 @@ public class EnemySpawnHandler
             Debug.Log("Enemy spawn file for level could not be read:");
             Debug.Log(e.Message);
         }
+
+
 
         this.active_wave = -1;
         is_spawning = true;

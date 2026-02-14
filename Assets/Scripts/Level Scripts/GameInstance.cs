@@ -29,6 +29,12 @@ public static class GameInstance
         //BaseEffect y;
         //if (true && (y = effectList.Find(x => x.GetType().Name == eff.GetType().Name)) != null ? true : false) Debug.Log("p");
         //Debug.Log(y);
+        //BaseEnemy dtest = new BaseEnemy();
+        //dtest.baseHp = 2400;
+        //dtest.baseSpd = 3.5f;
+        //dtest.baseDef = 0;
+        //Debug.Log(dtest.testljson());
+
     }
 
     static void OnSceneLoaded(Scene scene, LoadSceneMode mode)
