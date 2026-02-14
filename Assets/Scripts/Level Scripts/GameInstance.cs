@@ -21,17 +21,32 @@ public static class GameInstance
     
     static void LStart()
     {
+        Debug.Log("gameInst started");
         SceneManager.sceneLoaded += OnSceneLoaded;
+        //List<BaseEffect> effectList = new List<BaseEffect>();
+        //BaseEffect eff = new BaseEffect();
+        //effectList.Add(new BaseEffect());
+        //BaseEffect y;
+        //if (true && (y = effectList.Find(x => x.GetType().Name == eff.GetType().Name)) != null ? true : false) Debug.Log("p");
+        //Debug.Log(y);
     }
 
     static void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         if (scene.name == "Gameplay and Mechanics" || scene.name == "Level 1"){
-            Debug.Log("gameInst started");
             clevel = new GameObject();
             clevel.AddComponent<LevelInstance>();
         }
     }
+
+    public enum difficultyType
+    {
+        Easy,
+        Normal,
+        Hard
+    };
+
+    public static difficultyType levelDifficulty = difficultyType.Normal;
 
     static void loadscene()
     {
