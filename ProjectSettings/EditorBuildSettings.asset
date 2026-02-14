@@ -15,7 +15,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Level 1.unity
     guid: 44d8ce6b6aafe5d4dbe899fe524f124d
   - enabled: 0
-    path: Assets/Scenes/Gameplay and Mechanics.unity
+    path: Assets/Scenes/Old Gameplay and Mechanics.unity
     guid: 0f55f7d9c420cfd4e84f4b7dec23ce28
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: 95a622695a79ba04a9173ffb3b88e095, type: 2}
