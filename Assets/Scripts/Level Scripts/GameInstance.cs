@@ -23,6 +23,12 @@ public static class GameInstance
     static void LStart()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
+        List<BaseEffect> effectList = new List<BaseEffect>();
+        BaseEffect eff = new BaseEffect();
+        //effectList.Add(new BaseEffect());
+        BaseEffect y;
+        if (true && (y = effectList.Find(x => x.GetType().Name == eff.GetType().Name)) != null ? true : false) Debug.Log("p");
+        Debug.Log(y);
     }
 
     static void OnSceneLoaded(Scene scene, LoadSceneMode mode)
