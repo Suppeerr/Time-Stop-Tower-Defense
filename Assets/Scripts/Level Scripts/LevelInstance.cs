@@ -14,19 +14,15 @@ public class LevelInstance : MonoBehaviour
     public EnemyWaypointPath epath = new EnemyWaypointPath(); //could be array if we want multiple paths
     List<BaseEnemy> enemies = new List<BaseEnemy>();
     public List<BaseEnemy> queueRemove = new List<BaseEnemy>();
-
     bool s_enabled = false;
-    
+
     private GameObject normalEPrefab;
     private GameObject speedyEPrefab;
 
-    // private float elapsed = 0f;
-    // private float lowStarting = 3f;
-    // private float highStarting = 4.8f;
-    // private float ramping = 0.04f;
-    // private float spawnInterval = 3f;
-
     EnemySpawnHandler sptest;
+
+    public GameInstance.difficultyType difficulty = GameInstance.levelDifficulty;
+
     public async Task Awake()
     {
         // Avoids duplicates of this object
@@ -53,10 +49,8 @@ public class LevelInstance : MonoBehaviour
 
         //this would be ideally loaded from a data structure or from file before the scene begin
         LoadWaypointPrefabs();
-        
-        // spawnInterval = Random.Range(1f, 3f);
 
-        sptest = new EnemySpawnHandler(this, "C:/Users/monpo/OneDrive/Documents/GitHub/Time-Stop-Tower-Defense/Assets/Data/Levels/TSTD Data - Level 1.csv");
+        sptest = new EnemySpawnHandler(this, "Levels/TSTD Data - Level 1" + "_" + difficulty.ToString());
     }
 
     // Loads the waypoints of each path in order 
@@ -91,22 +85,6 @@ public class LevelInstance : MonoBehaviour
             DestroyEnemies();
             return;
         }
-        
-        // if (elapsed < spawnInterval)
-        // {
-        //     elapsed += Time.deltaTime;
-        // }
-        // else
-        // {
-        //     SpawnEnemyTest();
-        //     spawnInterval = Random.Range(lowStarting, highStarting);
-        //     elapsed = 0;
-        //     if (lowStarting > 0.6f)
-        //     {
-        //         lowStarting -= ramping;
-        //         highStarting -= ramping;
-        //     }
-        // }
 
         await sptest.Update();
 
@@ -140,14 +118,6 @@ public class LevelInstance : MonoBehaviour
         }
         queueRemove.Clear();
     }
-
-    // public void SpawnEnemyTest()
-    // {
-    //     Debug.Log("levelInst spawned enemy");
-    //     BaseEnemy enemy = new BaseEnemy();
-    //     enemy.Init(ePrefab, this, epath, EnemyType.NormalBandit);
-    //     enemies.Add(enemy);
-    // }
 
     public async Task SpawnEnemy(string enemy_type, float scale)
     {

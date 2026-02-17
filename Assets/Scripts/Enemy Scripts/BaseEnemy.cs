@@ -10,9 +10,10 @@ using UnityEngine.UIElements;
 public class BaseEnemy
 {
     // Base enemy stats
-    private int baseHp;
-    private int baseDef;
-    private int baseRes;
+    public int baseHp;
+    public int baseDef;
+    public int baseRes;
+    public float baseSpd;
 
     // Current enemy stats
     private int hp;
@@ -44,13 +45,24 @@ public class BaseEnemy
     private EnemyCounter enemyCounterScript;
 
     // Enemy pathing offset/smoothing
-    [SerializeField] private float maxPathOffset = 0.45f;
+    private const float maxPathOffset = 0.45f;
     private float pathOffset;
     private Vector3 currentRight;
 
-    // Level instance
+    // Level instance reference
     private LevelInstance level;
+
     
+    public string testljson()
+    {
+        return JsonUtility.ToJson(this);
+    }
+    public BaseEnemy loadtjson(string test)
+    {
+        return JsonUtility.FromJson<BaseEnemy>(test);
+    }
+
+
     // Initializes an enemy with its stats and then spawns it
     public async Task Init(GameObject prefab, LevelInstance level, EnemyWaypointPath spath, EnemyType eType)
     {
