@@ -13,13 +13,27 @@ public class EnemyCounter : MonoBehaviour
     private int enemiesDefeatedCounter = 0;
 
     // Enemies defeated needed to win the level
-    private int enemiesNeeded = 90;
+    private int enemiesNeeded;
     
     // Level won check
     private bool hasWon = false;
 
     void Start()
     {
+        // Adjusts enemies needed count based on difficulty
+        if (GameInstance.levelDifficulty == GameInstance.difficultyType.Easy)
+        {
+            enemiesNeeded = 60;
+        }
+        else if (GameInstance.levelDifficulty == GameInstance.difficultyType.Normal)
+        {
+            enemiesNeeded = 90;
+        }
+        else
+        {
+            enemiesNeeded = 120;
+        }
+
         // Sets UI to inactive
         enemiesDefeatedText.enabled = false;
         enemiesDefeatedImage.enabled = false;
