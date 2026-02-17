@@ -52,10 +52,10 @@ public class CameraSwitcher : MonoBehaviour
 
     void Update()
     {
-        // Switches camera when c key pressed
-        if (Keyboard.current.cKey.wasPressedThisFrame && !IsCameraMoving)
+        // Switches camera when key pressed
+        if (InputManager.Instance.Input.Gameplay.SwitchCamera.triggered && !IsCameraMoving)
         {
-            if (TutorialManager.Instance.IsTutorialActive)
+            if (TutorialManager.Instance.IsTutorialActive || SettingsMenuOpener.Instance.MenuOpened)
             {
                 return;
             }

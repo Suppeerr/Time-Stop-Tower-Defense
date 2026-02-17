@@ -38,7 +38,7 @@ public class PlacedTower : MonoBehaviour
     void Update()
     {
         // Sells tower if x is pressed while cursor is hovering over 
-        if (isPlaced && Keyboard.current.xKey.wasPressedThisFrame)
+        if (isPlaced && InputManager.Instance.Input.Gameplay.SellTower.triggered)
         {
             SellTower();
         }

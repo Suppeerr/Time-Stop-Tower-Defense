@@ -241,12 +241,7 @@ MonoBehaviour:
   - {fileID: 5335663879714364314}
   - {fileID: 9190635772056050951}
   - {fileID: 7826912442443019400}
-  levelStartImage: {fileID: 0}
-  tutorialImage: {fileID: 0}
-  moneyIndicator: {fileID: 0}
-  coinImage: {fileID: 0}
-  storedTimeIndicator: {fileID: 0}
-  hourglassImage: {fileID: 0}
+  screenUI: []
   leftArrow: {fileID: 931622397362063361}
   rightArrow: {fileID: 2920203617521342794}
   exitButton: {fileID: 1170074791050713399}
@@ -1005,7 +1000,7 @@ PrefabInstance:
     - target: {fileID: 4217380492253496329, guid: 8d5aca8e63ab0f84b892dd4143ac48da, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: bac660b892eba0244815d8377f2d6643, type: 3}
+      objectReference: {fileID: 21300000, guid: 5b90eb14ed761ab4d8e09d650445b2f3, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

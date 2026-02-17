@@ -27,6 +27,13 @@ public class SettingsManager : MonoBehaviour
     // Day/night cycle field
     [SerializeField] private Toggle dayNightFreezeToggle;
 
+    // Main menu fields
+    [SerializeField] private GameObject mainMenu;
+
+    // Controls menu fields
+    [SerializeField] private GameObject controlsMenu;
+    private bool controlsOpened = false;
+
     void Awake()
     {
         // Avoids duplicates of this object
@@ -59,6 +66,11 @@ public class SettingsManager : MonoBehaviour
     {
         musicSource.pitch = 1f;
         AdjustVolume();
+
+        if (controlsOpened)
+        {
+            ToggleControls();
+        }
     }
 
     // Adjusts volume to slider values
@@ -119,6 +131,13 @@ public class SettingsManager : MonoBehaviour
         dmgIndicatorScript.UpdateIndicatorSize(dmgIndicatorSlider.value);
     }
 
+    // Resets the day/night cycle to the default time
+    public void ResetDayNightCycle()
+    {
+        DayAndNightAdjuster.Instance.ResetCycle();
+        UISoundManager.Instance.PlayClickSound(false);
+    }
+
     // Freezes the day/night cycle at the current time
     public void FreezeDayNightCycle()
     {
@@ -126,6 +145,7 @@ public class SettingsManager : MonoBehaviour
         UISoundManager.Instance.PlayClickSound(!dayNightFreezeToggle.isOn);
     }
 
+    // Tells DayAndNightAdjuster to freeze the cycle
     private IEnumerator FreezeCycle()
     {
         while (TutorialManager.Instance.IsTutorialActive)
@@ -136,11 +156,13 @@ public class SettingsManager : MonoBehaviour
         DayAndNightAdjuster.Instance.ToggleCycle(dayNightFreezeToggle.isOn);
     }
 
-    // Resets the day/night cycle to the default time
-    public void ResetDayNightCycle()
+    // Toggles between controls and main menu
+    public void ToggleControls()
     {
-        DayAndNightAdjuster.Instance.ResetCycle();
-        UISoundManager.Instance.PlayClickSound(false);
+        controlsOpened = !controlsOpened;
+        UISoundManager.Instance.PlayClickSound(controlsOpened);
+        mainMenu.SetActive(!controlsOpened);
+        controlsMenu.SetActive(controlsOpened);
     }
 
     // Restarts the level

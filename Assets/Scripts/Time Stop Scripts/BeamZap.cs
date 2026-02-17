@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
 
-
 public class BeamZap : MonoBehaviour
 {
     // Ball spawner script
@@ -27,7 +26,7 @@ public class BeamZap : MonoBehaviour
     void Update()
     {
         // Zaps a projectile when it is clicked
-        if ((Mouse.current.leftButton.wasPressedThisFrame || Keyboard.current.spaceKey.wasPressedThisFrame) && TimeStop.Instance.IsFrozen)
+        if (InputManager.Instance.Input.Gameplay.ZapParry.triggered && TimeStop.Instance.IsFrozen)
         {
             StartCoroutine(FireZap());
         }
