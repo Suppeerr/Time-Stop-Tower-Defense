@@ -122,7 +122,7 @@ public class TimeStop : MonoBehaviour
     // Starts or stops time stop when t key pressed
     private void ToggleTimeStop()
     {
-        if (Keyboard.current.tKey.wasPressedThisFrame && cooldown == 0f)
+        if (InputManager.Instance.Input.Gameplay.TimeStop.triggered && cooldown == 0f)
         {
             if (active)
             {
