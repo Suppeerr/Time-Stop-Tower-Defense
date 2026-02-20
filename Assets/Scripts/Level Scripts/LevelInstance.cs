@@ -123,13 +123,13 @@ public class LevelInstance : MonoBehaviour
     {
         Debug.Log("levelInst spawned enemy: " + enemy_type);
         BaseEnemy enemy = new BaseEnemy();
-        if (enemy_type.Equals("speedy"))
-        {
-            await enemy.Init(speedyEPrefab, this, epath, EnemyType.SpeedyBandit);
-        }
-        else
+        if (enemy_type.Equals("normal"))
         {
             await enemy.Init(normalEPrefab, this, epath, EnemyType.NormalBandit);
+        }
+        else if (enemy_type.Equals("speedy"))
+        {
+            await enemy.Init(speedyEPrefab, this, epath, EnemyType.SpeedyBandit);
         }
         enemies.Add(enemy);
         return;

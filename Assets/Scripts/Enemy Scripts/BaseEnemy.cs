@@ -250,6 +250,9 @@ public class BaseEnemy
     public virtual void OnDestroy() { }
     public virtual void OnDeath()
     {
-        CoinSpawner.Instance.SpawnCoin(enemyPos: visualObj.transform.position);
+        if (EnemyCounter.Instance.EnemiesDefeated < 120)
+        {
+            CoinSpawner.Instance.SpawnCoin(enemyPos: visualObj.transform.position);
+        }
     }
 }

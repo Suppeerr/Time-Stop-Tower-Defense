@@ -29,7 +29,8 @@ public class UIManagingv2 : MonoBehaviour
     private void LoadLvl()
     {
         sounds[1].Play();
-        SceneManager.LoadScene(sceneNames[CurrentLvl], LoadSceneMode.Single);
+        SceneLoader.targetScene = sceneNames[CurrentLvl];
+        SceneManager.LoadScene("Loading Screen", LoadSceneMode.Single);
     }
 
     private void DisplayLevel(int level)

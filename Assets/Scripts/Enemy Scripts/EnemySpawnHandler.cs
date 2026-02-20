@@ -101,7 +101,7 @@ public class EnemySpawnHandler
     /// </summary>
     /// <returns>True - if wave was sucessfully called
     /// False - if wave does not call?</returns>
-    public bool Change_wave() //gotta make the enemy call this, or autocall when all enemies in wave has been elminitated and more waves remain
+    public bool Change_wave() //gotta make the enemy call this, or autocall when all enemies in wave has been eliminated and more waves remain
     {
         //check if can wavechange, if so:
         active_wave++;

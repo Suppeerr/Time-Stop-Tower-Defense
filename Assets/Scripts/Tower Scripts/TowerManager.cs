@@ -10,7 +10,8 @@ public class TowerManager : MonoBehaviour
     private List<GameObject> activeTowers = new List<GameObject>();
 
     // List of splitter costs 
-    private List<int> splitterCosts = new List<int> {5, 5, 5, 6, 8, 8, 10};
+    private List<int> regularSplitterCosts = new List<int> {5, 5, 5, 6, 8, 8, 10};
+    private List<int> hardSplitterCosts = new List<int> {5, 5, 6, 8, 12, 12, 15};
 
     // Count of the number of active splitter towers
     private int activeSplitterCount = 0;
@@ -54,14 +55,29 @@ public class TowerManager : MonoBehaviour
     {
         int currentCost = 0;
 
-        if (activeSplitterCount >= splitterCosts.Count)
+        if (GameInstance.levelDifficulty != GameInstance.difficultyType.Hard)
         {
-            currentCost = 10;
+            if (activeSplitterCount >= regularSplitterCosts.Count)
+            {
+                currentCost = 10;
+            }
+            else 
+            {
+                currentCost = regularSplitterCosts[activeSplitterCount];
+            }
         }
-        else 
+        else
         {
-            currentCost = splitterCosts[activeSplitterCount];
+            if (activeSplitterCount >= hardSplitterCosts.Count)
+            {
+                currentCost = 15;
+            }
+            else 
+            {
+                currentCost = hardSplitterCosts[activeSplitterCount];
+            }
         }
+        
         
         return currentCost;
     }
