@@ -18,7 +18,7 @@ public class Drone : MonoBehaviour
 
     void Update()
     {
-        if (isCollecting)
+        if (isCollecting || BaseHealthManager.Instance.IsGameOver)
         {
             return;
         }

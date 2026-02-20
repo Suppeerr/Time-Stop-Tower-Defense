@@ -1,6 +1,6 @@
 using UnityEngine;
+using UnityEngine.UI;
 using System.Collections.Generic;
-using UnityEditor.UI;
 using Unity.VisualScripting;
 
 public class EnemyEffectHandler
@@ -64,11 +64,6 @@ public class EnemyEffectHandler
     public void clearEffect(BaseEffect effect){
         if (effect.is_clearable) _removeEffect(effect);
     }
-
-
-
-
-
 }
 
 public class BaseEffect

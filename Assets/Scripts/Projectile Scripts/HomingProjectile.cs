@@ -79,6 +79,11 @@ public class HomingProjectile : MonoBehaviour
             Destroy(parryEffect, 0.6f);
         }
 
+        if (target == null)
+        {
+            SpawnExplosion(0);
+        }
+
         Destroy(gameObject, destroyAfter);
     }
 
@@ -87,6 +92,7 @@ public class HomingProjectile : MonoBehaviour
     {        
         if ((target == null && !isPiercing) || BaseHealthManager.Instance.IsGameOver)
         {
+            SpawnExplosion(0);
             Destroy(gameObject);
             return;
         }

@@ -4,13 +4,13 @@ using TMPro;
 
 public class EnemyCounter : MonoBehaviour
 {
+    // Enemy counter instance
+    public static EnemyCounter Instance;
+
     // UI fields
     [SerializeField] private TMP_Text enemiesDefeatedText;
     [SerializeField] private Image enemiesDefeatedImage;
     private bool textEnabled = false;
-
-    // Enemy counter
-    private int enemiesDefeatedCounter = 0;
 
     // Enemies defeated needed to win the level
     private int enemiesNeeded;
@@ -18,12 +18,29 @@ public class EnemyCounter : MonoBehaviour
     // Level won check
     private bool hasWon = false;
 
+    // Enemy counter
+    public int EnemiesDefeated { get; private set; } = 0;
+
+    private void Awake()
+    {
+        // Avoids duplicates of this object
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Debug.LogWarning("There is a duplicate of the script " + this + "!");
+            Destroy(gameObject);
+        }
+    }
+
     void Start()
     {
         // Adjusts enemies needed count based on difficulty
         if (GameInstance.levelDifficulty == GameInstance.difficultyType.Easy)
         {
-            enemiesNeeded = 60;
+            enemiesNeeded = 50;
         }
         else if (GameInstance.levelDifficulty == GameInstance.difficultyType.Normal)
         {
@@ -31,7 +48,7 @@ public class EnemyCounter : MonoBehaviour
         }
         else
         {
-            enemiesNeeded = 120;
+            enemiesNeeded = 160;
         }
 
         // Sets UI to inactive
@@ -51,9 +68,9 @@ public class EnemyCounter : MonoBehaviour
         }
 
         // Toggles level win when goal reached
-        if (enemiesDefeatedCounter >= enemiesNeeded && !hasWon)
+        if (EnemiesDefeated >= enemiesNeeded && !hasWon)
         {
-            enemiesDefeatedCounter = enemiesNeeded;
+            EnemiesDefeated = enemiesNeeded;
             UpdateUI();
 
             hasWon = true;
@@ -63,11 +80,11 @@ public class EnemyCounter : MonoBehaviour
         // Changes position of UI for certain cameras
         if (CameraSwitcher.Instance.ActiveCam == 2)
         {
-            enemiesDefeatedText.rectTransform.anchoredPosition = new Vector2(178, 70);
+            enemiesDefeatedText.rectTransform.anchoredPosition = new Vector2(190f, 70f);
         }
         else
         {
-            enemiesDefeatedText.rectTransform.anchoredPosition = new Vector2(780, 70);
+            enemiesDefeatedText.rectTransform.anchoredPosition = new Vector2(780f, 70f);
         }
     }
 
@@ -76,14 +93,14 @@ public class EnemyCounter : MonoBehaviour
     {
         if (enemiesDefeatedText != null)
         {
-            enemiesDefeatedText.text = enemiesDefeatedCounter.ToString() + "/" + enemiesNeeded;
+            enemiesDefeatedText.text = EnemiesDefeated.ToString() + "/" + enemiesNeeded;
         }
     }
 
     // Increments enemies defeated count
     public void IncrementCount()
     {
-        enemiesDefeatedCounter++;
+        EnemiesDefeated++;
         UpdateUI();
     }
 }

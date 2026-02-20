@@ -48,7 +48,7 @@ public class StoredTimeManager : MonoBehaviour
         // Moves the seconds indicator for specific cameras
         if (CameraSwitcher.Instance.ActiveCam == 2)
         {
-            storedTimeText.rectTransform.anchoredPosition = new Vector3(138f, 132f);
+            storedTimeText.rectTransform.anchoredPosition = new Vector3(148f, 132f);
         }
         else
         {
