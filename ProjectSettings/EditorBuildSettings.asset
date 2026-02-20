@@ -8,15 +8,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/UI and Main Menu.unity
     guid: 1acee90947f042a42b9e5600b23a8cde
-  - enabled: 0
-    path: Assets/Scenes/Money System.unity
-    guid: 02ba150703963f145954430ad4896cc7
+  - enabled: 1
+    path: Assets/Scenes/Loading Screen.unity
+    guid: 6b229c9f412323c4f875d82c5335b466
   - enabled: 1
     path: Assets/Scenes/Level 1.unity
     guid: 44d8ce6b6aafe5d4dbe899fe524f124d
-  - enabled: 0
-    path: Assets/Scenes/Old Gameplay and Mechanics.unity
-    guid: 0f55f7d9c420cfd4e84f4b7dec23ce28
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: 95a622695a79ba04a9173ffb3b88e095, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
