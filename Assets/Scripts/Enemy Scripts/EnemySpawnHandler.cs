@@ -79,8 +79,6 @@ public class EnemySpawnHandler
             Debug.Log(e.Message);
         }
 
-
-
         this.active_wave = -1;
         is_spawning = true;
         Change_wave();

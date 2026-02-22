@@ -6,15 +6,14 @@ using System.Collections;
 public class SceneLoadingController : MonoBehaviour
 {
     [SerializeField] private Slider loadingBarSlider;
-    private float displayedProgress = 0f;
 
     void Start()
     {
         if (loadingBarSlider != null)
+        {
             loadingBarSlider.value = 0f;
-
-        displayedProgress = 0f;
-
+        }
+            
         // Make sure we have a valid target scene
         if (string.IsNullOrEmpty(SceneLoader.targetScene))
         {
@@ -22,35 +21,48 @@ public class SceneLoadingController : MonoBehaviour
             return;
         }
 
-        StartCoroutine(LoadSceneAsync(SceneLoader.targetScene));
+        Scene scene = SceneManager.GetSceneByName(SceneLoader.targetScene);
+
+        Debug.Log("scene: " + scene);
+        StartCoroutine(LoadSceneAsync());
     }
 
-    private IEnumerator LoadSceneAsync(string sceneName)
+    private IEnumerator LoadSceneAsync()
     {
-        SceneManager.LoadScene("Level 1", LoadSceneMode.Single);
-        AsyncOperation operation = SceneManager.LoadSceneAsync(sceneName);
+        Debug.Log("Coroutine started");
+        AsyncOperation operation = SceneManager.LoadSceneAsync(SceneLoader.targetScene);
         operation.allowSceneActivation = false;
+        float minimumLoadTime = 1.0f;
+        float timer = 0f;
+        float displayedProgress = 0f;
 
-        while (!operation.isDone)
+        while (operation.progress < 0.9f || timer < minimumLoadTime)
         {
+            timer += Time.unscaledDeltaTime;
+            Debug.Log("Looping...");
+
             // Unity async progress goes from 0 to 0.9
-            float targetProgress = Mathf.Clamp01(operation.progress / 0.9f);
+            float unityProgress = Mathf.Clamp01(operation.progress / 0.9f);
+
+            // Time-based progress
+            float timeProgress = Mathf.Clamp01(timer / minimumLoadTime);
+
+            // Target progress 
+            float targetProgress = Mathf.Min(Mathf.Max(unityProgress, timeProgress), 1f);
 
             // Smooth the displayed progress
-            displayedProgress = Mathf.MoveTowards(displayedProgress, targetProgress, Time.deltaTime * 2f);
+            displayedProgress = Mathf.MoveTowards(displayedProgress, targetProgress, Time.unscaledDeltaTime * 0.8f);
 
             if (loadingBarSlider != null)
-                loadingBarSlider.value = displayedProgress;
-
-            // Once Unity says loading is done (progress >= 0.9) and bar is full, activate scene
-            if (operation.progress >= 0.9f && displayedProgress >= 1f)
             {
-                SceneManager.LoadScene("Level 1", LoadSceneMode.Single);
-                yield return new WaitForSeconds(0.2f); // optional small pause
-                operation.allowSceneActivation = true;
+                loadingBarSlider.value = displayedProgress;
             }
-
+                
             yield return null;
         }
+            // Once Unity says loading is done and bar is full, activate scene
+            loadingBarSlider.value = 1f;
+            yield return new WaitForSecondsRealtime(0.2f); 
+            operation.allowSceneActivation = true;
     }
 }
