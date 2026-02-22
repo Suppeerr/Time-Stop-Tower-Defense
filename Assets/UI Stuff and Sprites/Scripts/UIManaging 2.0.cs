@@ -22,6 +22,7 @@ public class UIManagingv2 : MonoBehaviour
     private bool Selected;
     void Start()
     {
+        Time.timeScale = 1f;
         levelCount = sceneNames.Length;
         sounds = this.GetComponents<AudioSource>();
     }

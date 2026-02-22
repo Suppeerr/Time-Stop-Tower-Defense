@@ -17,6 +17,9 @@ public class CameraSwitcher : MonoBehaviour
 
     // Saves the previously active camera when a camera switches
     private int previousActiveCamNum;
+
+    // Animation curve for camera movement
+    [SerializeField] private AnimationCurve cameraAnimationCurve = AnimationCurve.EaseInOut(0,0,1,1);
     
     // Camera moving boolean
     public bool IsCameraMoving { get; private set; }
@@ -83,7 +86,7 @@ public class CameraSwitcher : MonoBehaviour
         yield return StartCoroutine(MoveCamera(cameras[previousActiveCamNum], cameras[ActiveCam], 1.5f));
         SyncOverlayCamera();
 
-        yield return new WaitForSecondsRealtime(1f);
+        yield return new WaitForSecondsRealtime(0.5f);
 
         if (!TimeStop.Instance.IsFrozen)
         {
@@ -156,7 +159,8 @@ public class CameraSwitcher : MonoBehaviour
             }
 
             elapsedDelay += Time.unscaledDeltaTime;
-            float t = elapsedDelay / cameraMoveTime;
+            float linearT = elapsedDelay / cameraMoveTime;
+            float t = cameraAnimationCurve.Evaluate(linearT);
 
             ApplyCameraState(
                 transitionCam, 
@@ -190,7 +194,7 @@ public class CameraSwitcher : MonoBehaviour
         TutorialManager.Instance.UpdateScreenUI(false);
         previousActiveCamNum = ActiveCam;
         
-        yield return StartCoroutine(MoveCamera(cameras[ActiveCam], cameras[0], 2f));
+        yield return StartCoroutine(MoveCamera(cameras[ActiveCam], cameras[0], 1.7f));
 
         SyncOverlayCamera();
         
@@ -203,7 +207,7 @@ public class CameraSwitcher : MonoBehaviour
         SyncOverlayCamera();
         TutorialManager.Instance.UpdateTutorialUI(false);
 
-        yield return StartCoroutine(MoveCamera(cameras[0], cameras[previousActiveCamNum], 2f));
+        yield return StartCoroutine(MoveCamera(cameras[0], cameras[previousActiveCamNum], 1.7f));
 
         TutorialManager.Instance.UpdateImage();
         TutorialManager.Instance.UpdateScreenUI(true);
