@@ -12,7 +12,7 @@ public class LevelInstance : MonoBehaviour
 
     // Enemy path and lists
     public EnemyWaypointPath epath = new EnemyWaypointPath(); //could be array if we want multiple paths
-    List<BaseEnemy> enemies = new List<BaseEnemy>();
+    public List<BaseEnemy> enemies = new List<BaseEnemy>();
     public List<BaseEnemy> queueRemove = new List<BaseEnemy>();
     bool s_enabled = false;
 
@@ -21,7 +21,8 @@ public class LevelInstance : MonoBehaviour
 
     EnemySpawnHandler sptest;
 
-    public GameInstance.difficultyType difficulty = GameInstance.levelDifficulty;
+    public GameInstance.DifficultyType difficulty = GameInstance.LevelDifficulty;
+    public bool WaypointsLoaded { get; private set; } = false;
 
     public async Task Awake()
     {
@@ -42,8 +43,15 @@ public class LevelInstance : MonoBehaviour
         string speedyAddress = "Enemies/Speedy Bandit";
         speedyEPrefab = await AddressableLoader.GetAsset<GameObject>(speedyAddress);
 
-        if (SceneManager.GetActiveScene().name.Equals("Gameplay and Mechanics") || SceneManager.GetActiveScene().name.Equals("Level 1")) s_enabled = true;
-        if (!s_enabled) return;
+        if (SceneManager.GetActiveScene().name.Equals("Level 1") || SceneManager.GetActiveScene().name.Equals("Level 2"))
+        {
+            s_enabled = true;
+        }
+        
+        if (!s_enabled)
+        {
+            return;
+        }
 
         Debug.Log("levelInst enabled");
 
@@ -68,9 +76,11 @@ public class LevelInstance : MonoBehaviour
 
         foreach (Transform child in path)
         {
-            epath.addWaypoint(child.position);
+            epath.AddWaypoint(child.position);
             child.gameObject.SetActive(false);
         }
+
+        WaypointsLoaded = true;
     }
 
     public async Task Update()
@@ -190,8 +200,8 @@ public class LevelInstance : MonoBehaviour
     {
         foreach (BaseEnemy enemy in enemies)
         {
-            enemies.Remove(enemy);
             Destroy(enemy.visualObj);
         }
+        enemies.Clear();
     }
 }

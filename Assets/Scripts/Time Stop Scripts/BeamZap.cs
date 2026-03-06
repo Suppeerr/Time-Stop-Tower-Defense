@@ -36,12 +36,12 @@ public class BeamZap : MonoBehaviour
     private IEnumerator FireZap()
     {        
         // Defines the layers a zap can hit
-        int projectileLayers = LayerMask.GetMask("Normal Projectile");
+        int zapLayers = LayerMask.GetMask("Normal Projectile", "Vine Tower");
 
         // Allows zapped homing projectiles to be zapped again and multi-charged
         if (UpgradeManager.Instance.IsBought(UpgradeType.MultiCharge))
         {
-            projectileLayers |= 1 << LayerMask.NameToLayer("Homing Projectile");
+            zapLayers |= 1 << LayerMask.NameToLayer("Homing Projectile");
         }
 
         // Sphere casts to a projectile 
@@ -49,11 +49,12 @@ public class BeamZap : MonoBehaviour
         RaycastHit hit;
         float radius = 0.8f;
 
-        if (Physics.SphereCast(ray, radius, out hit, Mathf.Infinity, projectileLayers))
+        if (Physics.SphereCast(ray, radius, out hit, Mathf.Infinity, zapLayers))
         {
-            GameObject hitProj = hit.collider.gameObject;
-            NormalProjectile normalProjScript = hitProj.GetComponent<NormalProjectile>();
-            HomingProjectile homingProjScript = hitProj.GetComponent<HomingProjectile>();
+            GameObject hitObj = hit.collider.gameObject;
+            NormalProjectile normalProjScript = hitObj.GetComponent<NormalProjectile>();
+            HomingProjectile homingProjScript = hitObj.GetComponent<HomingProjectile>();
+            VineGrower vineGrowerScript = hitObj.GetComponent<VineGrower>();
 
             beam.enabled = true;
             beam.SetPosition(0, firePoint.position);
@@ -70,14 +71,20 @@ public class BeamZap : MonoBehaviour
             // Normal charging
             if (normalProjScript != null)
             {
-                SpawnHomingProjectile(hitProj, normalProjScript);
-                Destroy(hitProj);
+                SpawnHomingProjectile(hitObj, normalProjScript);
+                Destroy(hitObj);
             }
 
             // Multi-charging 
             if (homingProjScript != null)
             {
                 MultiChargeProjectiles(homingProjScript);
+            }
+
+            // Vine charging
+            if (vineGrowerScript != null)
+            {
+                vineGrowerScript.RechargeVines();
             }       
         }
 

@@ -9,6 +9,9 @@ public class TutorialManager : MonoBehaviour
     // Tutorial manager instance
     public static TutorialManager Instance;
 
+    // Tutorial start button
+    [SerializeField] private GameObject tutorialStartButton;
+
     // Tutorial page images and current page number
     [SerializeField] private List<GameObject> tutorialImages;
     private int currentIndex = 0;

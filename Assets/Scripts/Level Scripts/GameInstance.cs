@@ -39,22 +39,23 @@ public static class GameInstance
 
     static void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (scene.name == "Gameplay and Mechanics" || scene.name == "Level 1"){
+        if (scene.name == "Level 1" || scene.name == "Level 2")
+        {
             clevel = new GameObject();
             clevel.AddComponent<LevelInstance>();
         }
     }
 
-    public enum difficultyType
+    public enum DifficultyType
     {
         Easy,
         Normal,
         Hard
     };
 
-    public static difficultyType levelDifficulty = difficultyType.Normal;
+    public static DifficultyType LevelDifficulty = DifficultyType.Normal;
 
-    static void loadscene()
+    static void LoadScene()
     {
         //check if scene name is a valid level
         //if scene name is valid, load new gameInstance.

@@ -38,11 +38,11 @@ public class EnemyCounter : MonoBehaviour
     void Start()
     {
         // Adjusts enemies needed count based on difficulty
-        if (GameInstance.levelDifficulty == GameInstance.difficultyType.Easy)
+        if (GameInstance.LevelDifficulty == GameInstance.DifficultyType.Easy)
         {
             enemiesNeeded = 50;
         }
-        else if (GameInstance.levelDifficulty == GameInstance.difficultyType.Normal)
+        else if (GameInstance.LevelDifficulty == GameInstance.DifficultyType.Normal)
         {
             enemiesNeeded = 90;
         }

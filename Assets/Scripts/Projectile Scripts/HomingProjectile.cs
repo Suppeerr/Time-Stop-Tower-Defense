@@ -318,16 +318,16 @@ public class HomingProjectile : MonoBehaviour
         
         foreach (Collider col in hitColliders)
         {
-            // Check up the hierarchy for an EnemyProxy
-            EnemyProxy proxy = col.GetComponent<EnemyProxy>();
-            if (proxy == null)
+            // Check up the hierarchy for an EnemyObject
+            EnemyObject enemyObj = col.GetComponent<EnemyObject>();
+            if (enemyObj == null)
             {
-                proxy = col.GetComponentInParent<EnemyProxy>();
+                enemyObj = col.GetComponentInParent<EnemyObject>();
             }  
 
-            if (proxy != null && proxy.enemyData != null)
+            if (enemyObj != null && enemyObj.enemy != null)
             {
-                proxy.enemyData.TakeDamage(new DamageInstance(damage));
+                enemyObj.enemy.TakeDamage(new DamageInstance(damage));
             }
         }
     }
@@ -335,16 +335,16 @@ public class HomingProjectile : MonoBehaviour
     // Does damage to a single hit target
     private void DoSingleTargetDamage(Collision collision)
     {
-        // Check up the hierarchy for an EnemyProxy
-        EnemyProxy proxy = collision.collider.GetComponent<EnemyProxy>();
-        if (proxy == null)
+        // Check up the hierarchy for an EnemyObject
+        EnemyObject enemyObj = collision.collider.GetComponent<EnemyObject>();
+        if (enemyObj == null)
         {
-            proxy = collision.collider.GetComponentInParent<EnemyProxy>();
+            enemyObj = collision.collider.GetComponentInParent<EnemyObject>();
         }  
 
-        if (proxy != null && proxy.enemyData != null)
+        if (enemyObj != null && enemyObj.enemy != null)
         {
-            proxy.enemyData.TakeDamage(new DamageInstance(damage));
+            enemyObj.enemy.TakeDamage(new DamageInstance(damage));
         }
     }
 

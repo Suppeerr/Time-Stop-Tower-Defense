@@ -55,7 +55,7 @@ public class TowerManager : MonoBehaviour
     {
         int currentCost = 0;
 
-        if (GameInstance.levelDifficulty != GameInstance.difficultyType.Hard)
+        if (GameInstance.LevelDifficulty != GameInstance.DifficultyType.Hard)
         {
             if (activeSplitterCount >= regularSplitterCosts.Count)
             {

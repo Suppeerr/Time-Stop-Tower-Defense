@@ -74,7 +74,8 @@ public class EnemySpawnHandler
                 spawndata = spawndata.Append(spawn_inst_container).ToArray(); //this can be optimized
             }
         }
-        catch (Exception e) {
+        catch (Exception e) 
+        {
             Debug.Log("Enemy spawn file for level could not be read:");
             Debug.Log(e.Message);
         }

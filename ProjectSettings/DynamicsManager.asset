@@ -3,7 +3,7 @@
 --- !u!55 &1
 PhysicsManager:
   m_ObjectHideFlags: 0
-  serializedVersion: 20
+  serializedVersion: 23
   m_Gravity: {x: 0, y: -9.81, z: 0}
   m_DefaultMaterial: {fileID: 0}
   m_BounceThreshold: 2
@@ -17,7 +17,7 @@ PhysicsManager:
   m_EnableAdaptiveForce: 0
   m_ClothInterCollisionDistance: 0.1
   m_ClothInterCollisionStiffness: 0.2
-  m_LayerCollisionMatrix: 3bfeffffbbdeffff00d8ffffbbdeffffbbdeffff3bd6ffff00c8ffff1ac1ffff80c0ffff3bd6ffff3bc6ffff5fc0ffff3fc2ffff01c0ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+  m_LayerCollisionMatrix: 3bfefeffbbdefeff0058feffbbdefeffbbdefeff3bd6feff0008feff1a41feff8040feff3bd6feff3bc6feff5f40ffff3f42feff0140feffbffffeff3bc6feff0008feffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
   m_SimulationMode: 0
   m_AutoSyncTransforms: 0
   m_ReuseCollisionCallbacks: 1
@@ -39,3 +39,7 @@ PhysicsManager:
   m_ScratchBufferChunkCount: 4
   m_CurrentBackendId: 4072204805
   m_FastMotionThreshold: 3.4028235e+38
+  m_SceneBuffersReleaseInterval: 0
+  m_ReleaseSceneBuffers: 0
+  m_LogVerbosity: 3
+  m_IncrementalStaticBroadphase: 1

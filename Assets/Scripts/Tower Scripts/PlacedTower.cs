@@ -21,7 +21,7 @@ public class PlacedTower : MonoBehaviour
 
     // Ball spawner and block source scripts
     private BallSpawner ballSpawner;
-    private BlockSource towerSchematic;
+    private TowerSource towerSchematic;
 
     // Tower sell price
     [SerializeField] private int sellPrice;
@@ -29,7 +29,7 @@ public class PlacedTower : MonoBehaviour
     void Awake()
     {
         // Initializes fields
-        towerSchematic = GameObject.Find("Splitter Schematic")?.GetComponent<BlockSource>();
+        towerSchematic = GameObject.Find("Splitter Schematic")?.GetComponent<TowerSource>();
         ballSpawner = GetComponent<BallSpawner>();
         ballSpawner.enabled = false;
         towerLayer = LayerMask.GetMask("Tower");
@@ -92,7 +92,8 @@ public class PlacedTower : MonoBehaviour
     // Sells tower and refunds some coins
     private void SellTower()
     {
-        Ray ray = CameraSwitcher.Instance.CurrentCamera.ScreenPointToRay(Input.mousePosition);
+        Ray ray = CameraSwitcher.Instance.
+                  CurrentCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
         if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, towerLayer))
         {
             if (hit.collider.transform == this.transform)

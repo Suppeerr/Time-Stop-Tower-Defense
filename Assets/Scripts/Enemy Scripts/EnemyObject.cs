@@ -1,8 +1,40 @@
 using UnityEngine;
+using System.Collections;
 
 public class EnemyObject : MonoBehaviour
 {
-    BaseEnemy s_edatastructure;
+    // Enemy field
+    public BaseEnemy enemy;
+
+    // Enemy slowing fields
+    public bool IsEnemySlowed { get; private set; } = false;
+
+    public void Init(BaseEnemy enemy)
+    {
+        this.enemy = enemy;
+    }
+
+    // Slows the enemy by a specified percentage
+    public bool SlowEnemy(float slowPercent, float slowDur)
+    {
+        if (IsEnemySlowed)
+        {
+            return false;
+        }
+        StartCoroutine(SlowRoutine(slowPercent, slowDur));
+        return true;
+    }
+
+    private IEnumerator SlowRoutine(float slowPercent, float slowDur)
+    {
+        enemy.SetSpeedMultiplier(1f - slowPercent);
+        IsEnemySlowed = true;
+
+        yield return new WaitForSeconds(slowDur);
+
+        enemy.SetSpeedMultiplier(1f);
+        IsEnemySlowed = false;
+    }
 
     //game object specifics go here, such as animations or hitboxes
 }

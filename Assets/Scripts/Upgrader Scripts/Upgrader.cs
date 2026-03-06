@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 using TMPro;
 using System.Collections;
 
@@ -180,7 +181,7 @@ public class Upgrader : MonoBehaviour
         baseText = upgrade.text;
     }
 
-    void OnMouseDown()
+    private void ReceiveMouseInput()
     {
         if (TimeStop.Instance.IsFrozen || !clickableScript.ClickableEnabled || BaseHealthManager.Instance.IsGameOver)
         {
@@ -341,6 +342,19 @@ public class Upgrader : MonoBehaviour
     {
         ManageOutlineFlash();
 
+        if (Mouse.current.leftButton.wasPressedThisFrame)
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
+
+            if (Physics.Raycast(ray, out RaycastHit hit))
+            {
+                if (hit.collider.gameObject == gameObject)
+                {
+                    ReceiveMouseInput();
+                }
+            }
+        }
+    
         AdjustUI();
     }
 
@@ -349,7 +363,9 @@ public class Upgrader : MonoBehaviour
     {
         if (TimeStop.Instance.IsFrozen || 
             (IsLocked && activeUpgrader != this) ||
-            (clickableScript.ClickableEnabled && (currentState == UpgraderState.Locked || currentState == UpgraderState.Finished)))
+            (clickableScript.ClickableEnabled && 
+             (currentState == UpgraderState.Locked 
+              || currentState == UpgraderState.Finished)))
         {
             if (currentState != UpgraderState.Locked)
             {
