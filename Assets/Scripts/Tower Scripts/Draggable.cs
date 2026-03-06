@@ -43,6 +43,23 @@ public class Draggable : MonoBehaviour
     void Update()
     {
         DragToCursor();
+
+        // When left mouse button is clicked and held, begin dragging the tower
+        if (!isPlaced && Mouse.current.leftButton.wasPressedThisFrame)
+        {
+            if (Mouse.current.leftButton.wasPressedThisFrame)
+            {
+                Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
+
+                if (Physics.Raycast(ray, out RaycastHit hit))
+                {
+                    if (hit.collider.gameObject == gameObject)
+                    {
+                        BeginDrag();
+                    }
+                }
+            }
+        }
     }
 
     // Drags the tower to wherever the cursor is
@@ -52,7 +69,8 @@ public class Draggable : MonoBehaviour
         {
             bool isColliding = false;
             bool insidePlacementZone = false;
-            Ray ray = CameraSwitcher.Instance.CurrentCamera.ScreenPointToRay(Input.mousePosition);
+            Ray ray = CameraSwitcher.Instance.CurrentCamera.
+                      ScreenPointToRay(Mouse.current.position.ReadValue());
             RaycastHit hit;
 
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, groundMask))
@@ -60,7 +78,8 @@ public class Draggable : MonoBehaviour
                 Vector3 desiredPos = hit.point + offset;
 
                 // Ensures correct Y position by sampling the ground height
-                if (Physics.Raycast(desiredPos + Vector3.up * 10f, Vector3.down, out RaycastHit groundHit, 20f, groundMask))
+                if (Physics.Raycast(desiredPos + Vector3.up * 10f, 
+                    Vector3.down, out RaycastHit groundHit, 20f, groundMask))
                 {
                     // Snap to the real ground height
                     desiredPos.y = groundHit.point.y + 0.67f;
@@ -104,7 +123,7 @@ public class Draggable : MonoBehaviour
             }
 
             // Stop dragging if mouse released
-            if (Input.GetMouseButtonUp(0))
+            if (Mouse.current.leftButton.wasReleasedThisFrame)
             {
                 if (!isColliding && insidePlacementZone)
                 {
@@ -124,19 +143,11 @@ public class Draggable : MonoBehaviour
         }
     }
 
-    // When left mouse button is clicked and held, begin dragging the tower
-    void OnMouseDown()
-    {
-        if (!isPlaced)
-        {
-            BeginDrag();
-        }
-    }
-
     // Starts dragging the tower
     public void BeginDrag()
     {
-        Ray ray = CameraSwitcher.Instance.CurrentCamera.ScreenPointToRay(Input.mousePosition);
+        Ray ray = CameraSwitcher.Instance.
+                  CurrentCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
         RaycastHit hit;
         isDragging = true;
         PlacementZoneManager.Instance.ShowZone();

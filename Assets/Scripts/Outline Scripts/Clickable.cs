@@ -54,7 +54,7 @@ public class Clickable : MonoBehaviour
         }
 
         // Raycast to detect hovering
-        Ray ray = CameraSwitcher.Instance.CurrentCamera.ScreenPointToRay(Input.mousePosition);
+        Ray ray = CameraSwitcher.Instance.CurrentCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
         bool hoveringThisFrame = false;
         bool clickedThisFrame = false;
 

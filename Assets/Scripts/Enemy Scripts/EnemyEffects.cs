@@ -8,16 +8,16 @@ public static class effectLockoutAdditionalEnum
 //list of all enemy effects
 //could change to seperate scripts in a folder in directory
 
-public class msrFramework_Effect : BaseEffect
+public class MsrFrameworkEffect : BaseEffect
 {
     //movement speed reduction
 }
 
-public class basicSlow_Effect : msrFramework_Effect
+public class BasicSlowEffect : MsrFrameworkEffect
 {
-    public basicSlow_Effect()
-    {
+    // public BasicSlow_Effect()
+    // {
 
-    }
+    // }
 
 }

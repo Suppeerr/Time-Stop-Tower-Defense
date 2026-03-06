@@ -13,7 +13,7 @@ public class CoinLogic : MonoBehaviour
 
     void Awake()
     {
-        // Initialize fields
+        // Initializes fields
         droneScript ??= FindFirstObjectByType<Drone>();
         launcher = GameObject.Find("Coin Launcher")?.transform;
     }

@@ -25,7 +25,7 @@ public class BallSpawner : MonoBehaviour
     {
         // Initializes fields
         barrelAim = GetComponentInParent<BarrelAim>();
-        shootPoint = this.transform;
+        shootPoint = transform;
         
         spawnRate = 1f / spawnPerSecond;
     }

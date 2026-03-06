@@ -112,19 +112,19 @@ public class UIManagingv2 : MonoBehaviour
 
     public void ChooseEasy()
     {
-        GameInstance.levelDifficulty = GameInstance.difficultyType.Easy;
+        GameInstance.LevelDifficulty = GameInstance.DifficultyType.Easy;
         SelectDiff(0);
     }
 
     public void ChooseMedium()
     {
-        GameInstance.levelDifficulty = GameInstance.difficultyType.Normal;
+        GameInstance.LevelDifficulty = GameInstance.DifficultyType.Normal;
         SelectDiff(1);
     }
 
     public void ChooseHard()
     {
-        GameInstance.levelDifficulty = GameInstance.difficultyType.Hard;
+        GameInstance.LevelDifficulty = GameInstance.DifficultyType.Hard;
         SelectDiff(2);
     }
 }

@@ -51,7 +51,6 @@ public class BaseEnemy
 
     // Level instance reference
     private LevelInstance level;
-
     
     public string testljson()
     {
@@ -80,6 +79,7 @@ public class BaseEnemy
         baseHp = stats.hp;
         hp = baseHp;
         speed = stats.spd;
+        baseSpd = stats.spd;
         baseDef = stats.def;
         def = baseDef;
         enemyvObjPrefab = prefab;
@@ -126,13 +126,13 @@ public class BaseEnemy
         visualObj = GameObject.Instantiate(enemyvObjPrefab);
         visualObj.SetActive(false);
 
-        this.s_position = spath.waypoints[0].position;
+        this.s_position = spath.Waypoints[0].position;
         visualObj.transform.position = s_position;
         visObjbaseRot = visualObj.transform.rotation;
 
-        // Attach proxy
-        var proxy = visualObj.AddComponent<EnemyProxy>();
-        proxy.Init(this);
+        // Attach object script
+        var enemyObj = visualObj.AddComponent<EnemyObject>();
+        enemyObj.Init(this);
 
         // Gets damage indicator
         string indicatorAddress = "Enemies/Enemy Damage Indicator";
@@ -176,9 +176,9 @@ public class BaseEnemy
     {   //... change positioning later - jack (self)
         float distance_traveled = speed * Time.deltaTime;
     
-        while (distance_traveled > 0f && currentWaypoint < spath.waypoints.Length)
+        while (distance_traveled > 0f && currentWaypoint < spath.Waypoints.Count)
         {
-            Waypoint targ_waypoint = spath.waypoints[currentWaypoint];
+            Waypoint targ_waypoint = spath.Waypoints[currentWaypoint];
             Vector3 offsetVec = ComputeOffset(targ_waypoint);
             Vector3 targetPosWithOffset = targ_waypoint.position + offsetVec;
 
@@ -194,13 +194,13 @@ public class BaseEnemy
                 curdist_traveled = 0;
                 currentWaypoint += 1;
 
-                if (currentWaypoint >= spath.waypoints.Length)
+                if (currentWaypoint >= spath.Waypoints.Count)
                 {
                     this._s_pathend();
                     return;
                 }
 
-                visualObj.transform.rotation = visObjbaseRot * spath.waypoints[currentWaypoint].faceDirection;
+                visualObj.transform.rotation = visObjbaseRot * spath.Waypoints[currentWaypoint].faceDirection;
                 Vector3 testv = visualObj.transform.eulerAngles;
                 visualObj.transform.rotation = Quaternion.Euler(-testv.z, testv.y, 0f); //correct facing direction
             }
@@ -211,6 +211,13 @@ public class BaseEnemy
                 distance_traveled = 0f;
             }
         }
+    }
+
+    // Adjusts the enemy's speed to respond to slow down effects
+    public void SetSpeedMultiplier(float multiplier)
+    {
+        speed = baseSpd * multiplier;
+        Debug.Log("This enemy's speed is now: " + speed);
     }
 
     // Computes the enemy's pathing offset
@@ -242,7 +249,6 @@ public class BaseEnemy
     {
         return currentWaypoint;
     }
-
 
     // Overridable implementations for diff enemy types
     public virtual void OnReachEnd() { }

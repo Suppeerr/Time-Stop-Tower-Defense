@@ -1,14 +1,19 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
+using System.Collections;
 
 public class LevelStarter : MonoBehaviour
 {
     // Level starter instance
     public static LevelStarter Instance;
 
-    // Tutorial image
-    [SerializeField] private Image tutorialImage;
+    // Tutorial start button
+    [SerializeField] private GameObject tutorialStartButton;
+
+    // Level start and tutorial slide animator
+    [SerializeField] private Animator startSlideAnimator;
+    [SerializeField] private Animator tutorialSlideAnimator;
 
     // Static level start boolean
     public static bool HasLevelStarted { get; private set; }
@@ -41,9 +46,19 @@ public class LevelStarter : MonoBehaviour
     // Starts the level
     public void StartLevel()
     {
+        startSlideAnimator.SetTrigger("Slide");
+        tutorialSlideAnimator.SetTrigger("Slide");
+        StartCoroutine(HideUI());
+
         HasLevelStarted = true;
-        gameObject.SetActive(false);
-        tutorialImage.enabled = false;
         UISoundManager.Instance.PlayClickSound(false);
+    }
+
+    // Hides the level start UI after the level starts
+    public IEnumerator HideUI()
+    {
+        yield return new WaitForSeconds(0.8f);
+        gameObject.SetActive(false);
+        tutorialStartButton.SetActive(false);
     }
 }

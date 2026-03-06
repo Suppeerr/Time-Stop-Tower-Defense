@@ -4,24 +4,27 @@ using UnityEngine;
 
 public class EnemyWaypointPath
 {
-    public Waypoint[] waypoints { get; private set; } = new Waypoint[0];
-    public void addWaypoint(float x, float y, float z)
+    public List<Waypoint> Waypoints { get; private set; } = new List<Waypoint>();
+    public void AddWaypoint(float x, float y, float z)
     {
-        addWaypoint(new Vector3(x, y, z));
+        AddWaypoint(new Vector3(x, y, z));
     }
 
-    public void addWaypoint(Vector3 position)
+    public void AddWaypoint(Vector3 position)
     {
-        if (waypoints.Length == 0)
+        float cumuDist = 0f;
+        if (Waypoints.Count == 0)
         {
-            waypoints = waypoints.Append(new Waypoint(position)).ToArray();
-            return;
+            Waypoints.Add(new Waypoint(position, position, cumuDist)); 
         }
+        else
+        {
+            Waypoint prev = Waypoints[Waypoints.Count - 1];
+            cumuDist = prev.cumulativeDist + Vector3.Distance(prev.position, position);
+            Waypoints.Add(new Waypoint(position, prev.position, cumuDist)); 
 
-        Waypoint prevPoint = waypoints[waypoints.Length - 1];
-        waypoints = waypoints.Append(new Waypoint(position, prevPoint.position)).ToArray(); //this datastructure probally shouldn't be an array...
+        }
     }
-
 }
 
 public class Waypoint
@@ -29,14 +32,17 @@ public class Waypoint
     public Vector3 position;
     public Vector3 modif;
     public Quaternion faceDirection;
+    public float cumulativeDist;
     public float dist;
 
-    public Waypoint(Vector3 position, Vector3 source)
+    public Waypoint(Vector3 position, Vector3 source, float cumulativeDist)
     {
         this.position = position;
-        dist = (position - source).magnitude;
         modif = (position - source).normalized;
         faceDirection = Quaternion.LookRotation((source - position).normalized);
+        this.cumulativeDist = cumulativeDist;
+        dist = (position - source).magnitude;
+
         // Debug.Log($"Created New Waypoint: at {position}, modif {modif} ({dist})");
     }
 

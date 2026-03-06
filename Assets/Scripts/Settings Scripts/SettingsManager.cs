@@ -160,7 +160,10 @@ public class SettingsManager : MonoBehaviour
     public void ToggleControls()
     {
         controlsOpened = !controlsOpened;
-        UISoundManager.Instance.PlayClickSound(controlsOpened);
+        if (SettingsMenuOpener.Instance.MenuOpened)
+        {
+            UISoundManager.Instance.PlayClickSound(controlsOpened);
+        }
         mainMenu.SetActive(!controlsOpened);
         controlsMenu.SetActive(controlsOpened);
     }
@@ -176,6 +179,6 @@ public class SettingsManager : MonoBehaviour
     public void ExitLevel()
     {
         UISoundManager.Instance.PlayClickSound(false);
-        SceneManager.LoadScene("UI and Main Menu", LoadSceneMode.Single);
+        SceneManager.LoadScene("Level Selector", LoadSceneMode.Single);
     }
 }
